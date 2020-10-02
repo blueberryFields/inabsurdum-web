@@ -5,7 +5,12 @@ export const selectTrack = (track) => ({
   payload: track,
 });
 
-export const setPlaying = () => ({
-  type: PlayerActionTypes.SET_PLAYING,
-  payload: null
-})
+export const togglePlaying = () => ({
+  type: PlayerActionTypes.TOGGLE_PLAYING,
+  payload: null,
+});
+
+export const setShowControls = (test) => ({
+  type: PlayerActionTypes.SET_SHOW_CONTROLS,
+  payload: test,
+});

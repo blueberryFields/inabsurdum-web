@@ -19,3 +19,8 @@ export const selectIsTrackSelected = memoize((track) =>
     playing: selectedTrack.id === track.id && selectedTrack.playing,
   }))
 );
+
+export const selectShowControls = createSelector(
+  [selectPlayer],
+  (player) => player.showControls
+);

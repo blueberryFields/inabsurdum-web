@@ -1,14 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import WaveSurfer from 'wavesurfer.js';
-import { setPlaying } from '../../redux/player/player.actions';
+import {
+  togglePlaying,
+  setShowControls,
+} from '../../redux/player/player.actions';
+import { selectShowControls } from '../../redux/player/player.selectors';
 
 import './waveform.styles.scss';
 
 const Waveform = ({ selectedTrack: { url, playing } }) => {
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
+
+  const showControls = useSelector(selectShowControls);
 
   const dispatch = useDispatch();
 
@@ -32,10 +38,22 @@ const Waveform = ({ selectedTrack: { url, playing } }) => {
     wavesurfer.current.on('ready', function () {
       wavesurfer.current.setVolume(0.9);
       wavesurfer.current.play();
-      dispatch(setPlaying());
+      dispatch(togglePlaying());
+      dispatch(setShowControls(true));
     });
 
-    return () => wavesurfer.current.destroy();
+    wavesurfer.current.on('finish', function () {
+      dispatch(togglePlaying());
+    });
+
+    return () => {
+      wavesurfer.current.destroy();
+      dispatch(setShowControls(false));
+    };
+  }, []);
+
+  useEffect(() => {
+    if (url) wavesurfer.current.load(url);
   }, [url]);
 
   return <div className="waveform" ref={waveformRef} />;

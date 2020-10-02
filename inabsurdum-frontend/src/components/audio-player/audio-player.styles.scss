@@ -10,16 +10,16 @@
   flex-direction: row;
 
   .controls {
-    min-width: 55px;
+    min-width: 58px;
     display: flex;
     box-sizing: border-box;
 
     .toggle-play-holder {
-      margin: auto 10px;
+      margin: auto;
       border-radius: 50px;
       border: 1px solid white;
-      width: 35px;
-      height: 35px;
+      // width: 35px;
+      // height: 35px;
       display: flex;
 
       &:hover {
@@ -29,6 +29,7 @@
       .toggle-play-icon {
         margin: auto;
         font-size: 12px;
+        padding: 15px;
       }
     }
   }

@@ -4,6 +4,7 @@ import PlayerActionTypes from './player.types';
 const INITIAL_STATE = {
   playlists: PLAYLIST_DATA,
   selectedTrack: {},
+  showControls: false,
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
@@ -13,10 +14,18 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         ...state,
         selectedTrack: { ...action.payload, playing: false },
       };
-    case PlayerActionTypes.SET_PLAYING:
+    case PlayerActionTypes.TOGGLE_PLAYING:
       return {
         ...state,
-        selectedTrack: { ...state.selectedTrack, playing: !state.selectedTrack.playing },
+        selectedTrack: {
+          ...state.selectedTrack,
+          playing: !state.selectedTrack.playing,
+        },
+      };
+    case PlayerActionTypes.SET_SHOW_CONTROLS:
+      return {
+        ...state,
+        showControls: action.payload,
       };
     default:
       return state;
