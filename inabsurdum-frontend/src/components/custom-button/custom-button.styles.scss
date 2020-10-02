@@ -1,0 +1,35 @@
+.custom-button {
+  margin: auto;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+  padding: 5px 15px;
+  font-size: 10px;
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+  border-radius: 50px;
+  text-transform: uppercase;
+  font-family: 'Open Sans Condensed';
+  font-weight: bolder;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+
+  &:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+  }
+
+  &.inverted {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+
+    &:hover {
+      background-color: black;
+      color: white;
+      border: none;
+    }
+  }
+}

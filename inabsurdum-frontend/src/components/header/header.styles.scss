@@ -1,0 +1,28 @@
+.header {
+  z-index: 1;
+  height: 70px;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  box-shadow: 0px 0px 8px 3px rgba(0, 0, 0, 0.75);
+  background: black;
+
+  button {
+    margin: auto auto auto 15px;
+  }
+
+  .logo {
+    // grid-column: 2;
+    margin: auto;
+    font-family: 'Who-asks-Satan';
+    color: white;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  .menu-icon {
+    margin: auto 25px auto auto;
+    color: white;
+  }
+}
