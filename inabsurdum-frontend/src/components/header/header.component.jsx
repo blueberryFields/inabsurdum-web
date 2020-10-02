@@ -9,8 +9,9 @@ import CustomButton from '../custom-button/custom-button.component';
 const Header = () => {
   return (
     <div className="header">
-      <CustomButton >Ladda upp</CustomButton>
+      <CustomButton>Ladda upp</CustomButton>
       <h1 className="logo">In Absurdum</h1>
+      {/* <CustomButton>Logga ut</CustomButton> */}
       <FontAwesomeIcon className="menu-icon" icon={faBars} />
     </div>
   );

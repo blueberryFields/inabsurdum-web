@@ -38,6 +38,7 @@ const Waveform = ({ selectedTrack: { url, playing } }) => {
     wavesurfer.current.on('ready', function () {
       wavesurfer.current.setVolume(0.9);
       wavesurfer.current.play();
+      //TODO: change this so it always sets playing to true
       dispatch(togglePlaying());
       dispatch(setShowControls(true));
     });
