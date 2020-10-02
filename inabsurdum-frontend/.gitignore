@@ -8,6 +8,10 @@
 # testing
 /coverage
 
+#resource files
+/public/audio
+/public/audio/*
+
 # production
 /build
 

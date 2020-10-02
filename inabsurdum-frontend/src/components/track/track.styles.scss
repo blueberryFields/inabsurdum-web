@@ -10,12 +10,13 @@
   }
 
   &:hover {
-    // DETTA SKA GÄLLA NÄR ETT SPÅR SPELAS
-    // background: black;
-    // color: white;
-    // border-top: none;
-
     background: #f2f2f2f2;
+  }
+
+  &.selected {
+    background: black;
+    color: white;
+    border-top: 1px black solid;
   }
 
   .play {
@@ -30,6 +31,7 @@
 
   .title {
     width: 55%;
+    text-overflow: clip;
   }
 
   .length {

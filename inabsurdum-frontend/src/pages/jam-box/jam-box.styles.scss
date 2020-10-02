@@ -2,4 +2,12 @@
   height: 100%;
   background: black;
   overflow: scroll;
+
+  display: flex;
+  flex-direction: column;
+
+  .playlist-area {
+    height: 100%;
+    overflow-y: scroll;
+  }
 }
