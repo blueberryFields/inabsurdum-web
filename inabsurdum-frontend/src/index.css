@@ -14,10 +14,10 @@ code {
 
 @font-face {
   font-family: 'Who-asks-Satan';
-  src:url('fonts/Who-asks-Satan.ttf.woff') format('woff'),
-      url('fonts/Who-asks-Satan.ttf.svg#Who-asks-Satan') format('svg'),
-      url('fonts/Who-asks-Satan.ttf.eot'),
-      url('fonts/Who-asks-Satan.ttf.eot?#iefix') format('embedded-opentype'); 
+  src: url('fonts/Who-asks-Satan.ttf.woff') format('woff'),
+    url('fonts/Who-asks-Satan.ttf.svg#Who-asks-Satan') format('svg'),
+    url('fonts/Who-asks-Satan.ttf.eot'),
+    url('fonts/Who-asks-Satan.ttf.eot?#iefix') format('embedded-opentype');
   font-weight: normal;
   font-style: normal;
 }
