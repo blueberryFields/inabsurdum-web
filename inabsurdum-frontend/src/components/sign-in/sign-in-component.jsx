@@ -8,15 +8,31 @@ import { setCurrentUser } from '../../redux/user/user.actions';
 import './sign-in.styles.scss';
 
 const SignIn = () => {
-  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+
+  const [state, setState] = useState({
+    password: '',
+    message: '',
+  });
+
+  const handleChange = (event) => {
+    const { value, name } = event.target;
+
+    setState({ ...state, [name]: value });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (password === 'secret') {
+    if (state.password === 'secret') {
       dispatch(setCurrentUser({ id: 1 }));
-      setPassword('');
+      setState({ ...state, password: '' });
+    } else {
+      setState({
+        ...state,
+        password: '',
+        message: 'Fel lösenord! Försök igen.',
+      });
     }
   };
 
@@ -26,12 +42,13 @@ const SignIn = () => {
         <FormInput
           name="password"
           type="password"
-          value={password}
-          handleChange={(e) => setPassword(e.target.value)}
+          value={state.password}
+          handleChange={handleChange}
           label="Lösenord"
           required
         />
         <CustomButton type="submit">Logga in</CustomButton>
+        <div className="message">{state.message}</div>
       </form>
     </div>
   );
