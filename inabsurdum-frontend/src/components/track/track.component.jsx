@@ -6,6 +6,7 @@ import {
   faPlay,
   faPause,
   faEllipsisH,
+  faDownload
 } from '@fortawesome/free-solid-svg-icons';
 
 import './track.styles.scss';
@@ -37,7 +38,7 @@ const Track = ({ track }) => {
       <td className="title">{title}</td>
       <td className="length">{length}</td>
       <td onClick={() => console.log('klick')} className="dots">
-        <FontAwesomeIcon className="dots-icon" icon={faEllipsisH} />
+        <FontAwesomeIcon className="dots-icon" icon={faDownload} />
       </td>
     </tr>
   );

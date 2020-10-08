@@ -15,6 +15,7 @@ ReactDOM.render(
         <App />
       </BrowserRouter>
     </Provider>
+    <div id="modal-root"></div>
   </React.StrictMode>,
   document.getElementById('root')
 );

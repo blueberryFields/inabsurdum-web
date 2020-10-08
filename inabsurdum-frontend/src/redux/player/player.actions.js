@@ -7,10 +7,9 @@ export const selectTrack = (track) => ({
 
 export const togglePlaying = () => ({
   type: PlayerActionTypes.TOGGLE_PLAYING,
-  payload: null,
 });
 
-export const setShowControls = (test) => ({
+export const setShowControls = (bool) => ({
   type: PlayerActionTypes.SET_SHOW_CONTROLS,
-  payload: test,
+  payload: bool,
 });
