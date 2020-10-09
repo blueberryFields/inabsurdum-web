@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { signOut } from '../../redux/user/user.actions';
+import { unselectTrack } from '../../redux/player/player.actions';
 import CustomButton from '../custom-button/custom-button.component';
 import ToggleContent from '../../modal-engine/toggle-content/toggle-content.component';
 import Modal from '../../modal-engine/modal/modal.component';
@@ -32,7 +33,13 @@ const Header = () => {
       {/* <CustomButton inverted>Logga ut</CustomButton> */}
       {/* <FontAwesomeIcon className="menu-icon" icon={faBars} /> */}
       {user && (
-        <div className="sign-out" onClick={() => dispatch(signOut())}>
+        <div
+          className="sign-out"
+          onClick={() => {
+            dispatch(signOut());
+            dispatch(unselectTrack());
+          }}
+        >
           LOGGA UT
         </div>
       )}

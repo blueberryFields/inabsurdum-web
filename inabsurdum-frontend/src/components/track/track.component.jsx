@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPlay,
   faPause,
-  faDownload
+  faDownload,
+  faTimes
 } from '@fortawesome/free-solid-svg-icons';
 
 import './track.styles.scss';
@@ -36,8 +37,9 @@ const Track = ({ track }) => {
       </td>
       <td className="title">{title}</td>
       <td className="length">{length}</td>
-      <td onClick={() => console.log('klick')} className="dots">
-        <FontAwesomeIcon className="dots-icon" icon={faDownload} />
+      <td onClick={() => console.log('klick')} className="options">
+        <FontAwesomeIcon className="icon first" icon={faDownload} />
+        <FontAwesomeIcon className="icon" icon={faTimes} />
       </td>
     </tr>
   );

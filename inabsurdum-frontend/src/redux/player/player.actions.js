@@ -5,6 +5,10 @@ export const selectTrack = (track) => ({
   payload: track,
 });
 
+export const unselectTrack = () => ({
+  type: PlayerActionTypes.UNSELECT_TRACK,
+})
+
 export const togglePlaying = () => ({
   type: PlayerActionTypes.TOGGLE_PLAYING,
 });

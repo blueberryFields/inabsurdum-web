@@ -38,8 +38,17 @@
     width: 25%;
   }
 
-  .dots {
-    cursor: pointer;
+  .options {
+    display: flex;
+    flex-direction: row;
     width: 10%;
+
+    .icon {
+      cursor: pointer;
+    }
+
+    .first {
+      margin-right: 8px;
+    }
   }
 }

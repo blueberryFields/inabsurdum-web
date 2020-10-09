@@ -14,6 +14,11 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         ...state,
         selectedTrack: { ...action.payload, playing: false },
       };
+    case PlayerActionTypes.UNSELECT_TRACK:
+      return {
+        ...state,
+        selectedTrack: {},
+      };
     case PlayerActionTypes.TOGGLE_PLAYING:
       return {
         ...state,
