@@ -1,38 +1,79 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import CustomButton from '../custom-button/custom-button.component';
+import FileUploader from '../file-uploader/file-uploader.component';
+import PlaylistSelect from '../playlist-select/playlist-select.component';
+import CreatePlaylist from '../create-playlist/create-playlist.component';
+import ModalFormInput from '../modal-form-input/modal-form-input.component';
+import { selectPlaylists } from '../../redux/player/player.selectors';
 
 import './upload-modal.styles.scss';
 
 const UploadModal = ({ hide }) => {
+  const playlists = useSelector(selectPlaylists);
+
   const [state, setState] = useState({
     name: '',
-    playlist: '',
+    selectedPlaylist: '',
     selectedFile: null,
-  }); 
+    showCreatePlaylist: false,
+  });
+
+  const selectFile = (e) => {
+    setState({
+      ...state,
+      selectedFile: e.target.files[0],
+      name: e.target.files[0].name,
+    });
+  };
+
+  const showCreatePlaylist = () => {
+    setState({
+      ...state,
+      showCreatePlaylist: true,
+    });
+  };
+
+  const hideCreatePlaylist = () => {
+    setState({
+      ...state,
+      showCreatePlaylist: false,
+    });
+  };
+
+  const handleChange = (event) => {
+    const { value, name } = event.target;
+
+    setState({ ...state, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
   return (
-    <div className="upload-modal">
+    <form onSubmit={handleSubmit} className="upload-modal">
       <h2 className="title">LADDA UPP</h2>
-      <div className="upload-file">
-        <label className="fileContainer">
-          <div className="upload-text">
-            {state.selectedFile
-              ? state.selectedFile.name
-              : 'Drop sample here or click to browse your filesystem'}
-          </div>
-          <input
-            type="file"
-            onChange={(e) => {
-              setState({
-                ...state,
-                selectedFile: e.target.files[0],
-                name: e.target.files[0].name,
-              });
-            }}
-          />
-        </label>
-      </div>
+      <FileUploader selectedFile={state.selectedFile} selectFile={selectFile} />
+      <ModalFormInput
+        name="name"
+        type="text"
+        value={state.name}
+        onChange={handleChange}
+        placeholder="Namn"
+        required
+      />
+      {state.showCreatePlaylist ? (
+        <CreatePlaylist hide={hideCreatePlaylist} />
+      ) : (
+        <PlaylistSelect
+          handleChange={handleChange}
+          playlists={playlists}
+          selectedPlaylist={state.selectedPlaylist}
+          showCreatePlaylist={showCreatePlaylist}
+        />
+      )}
       <div className="buttons">
         <CustomButton inverted onClick={() => {}}>
           Ladda upp
@@ -41,7 +82,7 @@ const UploadModal = ({ hide }) => {
           Stäng
         </CustomButton>
       </div>
-    </div>
+    </form>
   );
 };
 

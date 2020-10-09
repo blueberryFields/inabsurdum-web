@@ -1,0 +1,16 @@
+.create-playlist {
+  box-sizing: border-box;
+  padding: 10px;
+  border: solid black 1px;
+  width: 100%;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+
+  h3 {
+    text-transform: uppercase;
+    margin: 0 0 10px;
+    font-weight: 200;
+  }
+}
