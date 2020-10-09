@@ -9,7 +9,7 @@ const UploadModal = ({ hide }) => {
     name: '',
     playlist: '',
     selectedFile: null,
-  });
+  }); 
 
   return (
     <div className="upload-modal">

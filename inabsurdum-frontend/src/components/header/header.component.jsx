@@ -1,5 +1,4 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { signOut } from '../../redux/user/user.actions';
@@ -23,7 +22,7 @@ const Header = () => {
             <CustomButton onClick={show}>Ladda upp</CustomButton>
           )}
           content={(hide) => (
-            <Modal>
+            <Modal hide={hide}>
               <UploadModal hide={hide} />
             </Modal>
           )}

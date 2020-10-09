@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import CustomButton from '../custom-button/custom-button.component';
@@ -26,12 +26,12 @@ const SignIn = () => {
 
     if (state.password === 'secret') {
       dispatch(setCurrentUser({ id: 1 }));
-      setState({ ...state, password: '' });
+      setState({ ...state, password: '', message: '' });
     } else {
       setState({
         ...state,
         password: '',
-        message: 'Fel lösenord! Försök igen.',
+        message: 'Fel lösenord!',
       });
     }
   };

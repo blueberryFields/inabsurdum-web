@@ -1,12 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import WaveSurfer from 'wavesurfer.js';
 import {
   togglePlaying,
   setShowControls,
 } from '../../redux/player/player.actions';
-import { selectShowControls } from '../../redux/player/player.selectors';
 
 import './waveform.styles.scss';
 
@@ -14,7 +13,7 @@ const Waveform = ({ selectedTrack: { url, playing } }) => {
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
 
-  const showControls = useSelector(selectShowControls);
+  // const showControls = useSelector(selectShowControls);
 
   const dispatch = useDispatch();
 
@@ -51,7 +50,7 @@ const Waveform = ({ selectedTrack: { url, playing } }) => {
       wavesurfer.current.destroy();
       dispatch(setShowControls(false));
     };
-  }, []);
+  }, [dispatch, url]);
 
   useEffect(() => {
     if (url) wavesurfer.current.load(url);
