@@ -6,7 +6,7 @@ import CustomButton from '../custom-button/custom-button.component';
 import './create-playlist.styles.scss';
 
 const CreatePlaylist = ({ hide }) => {
-  const [title, setTitle] = useState();
+  const [title, setTitle] = useState('');
 
   return (
     <div className="create-playlist">

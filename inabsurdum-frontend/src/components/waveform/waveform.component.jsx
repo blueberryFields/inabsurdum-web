@@ -9,7 +9,9 @@ import {
 
 import './waveform.styles.scss';
 
-const Waveform = ({ selectedTrack: { url, playing } }) => {
+const Waveform = ({ selectedTrack }) => {
+  const { url, playing } = selectedTrack;
+
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
 
@@ -56,7 +58,12 @@ const Waveform = ({ selectedTrack: { url, playing } }) => {
     if (url) wavesurfer.current.load(url);
   }, [url]);
 
-  return <div className="waveform" ref={waveformRef} />;
+  return (
+    <div className="waveform">
+      <div className="title">{selectedTrack.title}</div>
+      <div ref={waveformRef} />
+    </div>
+  );
 };
 
 export default Waveform;
