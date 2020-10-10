@@ -5,19 +5,19 @@
 
   button {
     font-family: 'Open Sans Condensed';
-    font-size: 1rem;
-    // font-weight: 200;
+    font-size: 12px;
+    font-weight: 600;
     letter-spacing: 0.75px;
-    padding: 5px 15px;
+    padding: 5px 10px 5px 15px;
     color: black;
     background: white;
     text-transform: uppercase;
-    box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.4);
-    // border: solid black 1px;
-    border: none;
+    // box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.4);
+    border: solid black 1px;
+    // border: none;
     margin: 10px 0 25px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
     // border-top: solid lightgrey 1px;
     // border-bottom: solid grey 1px;
     cursor: pointer;
