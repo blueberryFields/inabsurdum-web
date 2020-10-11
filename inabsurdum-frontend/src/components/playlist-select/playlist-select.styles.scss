@@ -13,11 +13,11 @@
     background: white;
     text-transform: uppercase;
     border: solid black 1px;
-    border-right: solid white 1px;
+    border-right: solid black 1px;
     margin: 10px 0 25px;
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
-    border-right: 1px ridge lightgrey;
+    // border-right: 1px ridge lightgrey;
     cursor: pointer;
 
     &:hover {

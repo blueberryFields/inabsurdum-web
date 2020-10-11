@@ -24,7 +24,7 @@ const UploadModal = ({ hide }) => {
     setState({
       ...state,
       selectedFile: e.target.files[0],
-      name: e.target.files[0].name,
+      name: state.name || e.target.files[0].name,
     });
   };
 
