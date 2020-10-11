@@ -12,24 +12,18 @@
     color: black;
     background: white;
     text-transform: uppercase;
-    box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.4),
-      0px 1px 2px 0px rgba(0, 0, 0, 0.1);
-    border: none;
-    // border: solid black 1px;
-    // border-right: solid white 1px;
+    border: solid black 1px;
+    border-right: solid white 1px;
     margin: 10px 0 25px;
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
     border-right: 1px ridge lightgrey;
-    // border-top: solid lightgrey 1px;
-    // border-bottom: solid grey 1px;
     cursor: pointer;
 
     &:hover {
       background: black;
       color: white;
-      // box-shadow: inset 0px 0px 6px 0px rgba(255, 255, 255, 0.8);
-      // border-right: solid white 1px;
+      border-right: solid white 1px;
     }
   }
 
@@ -51,8 +45,6 @@
     border: none;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    border-top: 1px ridge grey;
-    border-bottom: 2px groove lightgrey;
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;

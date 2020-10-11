@@ -22,11 +22,9 @@
   }
 
   &.inverted {
-    background-color: white;
+    background-color:white;
     color: black;
     border: 1px solid black;
-    box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.4), 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
-    border: none;
 
     &:hover {
       background-color: black;
