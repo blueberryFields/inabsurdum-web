@@ -11,11 +11,8 @@ import {
 import './track.styles.scss';
 import { selectIsTrackSelected } from '../../redux/player/player.selectors';
 import { selectTrack, togglePlaying } from '../../redux/player/player.actions';
-import DropDownMenu from '../../pop-ups/drop-down-menu/drop-down-menu.component';
 import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component';
-import DropDownMenuItem from '../../pop-ups/drop-down-menu-item/drop-down-menu-item.component';
-import ModalFrame from '../../pop-ups/modal-frame/modal-frame.component';
-import ConfirmModal from '../../pop-ups/confirm-modal/confirm-modal.component';
+import TrackOptions from '../../pop-ups/track-options/track-options.component';
 
 const Track = ({ track }) => {
   const { title, length } = track;
@@ -29,14 +26,6 @@ const Track = ({ track }) => {
       : isTrack.selected
       ? dispatch(togglePlaying())
       : dispatch(selectTrack(track));
-  };
-
-  const removeTrack = () => {
-    console.log('remove track');
-  };
-
-  const downloadTrack = () => {
-    console.log('download track');
   };
 
   return (
@@ -59,26 +48,7 @@ const Track = ({ track }) => {
               icon={faEllipsisH}
             />
           )}
-          content={(hide) => (
-            <DropDownMenu hide={hide}>
-              <ToggleContent
-                toggle={(show) => (
-                  <DropDownMenuItem action={show}>
-                    Remove track
-                  </DropDownMenuItem>
-                )}
-                content={(hide) => (
-                  <ModalFrame hide={hide}>
-                    <ConfirmModal hide={hide} action={removeTrack} />
-                  </ModalFrame>
-                )}
-              />
-
-              <DropDownMenuItem action={downloadTrack}>
-                Download track
-              </DropDownMenuItem>
-            </DropDownMenu>
-          )}
+          content={(hide) => <TrackOptions hide={hide} track={track} />}
         />
       </td>
     </tr>
