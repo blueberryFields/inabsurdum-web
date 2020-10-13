@@ -5,8 +5,8 @@ import { signOut } from '../../redux/user/user.actions';
 import { unselectTrack } from '../../redux/player/player.actions';
 import CustomButton from '../custom-button/custom-button.component';
 import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component';
-import Modal from '../../pop-ups/modal-frame/modal-frame.component';
-import UploadModal from '../upload-modal/upload-modal.component';
+import ModalFrame from '../../pop-ups/modal-frame/modal-frame.component';
+import UploadModal from '../../pop-ups/upload-modal/upload-modal.component';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 import './header.styles.scss';
@@ -23,9 +23,9 @@ const Header = () => {
             <CustomButton onClick={show}>Ladda upp</CustomButton>
           )}
           content={(hide) => (
-            <Modal hide={hide}>
+            <ModalFrame hide={hide}>
               <UploadModal hide={hide} />
-            </Modal>
+            </ModalFrame>
           )}
         />
       )}

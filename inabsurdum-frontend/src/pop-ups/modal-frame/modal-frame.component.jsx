@@ -4,7 +4,7 @@ import useOnclickOutside from 'react-cool-onclickoutside';
 
 import './modal-frame.styles.scss';
 
-const Modal = ({ children, hide }) => {
+const ModalFrame = ({ children, hide }) => {
   
   const ref = useOnclickOutside(() => {
     hide();
@@ -20,4 +20,4 @@ const Modal = ({ children, hide }) => {
   );
 };
 
-export default Modal;
+export default ModalFrame;

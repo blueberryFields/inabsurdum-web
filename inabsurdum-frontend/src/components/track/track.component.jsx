@@ -5,8 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPlay,
   faPause,
-  faDownload,
-  faTimes,
   faEllipsisH,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -16,6 +14,8 @@ import { selectTrack, togglePlaying } from '../../redux/player/player.actions';
 import DropDownMenu from '../../pop-ups/drop-down-menu/drop-down-menu.component';
 import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component';
 import DropDownMenuItem from '../../pop-ups/drop-down-menu-item/drop-down-menu-item.component';
+import ModalFrame from '../../pop-ups/modal-frame/modal-frame.component';
+import ConfirmModal from '../../pop-ups/confirm-modal/confirm-modal.component';
 
 const Track = ({ track }) => {
   const { title, length } = track;
@@ -61,9 +61,19 @@ const Track = ({ track }) => {
           )}
           content={(hide) => (
             <DropDownMenu hide={hide}>
-              <DropDownMenuItem action={removeTrack}>
-                Remove track
-              </DropDownMenuItem>
+              <ToggleContent
+                toggle={(show) => (
+                  <DropDownMenuItem action={show}>
+                    Remove track
+                  </DropDownMenuItem>
+                )}
+                content={(hide) => (
+                  <ModalFrame hide={hide}>
+                    <ConfirmModal hide={hide} action={removeTrack} />
+                  </ModalFrame>
+                )}
+              />
+
               <DropDownMenuItem action={downloadTrack}>
                 Download track
               </DropDownMenuItem>
