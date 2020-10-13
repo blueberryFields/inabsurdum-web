@@ -1,0 +1,22 @@
+.loading-spinner {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  // bottom: 2.3rem;
+  
+  .spinner-icon {
+    margin: auto;
+    font-size: 3.5rem;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

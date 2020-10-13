@@ -1,7 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import WaveSurfer from 'wavesurfer.js';
+
+import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import {
   togglePlaying,
   setShowControls,
@@ -12,10 +14,10 @@ import './waveform.styles.scss';
 const Waveform = ({ selectedTrack }) => {
   const { url, playing } = selectedTrack;
 
+  const [showSpinner, setShowSpinner] = useState(false);
+
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
-
-  // const showControls = useSelector(selectShowControls);
 
   const dispatch = useDispatch();
 
@@ -32,6 +34,8 @@ const Waveform = ({ selectedTrack }) => {
       cursorColor: 'lightgrey',
       scrollParent: true,
       autoCenter: true,
+      normalize: true,
+      // barWidth: 1,
     });
 
     if (url) wavesurfer.current.load(url);
@@ -42,6 +46,7 @@ const Waveform = ({ selectedTrack }) => {
       //TODO: change this so it always sets playing to true
       dispatch(togglePlaying());
       dispatch(setShowControls(true));
+      setShowSpinner(false);
     });
 
     wavesurfer.current.on('finish', function () {
@@ -51,16 +56,21 @@ const Waveform = ({ selectedTrack }) => {
     return () => {
       wavesurfer.current.destroy();
       dispatch(setShowControls(false));
+      setShowSpinner(false);
     };
   }, [dispatch, url]);
 
   useEffect(() => {
-    if (url) wavesurfer.current.load(url);
+    if (url) {
+      setShowSpinner(true);
+      wavesurfer.current.load(url);
+    }
   }, [url]);
 
   return (
     <div className="waveform">
       <div className="title">{selectedTrack.title}</div>
+      {showSpinner && <LoadingSpinner />}
       <div ref={waveformRef} />
     </div>
   );

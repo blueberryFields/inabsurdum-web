@@ -7,7 +7,6 @@ import {
   selectShowControls,
 } from '../../redux/player/player.selectors';
 
-
 import { togglePlaying } from '../../redux/player/player.actions';
 import AudioPlayerControls from '../audio-player-controls/audio-player-controls.component';
 
