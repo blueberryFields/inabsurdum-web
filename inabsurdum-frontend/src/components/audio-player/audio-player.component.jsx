@@ -7,11 +7,11 @@ import {
   selectShowControls,
 } from '../../redux/player/player.selectors';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
+
+import { togglePlaying } from '../../redux/player/player.actions';
+import AudioPlayerControls from '../audio-player-controls/audio-player-controls.component';
 
 import './audio-player.styles.scss';
-import { togglePlaying } from '../../redux/player/player.actions';
 
 const AudioPlayer = () => {
   const selectedTrack = useSelector(selectSelectedTrack);
@@ -28,14 +28,10 @@ const AudioPlayer = () => {
   return (
     <div className="audio-player">
       {showControls && (
-        <div className="controls">
-          <div onClick={togglePlay} className="toggle-play-holder">
-            <FontAwesomeIcon
-              className="toggle-play-icon"
-              icon={selectedTrack.playing ? faPause : faPlay}
-            />
-          </div>
-        </div>
+        <AudioPlayerControls
+          selectedTrack={selectedTrack}
+          togglePlay={togglePlay}
+        />
       )}
       <Waveform selectedTrack={selectedTrack} />
     </div>

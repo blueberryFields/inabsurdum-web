@@ -17,7 +17,6 @@
     margin: 10px 0 25px;
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
-    // border-right: 1px ridge lightgrey;
     cursor: pointer;
 
     &:hover {
@@ -45,6 +44,8 @@
     border: none;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
