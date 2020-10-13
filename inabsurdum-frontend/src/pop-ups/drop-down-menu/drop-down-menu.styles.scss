@@ -1,0 +1,11 @@
+.drop-down-menu {
+  position: absolute;
+  right: 0;
+  top: 25px;
+  z-index: 1;
+  background: white;
+  border-radius: 5px;
+  padding: 10px 0px;
+  box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.2),
+    0px 0px 6px 0px rgba(0, 0, 0, 0.4);
+}

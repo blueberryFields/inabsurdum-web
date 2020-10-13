@@ -39,16 +39,13 @@
   }
 
   .options {
+    position: relative;
     display: flex;
     flex-direction: row;
     width: 10%;
-
+    
     .icon {
       cursor: pointer;
-    }
-
-    .first {
-      margin-right: 8px;
     }
   }
 }

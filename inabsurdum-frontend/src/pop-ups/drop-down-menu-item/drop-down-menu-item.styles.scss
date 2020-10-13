@@ -1,0 +1,12 @@
+.drop-down-menu-item {
+  box-sizing: border-box;
+  white-space: nowrap;
+  cursor: pointer;
+  // margin: 5px;
+  padding: 5px 15px;
+  width: 100%;
+
+  &:hover {
+    background: #f2f2f2;
+  }
+}

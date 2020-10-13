@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import useOnclickOutside from 'react-cool-onclickoutside';
 
-import './modal.styles.scss';
+import './modal-frame.styles.scss';
 
 const Modal = ({ children, hide }) => {
   

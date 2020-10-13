@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from '../../redux/user/user.actions';
 import { unselectTrack } from '../../redux/player/player.actions';
 import CustomButton from '../custom-button/custom-button.component';
-import ToggleContent from '../../modal-engine/toggle-content/toggle-content.component';
-import Modal from '../../modal-engine/modal/modal.component';
+import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component';
+import Modal from '../../pop-ups/modal-frame/modal-frame.component';
 import UploadModal from '../upload-modal/upload-modal.component';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 
@@ -30,7 +30,6 @@ const Header = () => {
         />
       )}
       <h1 className="logo">In Absurdum</h1>
-      {/* <CustomButton inverted>Logga ut</CustomButton> */}
       {/* <FontAwesomeIcon className="menu-icon" icon={faBars} /> */}
       {user && (
         <div

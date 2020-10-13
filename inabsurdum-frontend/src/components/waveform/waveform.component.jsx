@@ -35,6 +35,7 @@ const Waveform = ({ selectedTrack }) => {
       scrollParent: true,
       autoCenter: true,
       normalize: true,
+      // backend: 'MediaElement',
       // barWidth: 1,
     });
 
