@@ -17,9 +17,26 @@ const Waveform = ({ selectedTrack }) => {
   const [showSpinner, setShowSpinner] = useState(false);
   const [showLoadingProgress, setShowLoadingProgress] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [currentTime, setCurrentTime] = useState();
 
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
+
+  const formatCurrentTime = (currentTime) => {
+    var hrs = ~~(currentTime / 3600);
+    var mins = ~~((currentTime % 3600) / 60);
+    var secs = ~~currentTime % 60;
+
+    var ret = '';
+
+    if (hrs > 0) {
+      ret += '' + hrs + ':' + (mins < 10 ? '0' : '');
+    }
+
+    ret += '' + mins + ':' + (secs < 10 ? '0' : '');
+    ret += '' + secs;
+    return ret;
+  };
 
   // Create waveform and start listen to events
   useEffect(() => {
@@ -49,14 +66,20 @@ const Waveform = ({ selectedTrack }) => {
       setShowSpinner(false);
     });
 
+    wavesurfer.current.on('audioprocess', function () {
+      setCurrentTime(formatCurrentTime(wavesurfer.current.getCurrentTime()));
+    });
+
+    wavesurfer.current.on('seek', function () {
+      setCurrentTime(formatCurrentTime(wavesurfer.current.getCurrentTime()));
+    });
+
     wavesurfer.current.on('finish', function () {
       dispatch(setPlaying(false));
     });
 
     return () => {
       wavesurfer.current.destroy();
-      dispatch(setShowControls(false));
-      // setShowSpinner(false);
     };
   }, [dispatch, url]);
 
@@ -85,7 +108,9 @@ const Waveform = ({ selectedTrack }) => {
 
   return (
     <div className="waveform">
-      <div className="title">{selectedTrack.title}</div>
+      <div className="title">
+        {selectedTrack.title} {currentTime}
+      </div>
       {showSpinner && <LoadingSpinner />}
       {showLoadingProgress && <LoadingProgBar progress={loadingProgress} />}
       <div ref={waveformRef} />
