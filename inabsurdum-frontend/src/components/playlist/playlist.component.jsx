@@ -18,6 +18,8 @@ const Playlist = ({ playlist }) => {
 
   const [isCollapsed, setIsCollapsed] = useState(true);
 
+  const toggleIsCollapsed = () => setIsCollapsed(!isCollapsed);
+
   return (
     <div className="playlist">
       <div className="playlist-header">
@@ -34,9 +36,11 @@ const Playlist = ({ playlist }) => {
           )}
         />
 
-        <h3 className="title">{title.toUpperCase()}</h3>
+        <h3 className="title" onClick={toggleIsCollapsed}>
+          {title.toUpperCase()}
+        </h3>
         <FontAwesomeIcon
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          onClick={toggleIsCollapsed}
           className="toggle-collapse-icon"
           icon={isCollapsed ? faChevronDown : faChevronUp}
         />

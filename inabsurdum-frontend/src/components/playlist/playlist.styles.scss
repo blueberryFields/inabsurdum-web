@@ -6,8 +6,6 @@
   //   -moz-box-shadow: inset 0px 0px 16px 1px rgba(0, 0, 0, 0.2);
   box-shadow: inset 0px 0px 12px 0px rgba(0, 0, 0, 0.4);
   background: white;
-
-  //   border: 1px solid lightgrey;
   border-radius: 5px;
 
   .playlist-header {
@@ -17,12 +15,14 @@
 
     .options-icon {
       cursor: pointer;
+      margin: auto 0;
     }
 
     .title {
       font-size: 15px;
       font-weight: 300;
       margin: auto auto auto auto;
+      cursor: pointer;
     }
 
     .toggle-collapse-icon {
