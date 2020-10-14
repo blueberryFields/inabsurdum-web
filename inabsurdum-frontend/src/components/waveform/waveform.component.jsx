@@ -5,10 +5,7 @@ import WaveSurfer from 'wavesurfer.js';
 
 import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import LoadingProgBar from '../loading-prog-bar/loading-prog-bar.component';
-import {
-  togglePlaying,
-  setShowControls,
-} from '../../redux/player/player.actions';
+import { setPlaying, setShowControls } from '../../redux/player/player.actions';
 
 import './waveform.styles.scss';
 
@@ -47,14 +44,13 @@ const Waveform = ({ selectedTrack }) => {
     wavesurfer.current.on('ready', function () {
       wavesurfer.current.setVolume(0.9);
       wavesurfer.current.play();
-      //TODO: change this so it always sets playing to true
-      dispatch(togglePlaying());
+      dispatch(setPlaying(true));
       dispatch(setShowControls(true));
       setShowSpinner(false);
     });
 
     wavesurfer.current.on('finish', function () {
-      dispatch(togglePlaying());
+      dispatch(setPlaying(false));
     });
 
     return () => {

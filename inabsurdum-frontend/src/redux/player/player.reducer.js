@@ -27,6 +27,14 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           playing: !state.selectedTrack.playing,
         },
       };
+    case PlayerActionTypes.SET_PLAYING:
+      return {
+        ...state,
+        selectedTrack: {
+          ...state.selectedTrack,
+          playing: action.payload,
+        },
+      };
     case PlayerActionTypes.SET_SHOW_CONTROLS:
       return {
         ...state,
