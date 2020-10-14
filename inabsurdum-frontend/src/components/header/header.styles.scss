@@ -22,6 +22,12 @@
     color: white;
     white-space: nowrap;
     align-self: center;
+    
+    @media screen and (min-width: 992px) {
+      & {
+        font-size: 2.5rem;
+      }
+    }
   }
 
   .menu-icon {
@@ -38,6 +44,12 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-size: 10px;
+
+    @media screen and (min-width: 992px) {
+      & {
+        font-size: 12px;
+      }
+    }
 
   }
 }

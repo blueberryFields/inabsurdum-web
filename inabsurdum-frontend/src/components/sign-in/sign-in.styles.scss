@@ -2,6 +2,30 @@
   margin: 10% auto auto auto;
   width: 60%;
 
+  @media screen and (min-width: 992px) {
+    & {
+      width: 50%;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    & {
+      width: 40%;
+    }
+  }
+
+  @media screen and (min-width: 1600px) {
+    & {
+      width: 30%;
+    }
+  }
+
+  @media screen and (min-width: 2000px) {
+    & {
+      width: 20%;
+    }
+  }
+
   button {
     margin-left: 0;
   }

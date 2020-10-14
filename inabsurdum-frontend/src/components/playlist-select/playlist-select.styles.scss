@@ -24,6 +24,12 @@
       color: white;
       border-right: solid white 1px;
     }
+
+    @media screen and (min-width: 992px) {
+      & {
+        font-size: 12px;
+      }
+    }
   }
 
   select {
