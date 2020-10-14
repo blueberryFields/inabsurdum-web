@@ -1,0 +1,20 @@
+.loading-prog-bar {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+
+  .bar {
+    box-sizing: border-box;
+    border-radius: 5px;
+    margin: auto;
+    width: 80%;
+    height: 25px;
+    border: 2px solid white;
+
+    .progress {
+      height: 100%;
+      background: white;
+    }
+  }
+}

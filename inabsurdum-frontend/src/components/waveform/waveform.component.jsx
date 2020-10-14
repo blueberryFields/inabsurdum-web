@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import WaveSurfer from 'wavesurfer.js';
 
 import LoadingSpinner from '../loading-spinner/loading-spinner.component';
+import LoadingProgBar from '../loading-prog-bar/loading-prog-bar.component';
 import {
   togglePlaying,
   setShowControls,
@@ -14,18 +15,16 @@ import './waveform.styles.scss';
 const Waveform = ({ selectedTrack }) => {
   const { url, playing } = selectedTrack;
 
+  const dispatch = useDispatch();
+
   const [showSpinner, setShowSpinner] = useState(false);
+  const [showLoadingProgress, setShowLoadingProgress] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (wavesurfer.current)
-      playing ? wavesurfer.current.play() : wavesurfer.current.pause();
-  }, [playing]);
-
+  // Create waveform and start listen to events
   useEffect(() => {
     wavesurfer.current = WaveSurfer.create({
       container: waveformRef.current,
@@ -33,13 +32,17 @@ const Waveform = ({ selectedTrack }) => {
       progressColor: 'grey',
       cursorColor: 'lightgrey',
       scrollParent: true,
-      autoCenter: true,
+      // autoCenter: true,
       normalize: true,
       // backend: 'MediaElement',
       // barWidth: 1,
     });
 
     if (url) wavesurfer.current.load(url);
+
+    wavesurfer.current.on('loading', function (percent) {
+      setLoadingProgress(percent);
+    });
 
     wavesurfer.current.on('ready', function () {
       wavesurfer.current.setVolume(0.9);
@@ -57,21 +60,38 @@ const Waveform = ({ selectedTrack }) => {
     return () => {
       wavesurfer.current.destroy();
       dispatch(setShowControls(false));
-      setShowSpinner(false);
+      // setShowSpinner(false);
     };
   }, [dispatch, url]);
 
+  // Load a new track when url is changed
   useEffect(() => {
     if (url) {
-      setShowSpinner(true);
+      setShowLoadingProgress(true);
+      setShowSpinner(false);
       wavesurfer.current.load(url);
     }
   }, [url]);
+
+  // When track is loaded, hide progress bar and show spinner while rendering peaks
+  useEffect(() => {
+    if (loadingProgress === 100) {
+      setShowSpinner(true);
+      setShowLoadingProgress(false);
+    }
+  }, [loadingProgress]);
+
+  // If selected track is set to palying, start playback of wavesurfer
+  useEffect(() => {
+    if (wavesurfer.current)
+      playing ? wavesurfer.current.play() : wavesurfer.current.pause();
+  }, [playing]);
 
   return (
     <div className="waveform">
       <div className="title">{selectedTrack.title}</div>
       {showSpinner && <LoadingSpinner />}
+      {showLoadingProgress && <LoadingProgBar progress={loadingProgress} />}
       <div ref={waveformRef} />
     </div>
   );

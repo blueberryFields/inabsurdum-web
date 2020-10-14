@@ -8,7 +8,7 @@ import './audio-player-controls.styles.scss';
 
 const AudioPlayerControls = ({selectedTrack, togglePlay}) => {
   return (
-    <div className="controls">
+    <div className="audio-player-controls">
       <div onClick={togglePlay} className="toggle-play-holder">
         <FontAwesomeIcon
           className="toggle-play-icon"
