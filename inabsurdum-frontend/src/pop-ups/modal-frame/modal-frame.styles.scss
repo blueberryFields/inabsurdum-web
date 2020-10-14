@@ -4,7 +4,7 @@
   top: 0;
   height: 100vh;
   width: 100vw;
-
+  
   .overlay {
     position: fixed;
     top: 0;
@@ -12,16 +12,43 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     overflow: scroll;
+    // display: flex;
 
     .modal-body {
       box-sizing: border-box;
       position: relative;
       background: white;
       border-radius: 5px;
-      margin:  100px 20px;
+      margin: 100px auto;
+      width: 90%;
       padding: 20px;
       box-shadow: inset 0px 0px 12px 0px rgba(0, 0, 0, 0.4),
         0px 0px 12px 0px rgba(0, 0, 0, 0.6);
+    }
+
+    @media screen and (min-width: 992px) {
+      .modal-body {
+        margin: 100px auto auto auto;
+        width: 50%;
+      }
+    }
+
+    @media screen and (min-width: 1200px) {
+      .modal-body {
+        width: 40%;
+      }
+    }
+
+    @media screen and (min-width: 1600px) {
+      .modal-body {
+        width: 30%;
+      }
+    }
+
+    @media screen and (min-width: 2000px) {
+      .modal-body {
+        width: 20%;
+      }
     }
   }
 }
