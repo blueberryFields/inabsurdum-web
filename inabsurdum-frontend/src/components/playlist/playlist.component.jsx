@@ -1,22 +1,42 @@
 import React, { useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import {
+  faChevronDown,
+  faChevronUp,
+  faEllipsisH,
+} from '@fortawesome/free-solid-svg-icons';
 
+import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component';
 import Track from '../../components/track/track.component';
+import PlaylistOptions from '../../pop-ups/playlist-options/playlist-options.component';
 
 import './playlist.styles.scss';
 
-const Playlist = ({ playlist: { title, tracks } }) => {
+const Playlist = ({ playlist }) => {
+  const { title, tracks } = playlist;
+
   const [isCollapsed, setIsCollapsed] = useState(true);
+
   return (
     <div className="playlist">
-      <div
-        onClick={() => setIsCollapsed(!isCollapsed)}
-        className="playlist-header"
-      >
+      <div className="playlist-header">
+        <ToggleContent
+          toggle={(show) => (
+            <FontAwesomeIcon
+              onClick={show}
+              className="options-icon"
+              icon={faEllipsisH}
+            />
+          )}
+          content={(hide) => (
+            <PlaylistOptions hide={hide} playlist={playlist} />
+          )}
+        />
+
         <h3 className="title">{title.toUpperCase()}</h3>
         <FontAwesomeIcon
+          onClick={() => setIsCollapsed(!isCollapsed)}
           className="toggle-collapse-icon"
           icon={isCollapsed ? faChevronDown : faChevronUp}
         />

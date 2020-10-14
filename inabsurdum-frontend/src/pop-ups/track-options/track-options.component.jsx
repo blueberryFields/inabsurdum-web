@@ -15,14 +15,16 @@ const TrackOptions = ({ hide, track }) => {
   };
 
   return (
-    <DropDownMenu hide={hide}>
-      <DropDownMenuItem doubletap action={removeTrack} hide={hide}>
-        Ta bort spår
-      </DropDownMenuItem>
-      <DropDownMenuItem action={downloadTrack} hide={hide}>
-        Ladda ner spår
-      </DropDownMenuItem>
-    </DropDownMenu>
+    <div className="track-options">
+      <DropDownMenu hide={hide}>
+        <DropDownMenuItem doubletap action={removeTrack} hide={hide}>
+          Ta bort spår
+        </DropDownMenuItem>
+        <DropDownMenuItem action={downloadTrack} hide={hide}>
+          Ladda ner spår
+        </DropDownMenuItem>
+      </DropDownMenu>
+    </div>
   );
 };
 export default TrackOptions;
