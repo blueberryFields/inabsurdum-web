@@ -17,7 +17,7 @@ const Waveform = ({ selectedTrack }) => {
   const [showSpinner, setShowSpinner] = useState(false);
   const [showLoadingProgress, setShowLoadingProgress] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState();
+  const [currentTime, setCurrentTime] = useState('');
 
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
@@ -86,6 +86,7 @@ const Waveform = ({ selectedTrack }) => {
   // Load a new track when url is changed
   useEffect(() => {
     if (url) {
+      dispatch(setShowControls(false));
       setShowLoadingProgress(true);
       setShowSpinner(false);
       wavesurfer.current.load(url);

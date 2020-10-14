@@ -1,4 +1,5 @@
 .audio-player {
+  position: relative;
   bottom: 0;
   box-sizing: border-box;
   width: 100%;
@@ -9,4 +10,9 @@
   display: flex;
   flex-direction: row;
 
+  .title {
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
+  }
 }

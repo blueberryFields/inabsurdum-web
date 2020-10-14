@@ -24,3 +24,4 @@ export const selectShowControls = createSelector(
   [selectPlayer],
   (player) => player.showControls
 );
+

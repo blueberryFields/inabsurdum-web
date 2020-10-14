@@ -5,6 +5,10 @@ const INITIAL_STATE = {
   playlists: PLAYLIST_DATA,
   selectedTrack: {},
   showControls: false,
+  showSpinner: false,
+  showLoadingProgress: false,
+  loadingProgress: 0,
+  currentTime: '',
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
