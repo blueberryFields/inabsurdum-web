@@ -1,19 +1,31 @@
 .audio-player-controls {
-  min-width: 58px;
+  z-index: 10;
+  // min-width: 58px;
+  position: absolute;
+  top: -20px;
+  // bottom: 100px;
+  margin: auto;
   display: flex;
   box-sizing: border-box;
+  width: 100%;
 
   .toggle-play-holder {
     margin: auto;
     border-radius: 50px;
-    border: 1px solid white;
-    // width: 35px;
-    // height: 35px;
+    // border: 1px solid white;
+    // background: black;
     display: flex;
+    background: white;
+    box-shadow: inset 0px 0px 8px 0px rgba(0, 0, 0, 0.4),
+      0px 6px 8px 0px rgba(0, 0, 0, 0.5);
+    border: none;
+    color: black;
+    cursor: pointer;
 
     &:hover {
-      background: white;
-      color: black;
+      border: 1px solid white;
+      background: black;
+      color: white;
     }
 
     .toggle-play-icon {

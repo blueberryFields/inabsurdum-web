@@ -14,7 +14,7 @@ import './audio-player.styles.scss';
 
 const AudioPlayer = () => {
   const selectedTrack = useSelector(selectSelectedTrack);
-  
+
   const dispatch = useDispatch();
 
   const togglePlay = () => {
