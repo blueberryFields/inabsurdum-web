@@ -9,29 +9,68 @@
   box-sizing: border-box;
   width: 100%;
 
-  .toggle-play-holder {
+  .control-panel {
     margin: auto;
-    border-radius: 50px;
-    // border: 1px solid white;
-    // background: black;
     display: flex;
-    background: white;
-    box-shadow: inset 0px 0px 8px 0px rgba(0, 0, 0, 0.4),
-      0px 6px 8px 0px rgba(0, 0, 0, 0.5);
-    border: none;
-    color: black;
-    cursor: pointer;
+    flex-direction: row;
 
-    &:hover {
-      border: 1px solid white;
-      background: black;
-      color: white;
+    .step-backward {
+      margin: auto 0 auto auto;
+      display: flex;
+      background: white;
+      box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.4),
+        0px 6px 8px 0px rgba(0, 0, 0, 0.5);
+      border: none;
+      color: black;
+      cursor: pointer;
+      border-top-left-radius: 15px;
+      border-bottom-left-radius: 15px;
+
+      .step-backward-icon {
+        margin: auto;
+        font-size: 12px;
+        padding: 10px 11px 10px 16px;
+      }
     }
 
-    .toggle-play-icon {
+    .step-forward {
+      margin: auto 0 auto auto;
+      display: flex;
+      background: white;
+      box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.4),
+        0px 6px 8px 0px rgba(0, 0, 0, 0.5);
+      border: none;
+      color: black;
+      cursor: pointer;
+      border-top-right-radius: 15px;
+      border-bottom-right-radius: 15px;
+
+      .step-forward-icon {
+        margin: auto;
+        font-size: 12px;
+        padding: 10px 16px 10px 11px;
+      }
+    }
+
+    .toggle-play {
+      z-index: 1;
       margin: auto;
-      font-size: 12px;
-      padding: 15px;
+      border-radius: 5px;
+      // border: 1px solid white;
+      // background: black;
+      display: flex;
+      background: white;
+      box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.4),
+        0px 6px 8px 0px rgba(0, 0, 0, 0.5);
+      border: none;
+      color: black;
+      cursor: pointer;
+
+      .toggle-play-icon {
+        margin: auto;
+        font-size: 12px;
+        padding: 15px;
+      }
     }
   }
 }
