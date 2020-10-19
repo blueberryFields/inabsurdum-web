@@ -11,6 +11,7 @@ import {
 import {
   togglePlaying,
   selectNextTrack,
+  selectPreviousTrack,
 } from '../../redux/player/player.actions';
 
 import './audio-player-controls.styles.scss';
@@ -30,10 +31,16 @@ const AudioPlayerControls = ({ selectedTrack }) => {
     }
   };
 
+  const handleSelectPreviousTrack = () => {
+    if (selectedTrack) {
+      dispatch(selectPreviousTrack(selectedTrack));
+    }
+  };
+
   return (
     <div className="audio-player-controls">
       <div className="control-panel">
-        <div className="step-backward">
+        <div onClick={handleSelectPreviousTrack} className="step-backward">
           <FontAwesomeIcon
             className="step-backward-icon"
             icon={faStepBackward}
@@ -45,12 +52,8 @@ const AudioPlayerControls = ({ selectedTrack }) => {
             icon={selectedTrack.playing ? faPause : faPlay}
           />
         </div>
-        <div className="step-forward">
-          <FontAwesomeIcon
-            onClick={handleSelectNextTrack}
-            className="step-forward-icon"
-            icon={faStepForward}
-          />
+        <div onClick={handleSelectNextTrack} className="step-forward">
+          <FontAwesomeIcon className="step-forward-icon" icon={faStepForward} />
         </div>
       </div>
     </div>

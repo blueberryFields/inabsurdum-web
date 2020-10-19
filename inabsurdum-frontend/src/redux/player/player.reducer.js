@@ -23,6 +23,14 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           playing: false,
         },
       };
+    case PlayerActionTypes.SELECT_PREVIOUS_TRACK:
+      return {
+        ...state,
+        selectedTrack: {
+          ...getPreviousTrack(state.playlists, action.payload),
+          playing: false,
+        },
+      };
     case PlayerActionTypes.UNSELECT_TRACK:
       return {
         ...state,

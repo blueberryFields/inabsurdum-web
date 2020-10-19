@@ -26,6 +26,10 @@
       border-top-left-radius: 15px;
       border-bottom-left-radius: 15px;
 
+      &:hover {
+        color: grey;
+      }
+
       .step-backward-icon {
         margin: auto;
         font-size: 12px;
@@ -45,6 +49,10 @@
       border-top-right-radius: 15px;
       border-bottom-right-radius: 15px;
 
+      &:hover {
+        color: grey;
+      }
+
       .step-forward-icon {
         margin: auto;
         font-size: 12px;
@@ -56,8 +64,6 @@
       z-index: 1;
       margin: auto;
       border-radius: 5px;
-      // border: 1px solid white;
-      // background: black;
       display: flex;
       background: white;
       box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.4),
@@ -65,6 +71,10 @@
       border: none;
       color: black;
       cursor: pointer;
+
+      &:hover {
+        color: grey;
+      }
 
       .toggle-play-icon {
         margin: auto;
