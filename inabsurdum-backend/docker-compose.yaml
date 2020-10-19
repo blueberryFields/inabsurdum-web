@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'jambox'
+      MYSQL_USER: 'inabsurdum'
+      MYSQL_PASSWORD: 'secret'
+      MYSQL_ROOT_PASSWORD: 'secret'
+    ports:
+     - '3306:3306'
+    volumes:
+     - ./database:/var/lib/mysql
+  
+
+

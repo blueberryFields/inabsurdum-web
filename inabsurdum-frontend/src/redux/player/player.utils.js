@@ -14,6 +14,10 @@ const getSelectedTrackIndex = (tracks, selectedTrack) => {
   return tracks.findIndex((track) => track.id === selectedTrack.id);
 };
 
+const lastIndex = (array) => {
+  return array.length - 1;
+};
+
 export const getNextTrack = (playlists, selectedTrack) => {
   let tracks = getFlattenedTracks(playlists);
   let selectedTrackIndex = getSelectedTrackIndex(tracks, selectedTrack);
@@ -29,5 +33,5 @@ export const getPreviousTrack = (playlists, selectedTrack) => {
 
   let nextTrack = tracks.find((_, index) => index === selectedTrackIndex - 1);
 
-  return nextTrack || tracks[tracks.length - 1];
+  return nextTrack || tracks[lastIndex(tracks)];
 };
