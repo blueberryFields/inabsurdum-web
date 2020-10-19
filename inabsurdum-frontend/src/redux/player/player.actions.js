@@ -5,6 +5,16 @@ export const selectTrack = (track) => ({
   payload: track,
 });
 
+export const selectNextTrack = (selectedTrack) => ({
+  type: PlayerActionTypes.SELECT_NEXT_TRACK,
+  payload: selectedTrack,
+});
+
+export const selectPreviousTrack = (selectedTrack) => ({
+  type: PlayerActionTypes.SELECT_PREVIOUS_TRACK,
+  payload: selectedTrack,
+});
+
 export const unselectTrack = () => ({
   type: PlayerActionTypes.UNSELECT_TRACK,
 });

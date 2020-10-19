@@ -1,5 +1,6 @@
 import PLAYLIST_DATA from './player.data';
 import PlayerActionTypes from './player.types';
+import { getNextTrack, getPreviousTrack } from './player.utils';
 
 const INITIAL_STATE = {
   playlists: PLAYLIST_DATA,
@@ -13,6 +14,14 @@ const playerReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         selectedTrack: { ...action.payload, playing: false },
+      };
+    case PlayerActionTypes.SELECT_NEXT_TRACK:
+      return {
+        ...state,
+        selectedTrack: {
+          ...getNextTrack(state.playlists, action.payload),
+          playing: false,
+        },
       };
     case PlayerActionTypes.UNSELECT_TRACK:
       return {

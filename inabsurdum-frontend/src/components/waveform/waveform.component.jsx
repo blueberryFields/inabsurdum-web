@@ -14,8 +14,6 @@ const Waveform = ({ selectedTrack }) => {
 
   const dispatch = useDispatch();
 
-  console.log(window.mobileAndTabletCheck());
-
   const [showSpinner, setShowSpinner] = useState(false);
   const [showLoadingProgress, setShowLoadingProgress] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -82,6 +80,7 @@ const Waveform = ({ selectedTrack }) => {
 
     return () => {
       wavesurfer.current.destroy();
+      dispatch(setShowControls(false));
     };
   }, [dispatch]);
 
