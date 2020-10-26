@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: 'jambox'
-      MYSQL_USER: 'inabsurdum'
+      MYSQL_USER: 'jambox'
       MYSQL_PASSWORD: 'secret'
       MYSQL_ROOT_PASSWORD: 'secret'
     ports:

@@ -46,7 +46,7 @@ const Waveform = ({ selectedTrack }) => {
       progressColor: 'grey',
       cursorColor: 'lightgrey',
       scrollParent: true,
-      // autoCenter: true,
+      autoCenter: true,
       normalize: true,
       // backend: 'MediaElement',
       barWidth: 2,

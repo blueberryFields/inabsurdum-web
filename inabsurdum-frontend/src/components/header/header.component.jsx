@@ -18,29 +18,31 @@ const Header = () => {
   return (
     <div className="header">
       {user && (
-        <ToggleContent
-          toggle={(show) => (
-            <CustomButton onClick={show}>Ladda upp</CustomButton>
-          )}
-          content={(hide) => (
-            <ModalFrame hide={hide}>
-              <UploadModal hide={hide} />
-            </ModalFrame>
-          )}
-        />
-      )}
-      <h1 className="logo">In Absurdum</h1>
-      {/* <FontAwesomeIcon className="menu-icon" icon={faBars} /> */}
-      {user && (
-        <div
-          className="sign-out"
-          onClick={() => {
-            dispatch(signOut());
-            dispatch(unselectTrack());
-          }}
-        >
-          LOGGA UT
-        </div>
+        <>
+          <ToggleContent
+            toggle={(show) => (
+              <CustomButton onClick={show}>Ladda upp</CustomButton>
+            )}
+            content={(hide) => (
+              <ModalFrame hide={hide}>
+                <UploadModal hide={hide} />
+              </ModalFrame>
+            )}
+          />
+
+          <h1 className="logo">{user.username}</h1>
+          {/* <FontAwesomeIcon className="menu-icon" icon={faBars} /> */}
+
+          <div
+            className="sign-out"
+            onClick={() => {
+              dispatch(signOut());
+              dispatch(unselectTrack());
+            }}
+          >
+            LOGGA UT
+          </div>
+        </>
       )}
     </div>
   );

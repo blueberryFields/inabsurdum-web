@@ -7,6 +7,7 @@ import lombok.Setter;
 import online.inabsurdum.jambox.Playlist.Playlist;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -25,7 +26,17 @@ public class Track {
     @NotNull
     double duration;
 
+    Date uploadedAt;
+
     @NotNull
     private String url;
+
+    Track(TrackDTO trackDTO) {
+        this.id = trackDTO.getId();
+        this.title = trackDTO.getTitle();
+        this.duration = trackDTO.getDuration();
+        this.uploadedAt = trackDTO.getUploadedAt();
+        this.url = trackDTO.getUrl();
+    }
 
 }

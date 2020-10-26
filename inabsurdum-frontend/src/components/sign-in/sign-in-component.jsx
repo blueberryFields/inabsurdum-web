@@ -11,6 +11,7 @@ const SignIn = () => {
   const dispatch = useDispatch();
 
   const [state, setState] = useState({
+    username: '',
     password: '',
     message: '',
   });
@@ -25,7 +26,7 @@ const SignIn = () => {
     event.preventDefault();
 
     if (state.password === 'secret') {
-      dispatch(setCurrentUser({ id: 1 }));
+      dispatch(setCurrentUser({ id: 1, username: state.username }));
       setState({ ...state, password: '', message: '' });
     } else {
       setState({
@@ -39,6 +40,14 @@ const SignIn = () => {
   return (
     <div className="sign-in">
       <form onSubmit={handleSubmit}>
+        <FormInput
+          name="username"
+          type="text"
+          value={state.username}
+          handleChange={handleChange}
+          label="Användarnamn"
+          required
+        />
         <FormInput
           name="password"
           type="password"

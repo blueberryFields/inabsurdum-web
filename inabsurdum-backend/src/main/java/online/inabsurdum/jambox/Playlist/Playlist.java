@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.inabsurdum.jambox.track.Track;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,9 +23,14 @@ public class Playlist {
     @NotNull
     private String title;
 
-    @OneToMany
-    @JoinColumn(name = "playlist_id", nullable = false)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "playlist_id")
     private List<Track> tracks;
 
+    public Playlist(PlaylistDTO playlistDTO) {
+        this.id = playlistDTO.getId();
+        this.title = playlistDTO.getTitle();
+        this.tracks = playlistDTO.getTracks();
+    }
 
 }
