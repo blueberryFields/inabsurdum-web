@@ -8,4 +8,6 @@ public interface TrackRepository extends CrudRepository<Track, Long> {
     List<Track> findAll();
 
     Track findById(long id);
+
+    Track findFirstByChecksum(String checksum);
 }

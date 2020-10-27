@@ -4,6 +4,7 @@ import online.inabsurdum.jambox.Playlist.PlaylistNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -30,9 +31,9 @@ public class TrackController {
     }
 
     @PostMapping
-    public ResponseEntity<TrackDTO> uploadTrack(@RequestBody TrackDTO trackDTO, @RequestParam(name = "playlistid") long playlistId) {
+    public ResponseEntity<TrackDTO> uploadTrack(@RequestParam("file") MultipartFile file, @RequestParam(name = "playlistid") long playlistId, @RequestParam(name = "title") String title) {
         try {
-            TrackDTO result = trackService.create(trackDTO, playlistId);
+            TrackDTO result = trackService.create(title, playlistId, file);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (PlaylistNotFoundException e) {
             e.printStackTrace();
@@ -44,7 +45,7 @@ public class TrackController {
     }
 
     @PutMapping
-    public ResponseEntity<TrackDTO> rename(@RequestParam(name = "id") long id, @RequestParam(name = "newtitle") String newTitle) {
+    public ResponseEntity<TrackDTO> rename(@RequestParam(name = "id") long id, @RequestParam(name = "newtitle") java.lang.String newTitle) {
         try {
             TrackDTO result = trackService.rename(id, newTitle);
             return new ResponseEntity<>(result, HttpStatus.OK);

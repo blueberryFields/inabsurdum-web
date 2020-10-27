@@ -4,7 +4,6 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import online.inabsurdum.jambox.Playlist.Playlist;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,19 +23,21 @@ public class Track {
     private String title;
 
     @NotNull
-    double duration;
+    String duration;
 
+    @NotNull
     Date uploadedAt;
 
     @NotNull
-    private String url;
+    String checksum;
+
 
     Track(TrackDTO trackDTO) {
         this.id = trackDTO.getId();
         this.title = trackDTO.getTitle();
         this.duration = trackDTO.getDuration();
         this.uploadedAt = trackDTO.getUploadedAt();
-        this.url = trackDTO.getUrl();
+        this.checksum = trackDTO.getChecksum();
     }
 
 }

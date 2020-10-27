@@ -15,13 +15,13 @@ public class TrackDTO {
 
     private Long id;
 
-    private String title;
+    String title;
 
-    double duration;
+    String duration;
 
     Date uploadedAt;
 
-    private String url;
+    String checksum;
 
     @JsonIgnore
     private Playlist playlist;
@@ -31,6 +31,6 @@ public class TrackDTO {
         this.title = track.getTitle();
         this.duration = track.getDuration();
         this.uploadedAt = track.getUploadedAt();
-        this.url = track.getUrl();
+        this.checksum = track.getChecksum();
     }
 }
