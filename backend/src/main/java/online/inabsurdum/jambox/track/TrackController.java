@@ -54,7 +54,7 @@ public class TrackController {
             }
 
             return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(contentType))
+                    .contentType(MediaType.parseMediaType("audio/wav"/*contentType*/))
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + track.getFilename() + "\"")
                     .body(track);
         } catch (Exception e) {

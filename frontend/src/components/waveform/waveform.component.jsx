@@ -55,10 +55,12 @@ const Waveform = ({ selectedTrack }) => {
     // if (url) wavesurfer.current.load(url);
 
     wavesurfer.current.on('loading', function (percent) {
+      console.log('Hey Im loading!')
       setLoadingProgress(percent);
     });
 
     wavesurfer.current.on('ready', function () {
+      console.log("Hey Im ready!")
       wavesurfer.current.setVolume(0.9);
       wavesurfer.current.play();
       dispatch(setPlaying(true));
@@ -90,7 +92,7 @@ const Waveform = ({ selectedTrack }) => {
       dispatch(setShowControls(false));
       setShowLoadingProgress(true);
       setShowSpinner(false);
-      wavesurfer.current.load("http://localhost:8080/jambox/track/load?checksum=4ba3458fe2f7d70b67502446a3c07760");
+      wavesurfer.current.load(url);
     }
   }, [url, dispatch]);
 
