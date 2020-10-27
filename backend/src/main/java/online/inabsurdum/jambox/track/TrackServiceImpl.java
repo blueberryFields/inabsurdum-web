@@ -5,6 +5,7 @@ import online.inabsurdum.jambox.Playlist.PlaylistNotFoundException;
 import online.inabsurdum.jambox.Playlist.PlaylistRepository;
 import online.inabsurdum.jambox.storage.StorageService;
 import online.inabsurdum.jambox.storage.UploadLocation;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +30,7 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public TrackDTO create(String title, long playlistId, MultipartFile multipartFile) throws PlaylistNotFoundException, NoSuchAlgorithmException, IOException, TrackDecodingException {
+    public TrackDTO upload(String title, long playlistId, MultipartFile multipartFile) throws PlaylistNotFoundException, NoSuchAlgorithmException, IOException, TrackDecodingException {
         String filename = storageService.store(multipartFile, UploadLocation.TEMPFILE);
         File file = storageService.load(filename, UploadLocation.TEMPFILE);
         String checksum = getFileChecksum(MessageDigest.getInstance("MD5"), file);
@@ -81,7 +82,6 @@ public class TrackServiceImpl implements TrackService {
         }
         return duration;
     }
-
 
     private TrackDTO create(String title, long playlistId, String duration, String checksum) throws PlaylistNotFoundException {
         Track track = new Track();
@@ -142,6 +142,11 @@ public class TrackServiceImpl implements TrackService {
     @Override
     public void delete(long id) {
         trackRepository.deleteById(id);
+    }
+
+    @Override
+    public Resource loadFileAsResource(String checksum) {
+        return storageService.loadFileAsResource(checksum);
     }
 
     private List<TrackDTO> convertTracksToTrackDTOs(List<Track> tracks) {

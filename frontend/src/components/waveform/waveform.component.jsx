@@ -90,7 +90,7 @@ const Waveform = ({ selectedTrack }) => {
       dispatch(setShowControls(false));
       setShowLoadingProgress(true);
       setShowSpinner(false);
-      wavesurfer.current.load(url);
+      wavesurfer.current.load("http://localhost:8080/jambox/track/load?checksum=4ba3458fe2f7d70b67502446a3c07760");
     }
   }, [url, dispatch]);
 

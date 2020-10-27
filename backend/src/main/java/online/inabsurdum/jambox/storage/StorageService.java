@@ -1,5 +1,6 @@
 package online.inabsurdum.jambox.storage;
 
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -12,6 +13,8 @@ public interface StorageService {
     void delete(File file, UploadLocation uploadLocation);
 
     File load(String filename, UploadLocation uploadLocation);
+
+    Resource loadFileAsResource(String checksum);
 
     String store(MultipartFile file, UploadLocation uploadLocation);
 

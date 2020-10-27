@@ -1,5 +1,7 @@
 package online.inabsurdum.jambox.storage;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -7,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,6 +47,21 @@ public class StorageServiceImpl implements StorageService {
     public File load(String filename, UploadLocation uploadLocation) {
         Path rootLocation = getRootLocation(uploadLocation);
         return new File(String.valueOf(rootLocation.resolve(filename)));
+    }
+
+    @Override
+    public Resource loadFileAsResource(String checksum) {
+        try {
+            Path filePath = getRootLocation(UploadLocation.TRACK).resolve(checksum).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            if(resource.exists()) {
+                return resource;
+            } else {
+                throw new StorageException("File not found " + checksum);
+            }
+        } catch (MalformedURLException ex) {
+            throw new StorageException("File not found " + checksum, ex);
+        }
     }
 
     @Override

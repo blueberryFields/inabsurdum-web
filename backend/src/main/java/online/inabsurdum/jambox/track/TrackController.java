@@ -1,16 +1,22 @@
 package online.inabsurdum.jambox.track;
 
 import online.inabsurdum.jambox.Playlist.PlaylistNotFoundException;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("track")
+@RequestMapping("/track")
 public class TrackController {
 
     private final TrackService trackService;
@@ -30,10 +36,37 @@ public class TrackController {
         }
     }
 
+    @GetMapping("/load")
+    public ResponseEntity<Resource> load(@RequestParam(name = "checksum") String checksum, HttpServletRequest request) {
+        try {
+            Resource track = trackService.loadFileAsResource(checksum);
+
+            String contentType = null;
+            try {
+                contentType = request.getServletContext().getMimeType(track.getFile().getAbsolutePath());
+            } catch (IOException ex) {
+                System.out.println("Could not determine file type.");
+            }
+
+            // Fallback to the default content type if type could not be determined
+            if(contentType == null) {
+                contentType = "application/octet-stream";
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + track.getFilename() + "\"")
+                    .body(track);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
     @PostMapping
     public ResponseEntity<TrackDTO> uploadTrack(@RequestParam("file") MultipartFile file, @RequestParam(name = "playlistid") long playlistId, @RequestParam(name = "title") String title) {
         try {
-            TrackDTO result = trackService.create(title, playlistId, file);
+            TrackDTO result = trackService.upload(title, playlistId, file);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (PlaylistNotFoundException e) {
             e.printStackTrace();

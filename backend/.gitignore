@@ -34,3 +34,7 @@ build/
 
 ### Database files ###
 database/
+
+### Audiofiles ### 
+tracks/
+temp-files
