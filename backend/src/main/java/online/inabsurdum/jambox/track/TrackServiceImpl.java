@@ -1,8 +1,8 @@
 package online.inabsurdum.jambox.track;
 
-import online.inabsurdum.jambox.Playlist.Playlist;
-import online.inabsurdum.jambox.Playlist.PlaylistNotFoundException;
-import online.inabsurdum.jambox.Playlist.PlaylistRepository;
+import online.inabsurdum.jambox.playlist.Playlist;
+import online.inabsurdum.jambox.playlist.PlaylistNotFoundException;
+import online.inabsurdum.jambox.playlist.PlaylistRepository;
 import online.inabsurdum.jambox.storage.StorageService;
 import online.inabsurdum.jambox.storage.UploadLocation;
 import org.springframework.core.io.Resource;
@@ -141,6 +141,11 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public void delete(long id) {
+        Track track = trackRepository.findById(id);
+        List<Track> tracks = trackRepository.findTracksByChecksum(track.getChecksum());
+        if (tracks.size() == 1) {
+            storageService.deleteByFilename(track.getChecksum(), UploadLocation.TRACK);
+        }
         trackRepository.deleteById(id);
     }
 

@@ -1,4 +1,4 @@
-package online.inabsurdum.jambox.Playlist;
+package online.inabsurdum.jambox.playlist;
 
 public class PlaylistNotFoundException extends Exception {
 

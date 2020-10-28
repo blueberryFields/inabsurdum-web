@@ -1,11 +1,10 @@
-package online.inabsurdum.jambox.Playlist;
+package online.inabsurdum.jambox.playlist;
 
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.inabsurdum.jambox.track.Track;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;

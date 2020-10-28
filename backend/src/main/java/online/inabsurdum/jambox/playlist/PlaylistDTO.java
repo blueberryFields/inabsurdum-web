@@ -1,4 +1,4 @@
-package online.inabsurdum.jambox.Playlist;
+package online.inabsurdum.jambox.playlist;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

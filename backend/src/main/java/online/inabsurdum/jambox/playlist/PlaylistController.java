@@ -1,4 +1,4 @@
-package online.inabsurdum.jambox.Playlist;
+package online.inabsurdum.jambox.playlist;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

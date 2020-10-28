@@ -12,6 +12,8 @@ public interface StorageService {
 
     void delete(File file, UploadLocation uploadLocation);
 
+    void deleteByFilename(String filename, UploadLocation uploadLocation);
+
     File load(String filename, UploadLocation uploadLocation);
 
     Resource loadFileAsResource(String checksum);

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import online.inabsurdum.jambox.Playlist.Playlist;
+import online.inabsurdum.jambox.playlist.Playlist;
 
 import java.util.Date;
 

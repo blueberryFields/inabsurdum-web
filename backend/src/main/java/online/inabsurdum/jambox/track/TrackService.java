@@ -1,10 +1,9 @@
 package online.inabsurdum.jambox.track;
 
-import online.inabsurdum.jambox.Playlist.PlaylistNotFoundException;
+import online.inabsurdum.jambox.playlist.PlaylistNotFoundException;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;

@@ -28,7 +28,7 @@ public class StorageServiceImpl implements StorageService {
         try {
             Files.move(tempFileRootLoc.resolve(filename), rootLocation.resolve(name), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            throw new StorageException("Failed to move sample: " + filename, e);
+            throw new StorageException("Failed to move audio file: " + filename, e);
         }
     }
 
@@ -39,8 +39,14 @@ public class StorageServiceImpl implements StorageService {
         try {
             Files.delete(rootLocation.resolve(filename));
         } catch (IOException e) {
-            throw new StorageException("Failed to delete temporary sample: " + filename, e);
+            throw new StorageException("Failed to delete audio file: " + filename, e);
         }
+    }
+
+    @Override
+    public void deleteByFilename(String filename, UploadLocation uploadLocation) {
+        File file = load(filename, uploadLocation);
+        delete(file, uploadLocation);
     }
 
     @Override
@@ -54,7 +60,7 @@ public class StorageServiceImpl implements StorageService {
         try {
             Path filePath = getRootLocation(UploadLocation.TRACK).resolve(checksum).normalize();
             Resource resource = new UrlResource(filePath.toUri());
-            if(resource.exists()) {
+            if (resource.exists()) {
                 return resource;
             } else {
                 throw new StorageException("File not found " + checksum);
