@@ -35,15 +35,16 @@
   }
 
   .length {
-    width: 25%;
+    width: 15%;
   }
 
   .options {
     display: flex;
     flex-direction: row;
-    width: 10%;
+    width: 30%;
     
     .icon {
+      // font-size: 1rem;
       margin: auto;
       cursor: pointer;
     }
