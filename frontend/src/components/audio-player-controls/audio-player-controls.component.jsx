@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { isEmpty } from 'lodash';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -18,21 +19,22 @@ import './audio-player-controls.styles.scss';
 
 const AudioPlayerControls = ({ selectedTrack }) => {
   const dispatch = useDispatch();
+  console.log(isEmpty(selectedTrack));
 
   const handleTogglePlay = () => {
-    if (selectedTrack) {
+    if (!isEmpty(selectedTrack)) {
       dispatch(togglePlaying());
     }
   };
 
   const handleSelectNextTrack = () => {
-    if (selectedTrack) {
+    if (!isEmpty(selectedTrack)) {
       dispatch(selectNextTrack(selectedTrack));
     }
   };
 
   const handleSelectPreviousTrack = () => {
-    if (selectedTrack) {
+    if (!isEmpty(selectedTrack)) {
       dispatch(selectPreviousTrack(selectedTrack));
     }
   };
