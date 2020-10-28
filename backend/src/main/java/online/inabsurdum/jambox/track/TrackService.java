@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface TrackService {
 
-    TrackDTO upload(String title, long playlistId, MultipartFile file) throws PlaylistNotFoundException, NoSuchAlgorithmException, IOException, TrackDecodingException;
+    TrackDTO upload(String title, long playlistId, MultipartFile file) throws PlaylistNotFoundException, NoSuchAlgorithmException, IOException, TrackDecodingException, PeakGenerationException, InterruptedException, PeakNormalizationException;
 
     List<TrackDTO> findAll();
 

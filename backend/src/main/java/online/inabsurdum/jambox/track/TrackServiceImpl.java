@@ -5,11 +5,14 @@ import online.inabsurdum.jambox.playlist.PlaylistNotFoundException;
 import online.inabsurdum.jambox.playlist.PlaylistRepository;
 import online.inabsurdum.jambox.storage.StorageService;
 import online.inabsurdum.jambox.storage.UploadLocation;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -30,28 +33,31 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public TrackDTO upload(String title, long playlistId, MultipartFile multipartFile) throws PlaylistNotFoundException, NoSuchAlgorithmException, IOException, TrackDecodingException {
+    public TrackDTO upload(String title, long playlistId, MultipartFile multipartFile) throws PlaylistNotFoundException, NoSuchAlgorithmException, IOException, TrackDecodingException, PeakGenerationException, InterruptedException, PeakNormalizationException {
         String filename = storageService.store(multipartFile, UploadLocation.TEMPFILE);
         File file = storageService.load(filename, UploadLocation.TEMPFILE);
         String checksum = getFileChecksum(MessageDigest.getInstance("MD5"), file);
+
+        String peaks;
 
         Track result = trackRepository.findFirstByChecksum(checksum);
         String duration = "";
         if (result != null) {
             storageService.delete(file, UploadLocation.TEMPFILE);
             duration = result.getDuration();
+            peaks = result.getPeaks();
         } else {
             duration = getDurationOfTrack(file);
+            peaks = generatePeakData(file).toString();
             storageService.moveAndRenameFile(file, checksum, UploadLocation.TRACK);
         }
 
-        return create(title, playlistId, duration, checksum);
+        return create(title, playlistId, duration, checksum, peaks);
     }
 
     private String getDurationOfTrack(File file) throws TrackDecodingException {
         String duration = "";
         try {
-            // create the ffmpeg process command to run.
             Process ffprobe = new ProcessBuilder(
                     "/opt/local/bin/ffprobe", // mac: "/opt/local/bin/ffmpeg" linux: "/usr/bin/ffmpeg"
                     "-v", "error",
@@ -60,11 +66,10 @@ public class TrackServiceImpl implements TrackService {
                     "-sexagesimal",
                     file.getAbsolutePath())
                     .start();
-            // this blocks until the execute is complete.
+
             ffprobe.waitFor();
             if (0 != ffprobe.exitValue()) {
-                // a non-zero exit value means something blew up
-                // log.error("ffmpeg failed! Exit value: {}", ffmpeg.exitValue());
+
                 throw new TrackDecodingException("ffprobe failed! Exit value: " + ffprobe.exitValue());
             }
             // Read the output
@@ -72,34 +77,50 @@ public class TrackServiceImpl implements TrackService {
                     new BufferedReader(new InputStreamReader(ffprobe.getInputStream()));
             duration = reader.readLine();
         } catch (IOException e) {
-            // log.error("Unable to run ffmpeg", e);
             throw new TrackDecodingException("Unable to run ffmpeg", e);
         } catch (InterruptedException e) {
-            // you could potentially get this thrown from the waitFor() call.
-            // log.error("Interupted!", e);
             System.out.println("Interupted!!!");
             throw new TrackDecodingException("ffmpeg was interupted!", e);
         }
         return duration;
     }
 
-    private TrackDTO create(String title, long playlistId, String duration, String checksum) throws PlaylistNotFoundException {
-        Track track = new Track();
-        track.setTitle(title);
-        track.setDuration(duration);
-        track.setUploadedAt(new Date());
-        track.setChecksum(checksum);
+    private JSONObject generatePeakData(File file) throws IOException, PeakGenerationException, InterruptedException, PeakNormalizationException {
+        Process audiowaveform = new ProcessBuilder(
+                "/usr/local/bin/audiowaveform",
+                "-i", file.getAbsolutePath(),
+                "--pixels-per-second", "20",
+                "--bits", "8",
+                "-o", "temp-files/peaks.json")
+                .start();
+        audiowaveform.waitFor();
+        if (0 != audiowaveform.exitValue()) {
+            throw new PeakGenerationException("Audiowaveform failed! Exit value: " + audiowaveform.exitValue());
+        }
+        normalisePeakData();
 
-        track = trackRepository.save(track);
+        return readPeakAndDeleteFile();
+    }
 
-        Playlist playlist = playlistRepository.findById(playlistId);
-        if (playlist == null) throw new PlaylistNotFoundException();
-        List<Track> tracks = playlist.getTracks();
-        tracks.add(track);
-        playlist.setTracks(tracks);
-        playlistRepository.save(playlist);
+    // This seems to fuck stuff up, keeping it for reference though
+    private void normalisePeakData() throws IOException, InterruptedException, PeakNormalizationException {
+        Process python = new ProcessBuilder(
+                "python",
+                "scale-json.py",
+                "temp-files/peaks.json")
+                .start();
+        python.waitFor();
+        if (0 != python.exitValue()) {
+            throw new PeakNormalizationException("Normalization script failed! Exit value: " + python.exitValue());
+        }
+    }
 
-        return new TrackDTO(track);
+    private JSONObject readPeakAndDeleteFile() throws FileNotFoundException {
+        Path path = storageService.getRootLocation(UploadLocation.TEMPFILE).resolve("peaks.json");
+        InputStream is = new FileInputStream(String.valueOf(path));
+        JSONTokener tokener = new JSONTokener(is);
+        storageService.deleteByFilename("peaks.json", UploadLocation.TEMPFILE);
+        return new JSONObject(tokener);
     }
 
     private static String getFileChecksum(MessageDigest digest, File file) throws IOException, FileNotFoundException {
@@ -124,6 +145,26 @@ public class TrackServiceImpl implements TrackService {
         }
         //return complete hash
         return sb.toString();
+    }
+
+    private TrackDTO create(String title, long playlistId, String duration, String checksum, String peaks) throws PlaylistNotFoundException {
+        Track track = new Track();
+        track.setTitle(title);
+        track.setDuration(duration);
+        track.setUploadedAt(new Date());
+        track.setChecksum(checksum);
+        track.setPeaks(peaks);
+
+        track = trackRepository.save(track);
+
+        Playlist playlist = playlistRepository.findById(playlistId);
+        if (playlist == null) throw new PlaylistNotFoundException();
+        List<Track> tracks = playlist.getTracks();
+        tracks.add(track);
+        playlist.setTracks(tracks);
+        playlistRepository.save(playlist);
+
+        return new TrackDTO(track);
     }
 
     @Override

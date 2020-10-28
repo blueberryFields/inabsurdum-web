@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -31,6 +32,10 @@ public class Track {
     @NotNull
     String checksum;
 
+    @NotNull
+    @Column(columnDefinition = "JSON")
+    String peaks;
+
 
     Track(TrackDTO trackDTO) {
         this.id = trackDTO.getId();
@@ -38,6 +43,7 @@ public class Track {
         this.duration = trackDTO.getDuration();
         this.uploadedAt = trackDTO.getUploadedAt();
         this.checksum = trackDTO.getChecksum();
+        this.peaks = trackDTO.getPeaks().toString();
     }
 
 }
