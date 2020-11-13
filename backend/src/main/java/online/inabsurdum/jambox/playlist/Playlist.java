@@ -5,8 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.inabsurdum.jambox.track.Track;
+import online.inabsurdum.jambox.track.TrackDTO;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,7 +31,15 @@ public class Playlist {
     public Playlist(PlaylistDTO playlistDTO) {
         this.id = playlistDTO.getId();
         this.title = playlistDTO.getTitle();
-        this.tracks = playlistDTO.getTracks();
+        this.tracks = convertTrackDTOsToTracks(playlistDTO.getTracks());
+    }
+
+    private List<Track> convertTrackDTOsToTracks(List<TrackDTO> trackDTOs) {
+        List<Track> tracks = new ArrayList<>();
+        for (TrackDTO trackDTO : trackDTOs) {
+            tracks.add(new Track(trackDTO));
+        }
+        return tracks;
     }
 
 }

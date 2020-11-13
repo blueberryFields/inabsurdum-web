@@ -37,7 +37,7 @@ public class Track {
     String peaks;
 
 
-    Track(TrackDTO trackDTO) {
+    public Track(TrackDTO trackDTO) {
         this.id = trackDTO.getId();
         this.title = trackDTO.getTitle();
         this.duration = trackDTO.getDuration();

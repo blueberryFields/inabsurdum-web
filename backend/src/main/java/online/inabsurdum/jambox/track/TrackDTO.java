@@ -14,6 +14,7 @@ import java.util.Map;
 @Getter
 @Setter
 @NoArgsConstructor
+public
 class TrackDTO {
 
     private Long id;
@@ -31,7 +32,7 @@ class TrackDTO {
     @JsonIgnore
     private Playlist playlist;
 
-    TrackDTO(Track track) {
+    public TrackDTO(Track track) {
         this.id = track.getId();
         this.title = track.getTitle();
         this.duration = track.getDuration();

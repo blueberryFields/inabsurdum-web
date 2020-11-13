@@ -39,8 +39,8 @@ public class PlaylistController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<PlaylistDTO> rename(@RequestParam(name = "id") long id, @RequestParam(name = "newtitle") String newTitle) {
+    @PutMapping("/{id}")
+    public ResponseEntity<PlaylistDTO> rename(@PathVariable long id, @RequestParam(name = "newtitle") String newTitle) {
         try {
             PlaylistDTO result = playlistService.rename(id, newTitle);
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -50,8 +50,8 @@ public class PlaylistController {
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> delete(@RequestParam(name = "id") long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         try {
             playlistService.delete(id);
             return new ResponseEntity<>(HttpStatus.OK);

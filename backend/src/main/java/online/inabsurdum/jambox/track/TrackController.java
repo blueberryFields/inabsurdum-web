@@ -76,8 +76,8 @@ public class TrackController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<TrackDTO> rename(@RequestParam(name = "id") long id, @RequestParam(name = "newtitle") java.lang.String newTitle) {
+    @PutMapping("/{id}")
+    public ResponseEntity<TrackDTO> rename(@PathVariable long id, @RequestParam(name = "newtitle") String newTitle) {
         try {
             TrackDTO result = trackService.rename(id, newTitle);
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -87,8 +87,8 @@ public class TrackController {
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> delete(@RequestParam(name = "id") long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         try {
             trackService.delete(id);
             return new ResponseEntity<>(HttpStatus.OK);
