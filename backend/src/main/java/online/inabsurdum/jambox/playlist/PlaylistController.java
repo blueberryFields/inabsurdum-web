@@ -17,25 +17,47 @@ public class PlaylistController {
         this.playlistService = playlistService;
     }
 
-    @GetMapping("/findall")
+    @GetMapping()
     public ResponseEntity<List<PlaylistDTO>> findAll() {
         try {
             List<PlaylistDTO> result = playlistService.findAll();
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<PlaylistDTO>> findByUserId(@PathVariable long userId) {
+        try {
+            List<PlaylistDTO> result = playlistService.findByUserId(userId);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/reduced/{userId}")
+    public ResponseEntity<List<ReducedPlaylistDTO>> findReducedByUserId(@PathVariable long userId) {
+        try {
+            List<ReducedPlaylistDTO> result = playlistService.findReducedByUserId(userId);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping
-    public ResponseEntity<PlaylistDTO> create(@RequestParam(name = "title") String title) {
+    public ResponseEntity<PlaylistDTO> create(@RequestParam(name = "title") String title, @RequestParam(name = "userid") Long userId) {
         try {
-            PlaylistDTO result = playlistService.create(title);
+            PlaylistDTO result = playlistService.create(title, userId);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -46,7 +68,7 @@ public class PlaylistController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -57,7 +79,7 @@ public class PlaylistController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

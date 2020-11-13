@@ -31,14 +31,14 @@ public class UserController {
 
     //    CORS-ERROR fix?
     //    @CrossOrigin
-    @GetMapping("/profile/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ReducedUserDTO> getUser(@PathVariable Long id) {
         try {
 
             return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error finding profile");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error finding user");
         }
     }
 

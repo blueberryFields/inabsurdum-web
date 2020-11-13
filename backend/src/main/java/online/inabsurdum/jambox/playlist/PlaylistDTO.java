@@ -20,18 +20,22 @@ public class PlaylistDTO {
 
     private List<TrackDTO> tracks;
 
-    PlaylistDTO(Playlist playlist) {
+    public PlaylistDTO(Playlist playlist) {
         this.id = playlist.getId();
         this.title = playlist.getTitle();
         this.tracks = convertTracksToTrackDTOs(playlist.getTracks());
     }
 
     private List<TrackDTO> convertTracksToTrackDTOs(List<Track> tracks) {
-        List<TrackDTO> trackDTOs = new ArrayList<>();
-        for (Track track : tracks) {
-            trackDTOs.add(new TrackDTO(track));
+        if (tracks != null) {
+            List<TrackDTO> trackDTOs = new ArrayList<>();
+            for (Track track : tracks) {
+                trackDTOs.add(new TrackDTO(track));
+            }
+            return trackDTOs;
+        } else {
+            return null;
         }
-        return trackDTOs;
     }
 
 }
