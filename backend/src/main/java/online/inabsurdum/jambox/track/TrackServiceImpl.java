@@ -97,7 +97,7 @@ public class TrackServiceImpl implements TrackService {
         if (0 != audiowaveform.exitValue()) {
             throw new PeakGenerationException("Audiowaveform failed! Exit value: " + audiowaveform.exitValue());
         }
-        //normalisePeakData();
+        normalisePeakData();
 
         return readPeakAndDeleteFile();
     }

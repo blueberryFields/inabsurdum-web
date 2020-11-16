@@ -46,17 +46,17 @@ const Waveform = ({ selectedTrack }) => {
       cursorColor: 'lightgrey',
       scrollParent: true,
       autoCenter: true,
-      normalize: true,
-      // backend: 'MediaElement',
+      // normalize: true,
+      backend: 'MediaElement',
       barWidth: 2,
-      xhr: {
-        requestHeaders: [
-          {
-            key: 'Authorization',
-            value: 'Bearer ' + user.jwt,
-          },
-        ],
-      },
+      // xhr: {
+      //   requestHeaders: [
+      //     {
+      //       key: 'Authorization',
+      //       value: 'Bearer ' + user.jwt,
+      //     },
+      //   ],
+      // },
     });
 
     wavesurfer.current.on('ready', function () {
@@ -86,29 +86,11 @@ const Waveform = ({ selectedTrack }) => {
   // Load a new track when url is changed
   useEffect(() => {
     if (checksum) {
-      // setShowSpinner(true);
-      // (async function () {
-      //   try {
-      //     const response = await axios.request({
-      //       method: 'get',
-      //       url: 'http://localhost:8080/jambox/track/load/' + checksum,
-      //       headers: {
-      //         Authorization: 'Bearer ' + user.jwt,
-      //       },
-      //     });
-      //     console.log('Request is finished, trying to load audio into wavesurfer')
-      //     let blob = new window.Blob([new Uint8Array(response.data)]);
-      //     wavesurfer.current.loadBlob(blob, );
-      //     console.log('Audio loaded into wavesurfer, trying to hide spinner')
-      //     setShowSpinner(false);
-      //   } catch (error) {
-      //     console.log('ERROR: ', error);
-      //   }
-      // })();
 
       setShowSpinner(true);
       wavesurfer.current.load(
-        'http://localhost:8080/jambox/track/load/' + checksum, peaks.data
+        'http://localhost:8080/jambox/track/load/' + checksum,
+        peaks.data
       );
     }
   }, [checksum, dispatch, user.jwt, peaks]);
