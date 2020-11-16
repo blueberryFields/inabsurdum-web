@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
 
 import CustomButton from '../custom-button/custom-button.component';
 import FormInput from '../form-input/form-input.component';
@@ -22,17 +23,32 @@ const SignIn = () => {
     setState({ ...state, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (state.password === 'secret') {
-      dispatch(setCurrentUser({ id: 1, username: state.username }));
-      setState({ ...state, password: '', message: '' });
+    if (state.username && state.password) {
+      try {
+        const response = await axios({
+          method: 'post',
+          url: 'http://localhost:8080/jambox/user/login',
+          data: {
+            username: state.username,
+            password: state.password,
+          },
+        });
+        console.log(response);
+        dispatch(setCurrentUser(response.data));
+      } catch (error) {
+        setState({
+          ...state,
+          message: 'Fel användarnamn eller lösenord!',
+        });
+        console.log(error);
+      }
     } else {
       setState({
         ...state,
-        password: '',
-        message: 'Fel lösenord!',
+        message: 'Du måste skriva användarnamn och lösenord!',
       });
     }
   };

@@ -1,5 +1,10 @@
 import PlayerActionTypes from './player.types';
 
+export const setPlaylists = (playlists) => ({
+  type: PlayerActionTypes.SET_PLAYLISTS,
+  payload: playlists,
+});
+
 export const selectTrack = (track) => ({
   type: PlayerActionTypes.SELECT_TRACK,
   payload: track,

@@ -1,15 +1,19 @@
-import PLAYLIST_DATA from './player.data';
 import PlayerActionTypes from './player.types';
 import { getNextTrack, getPreviousTrack } from './player.utils';
 
 const INITIAL_STATE = {
-  playlists: PLAYLIST_DATA,
+  playlists: [],
   selectedTrack: {},
   showControls: false,
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case PlayerActionTypes.SET_PLAYLISTS:
+      return {
+        ...state,
+        playlists: action.payload,
+      };
     case PlayerActionTypes.SELECT_TRACK:
       return {
         ...state,

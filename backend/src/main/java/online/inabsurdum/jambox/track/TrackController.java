@@ -35,8 +35,8 @@ public class TrackController {
         }
     }
 
-    @GetMapping("/load")
-    public ResponseEntity<Resource> load(@RequestParam(name = "checksum") String checksum, HttpServletRequest request) {
+    @GetMapping("/load/{checksum}")
+    public ResponseEntity<Resource> load(@PathVariable String checksum, HttpServletRequest request) {
         try {
             Resource track = trackService.loadFileAsResource(checksum);
 

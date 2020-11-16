@@ -15,7 +15,7 @@ import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component
 import TrackOptions from '../../pop-ups/track-options/track-options.component';
 
 const Track = ({ track }) => {
-  const { title, length } = track;
+  const { title, duration } = track;
 
   const isTrack = useSelector(selectIsTrackSelected(track));
   const dispatch = useDispatch();
@@ -28,6 +28,10 @@ const Track = ({ track }) => {
       : dispatch(selectTrack(track));
   };
 
+  const formatDuration = (duration) => {
+    return duration.split('.')[0];
+  };
+
   return (
     <tr className={`${isTrack.selected ? 'selected' : ''} track`}>
       <td className="play">
@@ -38,7 +42,7 @@ const Track = ({ track }) => {
         />
       </td>
       <td className="title">{title}</td>
-      <td className="length">{length}</td>
+      <td className="length">{formatDuration(duration)}</td>
       <td className="options">
         <ToggleContent
           toggle={(show) => (

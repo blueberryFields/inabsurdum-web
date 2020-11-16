@@ -1,15 +1,17 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import WaveSurfer from 'wavesurfer.js';
 
 import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import { setPlaying } from '../../redux/player/player.actions';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 import './waveform.styles.scss';
 
 const Waveform = ({ selectedTrack }) => {
-  const { url, playing } = selectedTrack;
+  const { checksum, playing, peaks } = selectedTrack;
+  const user = useSelector(selectCurrentUser);
 
   const dispatch = useDispatch();
 
@@ -45,8 +47,16 @@ const Waveform = ({ selectedTrack }) => {
       scrollParent: true,
       autoCenter: true,
       normalize: true,
-      backend: 'MediaElement',
+      // backend: 'MediaElement',
       barWidth: 2,
+      xhr: {
+        requestHeaders: [
+          {
+            key: 'Authorization',
+            value: 'Bearer ' + user.jwt,
+          },
+        ],
+      },
     });
 
     wavesurfer.current.on('ready', function () {
@@ -71,17 +81,39 @@ const Waveform = ({ selectedTrack }) => {
     return () => {
       wavesurfer.current.destroy();
     };
-  }, [dispatch]);
+  }, [dispatch, user.jwt]);
 
   // Load a new track when url is changed
   useEffect(() => {
-    if (url) {
-      setShowSpinner(true);
-      wavesurfer.current.load(url);
-    }
-  }, [url, dispatch]);
+    if (checksum) {
+      // setShowSpinner(true);
+      // (async function () {
+      //   try {
+      //     const response = await axios.request({
+      //       method: 'get',
+      //       url: 'http://localhost:8080/jambox/track/load/' + checksum,
+      //       headers: {
+      //         Authorization: 'Bearer ' + user.jwt,
+      //       },
+      //     });
+      //     console.log('Request is finished, trying to load audio into wavesurfer')
+      //     let blob = new window.Blob([new Uint8Array(response.data)]);
+      //     wavesurfer.current.loadBlob(blob, );
+      //     console.log('Audio loaded into wavesurfer, trying to hide spinner')
+      //     setShowSpinner(false);
+      //   } catch (error) {
+      //     console.log('ERROR: ', error);
+      //   }
+      // })();
 
-  // If selected track is set to palying, start playback of wavesurfer
+      setShowSpinner(true);
+      wavesurfer.current.load(
+        'http://localhost:8080/jambox/track/load/' + checksum, peaks.data
+      );
+    }
+  }, [checksum, dispatch, user.jwt, peaks]);
+
+  // If selected track is set to playing, start playback of wavesurfer
   useEffect(() => {
     if (wavesurfer.current)
       playing ? wavesurfer.current.play() : wavesurfer.current.pause();

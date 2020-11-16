@@ -30,7 +30,7 @@ const Header = () => {
             )}
           />
 
-          <h1 className="logo">{user.username}</h1>
+          <h1 className="logo">{user.bandName}</h1>
           {/* <FontAwesomeIcon className="menu-icon" icon={faBars} /> */}
 
           <div

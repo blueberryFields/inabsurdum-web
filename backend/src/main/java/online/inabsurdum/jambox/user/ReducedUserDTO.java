@@ -22,26 +22,9 @@ class ReducedUserDTO {
 
     private String jwt;
 
-    private List<PlaylistDTO> playlists;
-
-
     ReducedUserDTO(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.bandName = user.getBandName();
-        this.playlists = convertPlaylistsToPlaylistDTOs(user.getPlaylists());
     }
-
-    private List<PlaylistDTO> convertPlaylistsToPlaylistDTOs(List<Playlist> playlists) {
-        if (playlists != null) {
-            List<PlaylistDTO> playlistDTOs = new ArrayList<>();
-            for (Playlist playlist : playlists) {
-                playlistDTOs.add(new PlaylistDTO(playlist));
-            }
-            return playlistDTOs;
-        } else {
-            return null;
-        }
-    }
-
 }
