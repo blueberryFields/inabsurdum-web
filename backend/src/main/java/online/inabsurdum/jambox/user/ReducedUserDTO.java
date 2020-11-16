@@ -20,9 +20,10 @@ class ReducedUserDTO {
 
     private String bandName;
 
+    private String jwt;
+
     private List<PlaylistDTO> playlists;
 
-    private String jwt;
 
     ReducedUserDTO(User user) {
         this.id = user.getId();

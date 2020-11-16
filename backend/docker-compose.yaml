@@ -9,10 +9,18 @@ services:
       MYSQL_USER: 'jambox'
       MYSQL_PASSWORD: 'secret'
       MYSQL_ROOT_PASSWORD: 'secret'
-    ports:
-     - '3306:3306'
+#    ports:
+#      - '3306:3306'
     volumes:
-     - ./database:/var/lib/mysql
+      - ./database:/var/lib/mysql
+  jambox:
+    build: .
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    volumes:
+      - "./tracks:/tracks"
+  #      - "/etc/localtime:/etc/localtime:ro"
   
 
 

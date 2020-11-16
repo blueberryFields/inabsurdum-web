@@ -59,7 +59,7 @@ public class TrackServiceImpl implements TrackService {
         String duration = "";
         try {
             Process ffprobe = new ProcessBuilder(
-                    "/opt/local/bin/ffprobe", // mac: "/opt/local/bin/ffmpeg" linux: "/usr/bin/ffmpeg"
+                    "/usr/bin/ffprobe", // mac: "/opt/local/bin/ffmpeg" linux: "/usr/bin/ffmpeg"
                     "-v", "error",
                     "-show_entries", "format=duration",
                     "-of", "default=noprint_wrappers=1:nokey=1",
@@ -87,7 +87,7 @@ public class TrackServiceImpl implements TrackService {
 
     private JSONObject generatePeakData(File file) throws IOException, PeakGenerationException, InterruptedException, PeakNormalizationException {
         Process audiowaveform = new ProcessBuilder(
-                "/usr/local/bin/audiowaveform",
+                "/usr/bin/audiowaveform",
                 "-i", file.getAbsolutePath(),
                 "--pixels-per-second", "20",
                 "--bits", "8",
@@ -97,7 +97,7 @@ public class TrackServiceImpl implements TrackService {
         if (0 != audiowaveform.exitValue()) {
             throw new PeakGenerationException("Audiowaveform failed! Exit value: " + audiowaveform.exitValue());
         }
-        normalisePeakData();
+        //normalisePeakData();
 
         return readPeakAndDeleteFile();
     }
