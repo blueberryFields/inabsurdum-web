@@ -19,7 +19,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public PlaylistDTO create(String title, long userId) {
+    public List<ReducedPlaylistDTO> create(String title, long userId) {
         Playlist playlist = new Playlist();
         playlist.setTitle(title);
         playlistRepository.save(playlist);
@@ -30,7 +30,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         user.setPlaylists(playlists);
         userRepository.save(user);
 
-        return new PlaylistDTO(playlist);
+        return convertPlaylistsToReducedPlaylistDTOs(playlists);
     }
 
     @Override

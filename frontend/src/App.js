@@ -1,18 +1,28 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
-import './App.scss';
+import axios from 'axios';
 
 import Header from './components/header/header.component';
 import JamBoxPage from './pages/jam-box/jam-box.component';
 import SignInPage from './pages/sign-in-page/sign-in-page.component';
-import {
-  selectIsUserAuthenticated,
-} from './redux/user/user.selectors';
+import { selectIsUserAuthenticated } from './redux/user/user.selectors';
+import { selectCurrentUser } from './redux/user/user.selectors';
+
+import './App.scss';
+import isEmpty from 'lodash.isempty';
 
 function App() {
   const isAuthenticated = useSelector(selectIsUserAuthenticated);
+  const user = useSelector(selectCurrentUser);
+
+  // TODO: Not sure if this is the ideal place to put this???
+  axios.interceptors.request.use((req) => {
+    if (!isEmpty(user) && isAuthenticated) {
+      req.headers.authorization = `Bearer ${user.jwt}`;
+    }
+    return req;
+  });
 
   window.mobileAndTabletCheck = function () {
     let check = false;

@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface PlaylistService {
 
-    PlaylistDTO create(String title, long userId);
+    List<ReducedPlaylistDTO> create(String title, long userId);
 
     List<PlaylistDTO> findAll();
 

@@ -13,7 +13,7 @@ import './track.styles.scss';
 import { selectIsTrackSelected } from '../../redux/player/player.selectors';
 import { selectTrack, togglePlaying } from '../../redux/player/player.actions';
 import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component';
-import TrackOptions from '../../pop-ups/track-options/track-options.component';
+import TrackOptions from '../track-options/track-options.component';
 
 const Track = ({ track }) => {
   const { title, duration, uploadedAt } = track;

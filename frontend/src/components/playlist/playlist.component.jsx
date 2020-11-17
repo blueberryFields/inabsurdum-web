@@ -9,7 +9,7 @@ import {
 
 import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component';
 import Track from '../../components/track/track.component';
-import PlaylistOptions from '../../pop-ups/playlist-options/playlist-options.component';
+import PlaylistOptions from '../playlist-options/playlist-options.component';
 
 import './playlist.styles.scss';
 

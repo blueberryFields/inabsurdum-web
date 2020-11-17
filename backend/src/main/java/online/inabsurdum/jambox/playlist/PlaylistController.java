@@ -51,9 +51,9 @@ public class PlaylistController {
     }
 
     @PostMapping
-    public ResponseEntity<PlaylistDTO> create(@RequestParam(name = "title") String title, @RequestParam(name = "userid") Long userId) {
+    public ResponseEntity<List<ReducedPlaylistDTO>> create(@RequestParam(name = "title") String title, @RequestParam(name = "userid") Long userId) {
         try {
-            PlaylistDTO result = playlistService.create(title, userId);
+            List<ReducedPlaylistDTO> result = playlistService.create(title, userId);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,6 +73,7 @@ public class PlaylistController {
     }
 
     @DeleteMapping("/{id}")
+    @CrossOrigin
     public ResponseEntity<Void> delete(@PathVariable long id) {
         try {
             playlistService.delete(id);

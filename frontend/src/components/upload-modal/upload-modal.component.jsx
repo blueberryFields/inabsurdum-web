@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
-import CustomButton from '../../components/custom-button/custom-button.component';
-import FileUploader from '../../components/file-uploader/file-uploader.component';
-import PlaylistSelect from '../../components/playlist-select/playlist-select.component';
-import CreatePlaylist from '../../components/create-playlist/create-playlist.component';
-import ModalFormInput from '../../components/modal-form-input/modal-form-input.component';
+import CustomButton from '../custom-button/custom-button.component';
+import FileUploader from '../file-uploader/file-uploader.component';
+import PlaylistSelect from '../playlist-select/playlist-select.component';
+import CreatePlaylist from '../create-playlist/create-playlist.component';
+import ModalFormInput from '../modal-form-input/modal-form-input.component';
+import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import { selectPlaylists } from '../../redux/player/player.selectors';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { setPlaylists } from '../../redux/player/player.actions';
 
 import './upload-modal.styles.scss';
 
 const UploadModal = ({ hide }) => {
+  const dispatch = useDispatch();
   const playlists = useSelector(selectPlaylists);
+  const user = useSelector(selectCurrentUser);
 
   const [state, setState] = useState({
     name: '',
@@ -19,6 +25,18 @@ const UploadModal = ({ hide }) => {
     selectedFile: null,
     showCreatePlaylist: false,
   });
+
+  const updatePlaylists = useCallback(async () => {
+    try {
+      const response = await axios.request({
+        method: 'get',
+        url: 'http://localhost:8080/jambox/playlist/' + user.id,
+      });
+      dispatch(setPlaylists(response.data));
+    } catch (error) {
+      console.log('ERROR: ', error);
+    }
+  }, [dispatch, user.id]);
 
   const selectFile = (e) => {
     setState({
@@ -54,6 +72,7 @@ const UploadModal = ({ hide }) => {
 
   return (
     <form onSubmit={handleSubmit} className="upload-modal">
+      {state.loading && <LoadingSpinner />}
       <h2 className="title">LADDA UPP</h2>
       <FileUploader selectedFile={state.selectedFile} selectFile={selectFile} />
       <ModalFormInput
@@ -65,7 +84,11 @@ const UploadModal = ({ hide }) => {
         required
       />
       {state.showCreatePlaylist ? (
-        <CreatePlaylist hide={hideCreatePlaylist} />
+        <CreatePlaylist
+          hide={hideCreatePlaylist}
+          userId={user.id}
+          updatePlaylists={updatePlaylists}
+        />
       ) : (
         <PlaylistSelect
           handleChange={handleChange}

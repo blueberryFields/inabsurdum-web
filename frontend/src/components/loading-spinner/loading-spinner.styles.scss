@@ -2,11 +2,12 @@
   height: 100%;
   width: 100%;
   display: flex;
+  background: rgba(0, 0, 0, 0.3);
 
   &.position-absolute {
     position: absolute;
   }
-  
+
   .spinner-icon {
     margin: auto;
     font-size: 3.5rem;
