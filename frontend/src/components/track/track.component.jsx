@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Moment from 'react-moment';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -42,7 +43,7 @@ const Track = ({ track }) => {
         />
       </td>
       <td className="title">{title}</td>
-      <td className="date">{uploadedAt}</td>
+      <td className="date">{<Moment format="YY/MM/DD">{uploadedAt}</Moment>}</td>
       <td className="length">{formatDuration(duration)}</td>
       <td className="options">
         <ToggleContent
