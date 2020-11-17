@@ -1,14 +1,17 @@
 .loading-spinner {
-  position: absolute;
   height: 100%;
   width: 100%;
   display: flex;
-  // bottom: 2.3rem;
 
+  &.position-absolute {
+    position: absolute;
+  }
+  
   .spinner-icon {
     margin: auto;
     font-size: 3.5rem;
     animation: spin 2s linear infinite;
+    color: white;
   }
 
   @keyframes spin {

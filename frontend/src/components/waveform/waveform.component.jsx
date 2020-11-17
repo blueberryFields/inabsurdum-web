@@ -1,8 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
 import WaveSurfer from 'wavesurfer.js';
-
 import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import { setPlaying } from '../../redux/player/player.actions';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
@@ -78,22 +76,19 @@ const Waveform = ({ selectedTrack }) => {
       dispatch(setPlaying(false));
     });
 
-    return () => {
-      wavesurfer.current.destroy();
-    };
-  }, [dispatch, user.jwt]);
-
-  // Load a new track when url is changed
-  useEffect(() => {
-    if (checksum) {
-
+    // Load track if checksum and peaks exist
+    if (checksum && peaks) {
       setShowSpinner(true);
       wavesurfer.current.load(
         'http://localhost:8080/jambox/track/load/' + checksum,
         peaks.data
       );
     }
-  }, [checksum, dispatch, user.jwt, peaks]);
+
+    return () => {
+      wavesurfer.current.destroy();
+    };
+  }, [checksum, dispatch, peaks, user.jwt]);
 
   // If selected track is set to playing, start playback of wavesurfer
   useEffect(() => {
@@ -106,7 +101,7 @@ const Waveform = ({ selectedTrack }) => {
       <div className="title">
         {selectedTrack.title} {currentTime}
       </div>
-      {showSpinner && <LoadingSpinner />}
+      {showSpinner && <LoadingSpinner isWaveformSpinner />}
       <div ref={waveformRef} />
     </div>
   );
