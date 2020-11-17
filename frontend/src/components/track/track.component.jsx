@@ -15,7 +15,7 @@ import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component
 import TrackOptions from '../../pop-ups/track-options/track-options.component';
 
 const Track = ({ track }) => {
-  const { title, duration } = track;
+  const { title, duration, uploadedAt } = track;
 
   const isTrack = useSelector(selectIsTrackSelected(track));
   const dispatch = useDispatch();
@@ -42,6 +42,7 @@ const Track = ({ track }) => {
         />
       </td>
       <td className="title">{title}</td>
+      <td className="date">{uploadedAt}</td>
       <td className="length">{formatDuration(duration)}</td>
       <td className="options">
         <ToggleContent

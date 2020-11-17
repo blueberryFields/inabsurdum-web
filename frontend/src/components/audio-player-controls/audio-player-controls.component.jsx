@@ -19,7 +19,6 @@ import './audio-player-controls.styles.scss';
 
 const AudioPlayerControls = ({ selectedTrack }) => {
   const dispatch = useDispatch();
-  console.log(isEmpty(selectedTrack));
 
   const handleTogglePlay = () => {
     if (!isEmpty(selectedTrack)) {
