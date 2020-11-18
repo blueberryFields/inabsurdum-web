@@ -46,7 +46,7 @@ const TrackOptions = ({ hide, track }) => {
           Ta bort spår
         </DropDownMenuItem>
         <DropDownMenuItem hide={hide}>
-          <a href={'http://localhost:8080/jambox/track/load/' + track.checksum} target="_blank" rel="noopener noreferrer" download={track.title}>
+          <a href={'http://localhost:8080/jambox/track/download/' + track.checksum} target="_blank" rel="noopener noreferrer" download={track.title}>
             Ladda ner
           </a>
         </DropDownMenuItem>

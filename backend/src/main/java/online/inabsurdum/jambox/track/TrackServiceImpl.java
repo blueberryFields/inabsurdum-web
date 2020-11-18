@@ -5,6 +5,7 @@ import online.inabsurdum.jambox.playlist.PlaylistNotFoundException;
 import online.inabsurdum.jambox.playlist.PlaylistRepository;
 import online.inabsurdum.jambox.storage.StorageService;
 import online.inabsurdum.jambox.storage.UploadLocation;
+import org.hibernate.cfg.CreateKeySecondPass;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.springframework.core.io.Resource;
@@ -38,21 +39,24 @@ public class TrackServiceImpl implements TrackService {
         File file = storageService.load(filename, UploadLocation.TEMPFILE);
         String checksum = getFileChecksum(MessageDigest.getInstance("MD5"), file);
 
-        String peaks;
-
         Track result = trackRepository.findFirstByChecksum(checksum);
-        String duration = "";
+
+        String duration;
+        String peaks;
+        String originalFilename;
         if (result != null) {
             storageService.delete(file, UploadLocation.TEMPFILE);
             duration = result.getDuration();
             peaks = result.getPeaks();
+            originalFilename = result.getOriginalFilename();
         } else {
             duration = getDurationOfTrack(file);
             peaks = generatePeakData(file).toString();
+            originalFilename = file.getName();
             storageService.moveAndRenameFile(file, checksum, UploadLocation.TRACK);
         }
 
-        return create(title, playlistId, duration, checksum, peaks);
+        return create(title, playlistId, duration, checksum, peaks, originalFilename);
     }
 
     private String getDurationOfTrack(File file) throws TrackDecodingException {
@@ -147,13 +151,14 @@ public class TrackServiceImpl implements TrackService {
         return sb.toString();
     }
 
-    private TrackDTO create(String title, long playlistId, String duration, String checksum, String peaks) throws PlaylistNotFoundException {
+    private TrackDTO create(String title, long playlistId, String duration, String checksum, String peaks, String originalFilename) throws PlaylistNotFoundException {
         Track track = new Track();
         track.setTitle(title);
         track.setDuration(duration);
         track.setUploadedAt(new Date());
         track.setChecksum(checksum);
         track.setPeaks(peaks);
+        track.setOriginalFilename(originalFilename);
 
         track = trackRepository.save(track);
 
@@ -194,6 +199,15 @@ public class TrackServiceImpl implements TrackService {
     public Resource loadFileAsResource(String checksum) {
         return storageService.loadFileAsResource(checksum);
     }
+/*
+
+    @Override
+    public Resource loadFileAsResourceWithOriginalFilename(String checksum) {
+        Track track = trackRepository.findFirstByChecksum(checksum);
+        return storageService.loadFileAsResourceWithOriginalFilename(checksum, track.getOriginalFilename());
+    }
+*/
+
 
     private List<TrackDTO> convertTracksToTrackDTOs(List<Track> tracks) {
         List<TrackDTO> trackDTOs = new ArrayList<>();

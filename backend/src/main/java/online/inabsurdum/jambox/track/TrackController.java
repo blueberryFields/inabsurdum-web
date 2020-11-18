@@ -43,21 +43,10 @@ public class TrackController {
     public ResponseEntity<Resource> load(@PathVariable String checksum, HttpServletRequest request) {
         try {
             Resource track = trackService.loadFileAsResource(checksum);
-
-            String contentType = null;
-            try {
-                contentType = request.getServletContext().getMimeType(track.getFile().getAbsolutePath());
-            } catch (IOException ex) {
-                System.out.println("Could not determine file type.");
-            }
-
-            // Fallback to the default content type if type could not be determined
-            if (contentType == null) {
-                contentType = "application/octet-stream";
-            }
+            String contentType = getContentType(track, request);
 
             return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType("audio/wav"/*contentType*/))
+                    .contentType(MediaType.parseMediaType(contentType))
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + track.getFilename() + "\"")
                     .body(track);
         } catch (Exception e) {
@@ -65,6 +54,38 @@ public class TrackController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
+
+    /*@GetMapping("/download/{checksum}")
+    public ResponseEntity<Resource> download(@PathVariable String checksum, HttpServletRequest request) {
+        try {
+            Resource track = trackService.loadFileAsResourceWithOriginalFilename(checksum);
+            String contentType = getContentType(track, request);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + track.getFilename() + "\"")
+                    .body(track);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }*/
+
+    private String getContentType(Resource track, HttpServletRequest request) {
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(track.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            System.out.println("Could not determine file type.");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+        return contentType;
+    }
+
 
     @PostMapping
     public ResponseEntity<List<PlaylistDTO>> uploadTrack(@RequestParam("file") MultipartFile file, @RequestParam(name = "playlistid") long playlistId, @RequestParam(name = "title") String title, @RequestParam(name = "userid") long userId) {

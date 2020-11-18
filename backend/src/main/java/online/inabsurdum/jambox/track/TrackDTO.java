@@ -27,10 +27,9 @@ class TrackDTO {
 
     String checksum;
 
-    Map peaks;
+    String originalFilename;
 
-    @JsonIgnore
-    private Playlist playlist;
+    Map peaks;
 
     public TrackDTO(Track track) {
         this.id = track.getId();
@@ -38,6 +37,7 @@ class TrackDTO {
         this.duration = track.getDuration();
         this.uploadedAt = track.getUploadedAt();
         this.checksum = track.getChecksum();
+        this.originalFilename = track.getOriginalFilename();
         // Convert string to map so it can be correctly serialized to JSON by Jackson
         ObjectMapper objectMapper = new ObjectMapper();
         try {

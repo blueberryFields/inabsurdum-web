@@ -33,9 +33,11 @@ public class Track {
     String checksum;
 
     @NotNull
+    String originalFilename;
+
+    @NotNull
     @Column(columnDefinition = "JSON")
     String peaks;
-
 
     public Track(TrackDTO trackDTO) {
         this.id = trackDTO.getId();
@@ -43,6 +45,7 @@ public class Track {
         this.duration = trackDTO.getDuration();
         this.uploadedAt = trackDTO.getUploadedAt();
         this.checksum = trackDTO.getChecksum();
+        this.originalFilename = trackDTO.getOriginalFilename();
         this.peaks = trackDTO.getPeaks().toString();
     }
 

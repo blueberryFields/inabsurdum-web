@@ -42,6 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/playlist").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/track/").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/track/load/*").permitAll() //.hasAnyRole("USER", "ADMIN")
+                .antMatchers("/track/download/*").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
