@@ -20,6 +20,7 @@ public interface TrackService {
 
     Resource loadFileAsResource(String checksum);
 
-//    Resource loadFileAsResourceWithOriginalFilename(String checksum);
+    Resource loadFileAsResourceWithOriginalFilename(String checksum);
 
+    void deleteDownloadedTempFile(String checksum);
 }

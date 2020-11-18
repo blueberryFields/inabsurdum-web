@@ -197,16 +197,20 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public Resource loadFileAsResource(String checksum) {
-        return storageService.loadFileAsResource(checksum);
+        return storageService.loadFileAsResource(UploadLocation.TRACK, checksum);
     }
-/*
 
     @Override
     public Resource loadFileAsResourceWithOriginalFilename(String checksum) {
         Track track = trackRepository.findFirstByChecksum(checksum);
         return storageService.loadFileAsResourceWithOriginalFilename(checksum, track.getOriginalFilename());
     }
-*/
+
+    @Override
+    public void deleteDownloadedTempFile(String checksum) {
+        Track track = trackRepository.findFirstByChecksum(checksum);
+        storageService.deleteByFilename(track.getOriginalFilename(), UploadLocation.TEMPFILE);
+    }
 
 
     private List<TrackDTO> convertTracksToTrackDTOs(List<Track> tracks) {

@@ -55,11 +55,12 @@ public class TrackController {
         }
     }
 
-    /*@GetMapping("/download/{checksum}")
+    @GetMapping("/download/{checksum}")
     public ResponseEntity<Resource> download(@PathVariable String checksum, HttpServletRequest request) {
         try {
             Resource track = trackService.loadFileAsResourceWithOriginalFilename(checksum);
             String contentType = getContentType(track, request);
+
 
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(contentType))
@@ -69,7 +70,7 @@ public class TrackController {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
-    }*/
+    }
 
     private String getContentType(Resource track, HttpServletRequest request) {
         String contentType = null;

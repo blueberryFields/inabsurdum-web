@@ -56,9 +56,9 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public Resource loadFileAsResource(String checksum) {
+    public Resource loadFileAsResource(UploadLocation uploadLocation, String checksum) {
         try {
-            Path filePath = getRootLocation(UploadLocation.TRACK).resolve(checksum).normalize();
+            Path filePath = getRootLocation(uploadLocation).resolve(checksum).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
                 return resource;
@@ -69,25 +69,19 @@ public class StorageServiceImpl implements StorageService {
             throw new StorageException("File not found " + checksum, ex);
         }
     }
-/*
 
     @Override
     public Resource loadFileAsResourceWithOriginalFilename(String checksum, String originalFilename) {
         try {
             Path source = trackRootLoc.resolve(checksum);
-            System.out.println(source.toString());
             Path destination = tempFileRootLoc.resolve(originalFilename);
-            System.out.println(destination.toString());
+
             Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new StorageException("Failed to copy and rename audio file: " + checksum, e);
         }
-        Resource resource = loadFileAsResource(UploadLocation.TEMPFILE, originalFilename);
-        deleteByFilename(originalFilename, UploadLocation.TEMPFILE);
-
-        return resource;
+        return loadFileAsResource(UploadLocation.TEMPFILE, originalFilename);
     }
-*/
 
 
     @Override

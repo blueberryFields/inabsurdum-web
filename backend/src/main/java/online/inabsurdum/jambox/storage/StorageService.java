@@ -16,9 +16,9 @@ public interface StorageService {
 
     File load(String filename, UploadLocation uploadLocation);
 
-    Resource loadFileAsResource(String checksum);
+    Resource loadFileAsResource(UploadLocation uploadLocation, String checksum);
 
-//    Resource loadFileAsResourceWithOriginalFilename(String checksum, String originalFilename);
+    Resource loadFileAsResourceWithOriginalFilename(String checksum, String originalFilename);
 
     String store(MultipartFile file, UploadLocation uploadLocation);
 
