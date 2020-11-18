@@ -4,15 +4,15 @@ import java.util.List;
 
 public interface PlaylistService {
 
-    List<ReducedPlaylistDTO> create(String title, long userId);
+    List<PlaylistDTO> create(String title, long userId);
 
     List<PlaylistDTO> findAll();
 
     List<PlaylistDTO> findByUserId(long userId);
 
-    PlaylistDTO rename(long id, String newTitle);
+    List<PlaylistDTO> rename(long id, String newTitle, long userId);
 
-    void delete(long id);
+    List<PlaylistDTO> delete(long id, long userId);
 
     List<ReducedPlaylistDTO> findReducedByUserId(long userId);
 }

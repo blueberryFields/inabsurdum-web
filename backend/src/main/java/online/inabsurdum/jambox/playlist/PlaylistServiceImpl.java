@@ -19,7 +19,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public List<ReducedPlaylistDTO> create(String title, long userId) {
+    public List<PlaylistDTO> create(String title, long userId) {
         Playlist playlist = new Playlist();
         playlist.setTitle(title);
         playlistRepository.save(playlist);
@@ -30,7 +30,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         user.setPlaylists(playlists);
         userRepository.save(user);
 
-        return convertPlaylistsToReducedPlaylistDTOs(playlists);
+        return findByUserId(userId);
     }
 
     @Override
@@ -76,17 +76,18 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
 
-
     @Override
-    public PlaylistDTO rename(long id, String newTitle) {
+    public List<PlaylistDTO> rename(long id, String newTitle, long userId) {
         Playlist playlist = playlistRepository.findById(id);
         playlist.setTitle(newTitle);
-        return new PlaylistDTO(playlistRepository.save(playlist));
+        playlistRepository.save(playlist);
+        return findByUserId(userId);
     }
 
     @Override
-    public void delete(long id) {
+    public List<PlaylistDTO> delete(long id, long userId) {
         playlistRepository.deleteById(id);
+        return findByUserId(userId);
     }
 
 

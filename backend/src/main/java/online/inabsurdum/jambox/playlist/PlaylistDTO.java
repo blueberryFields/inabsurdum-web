@@ -34,7 +34,7 @@ public class PlaylistDTO {
             }
             return trackDTOs;
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
 

@@ -33,7 +33,7 @@ public class PlaylistController {
         try {
             List<PlaylistDTO> result = playlistService.findByUserId(userId);
             return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -44,16 +44,16 @@ public class PlaylistController {
         try {
             List<ReducedPlaylistDTO> result = playlistService.findReducedByUserId(userId);
             return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping
-    public ResponseEntity<List<ReducedPlaylistDTO>> create(@RequestParam(name = "title") String title, @RequestParam(name = "userid") Long userId) {
+    public ResponseEntity<List<PlaylistDTO>> create(@RequestParam(name = "title") String title, @RequestParam(name = "userid") long userId) {
         try {
-            List<ReducedPlaylistDTO> result = playlistService.create(title, userId);
+            List<PlaylistDTO> result = playlistService.create(title, userId);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,9 +62,9 @@ public class PlaylistController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PlaylistDTO> rename(@PathVariable long id, @RequestParam(name = "newtitle") String newTitle) {
+    public ResponseEntity<List<PlaylistDTO>> rename(@PathVariable long id, @RequestParam(name = "newtitle") String newTitle, @RequestParam(name = "userid") long userId) {
         try {
-            PlaylistDTO result = playlistService.rename(id, newTitle);
+            List<PlaylistDTO> result = playlistService.rename(id, newTitle, userId);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,10 +74,10 @@ public class PlaylistController {
 
     @DeleteMapping("/{id}")
     @CrossOrigin
-    public ResponseEntity<Void> delete(@PathVariable long id) {
+    public ResponseEntity<List<PlaylistDTO>> delete(@PathVariable long id, @RequestParam(name = "userid") long userId) {
         try {
-            playlistService.delete(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            List<PlaylistDTO> result = playlistService.delete(id, userId);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { setPlaylists } from '../../redux/player/player.actions';
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 
 import './create-playlist.styles.scss';
 
-const CreatePlaylist = ({ hide, userId, updatePlaylists }) => {
+const CreatePlaylist = ({ hide }) => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState('');
+  const user = useSelector(selectCurrentUser);
 
   const createPlaylist = async () => {
     if (title) {
@@ -18,10 +23,10 @@ const CreatePlaylist = ({ hide, userId, updatePlaylists }) => {
             'http://localhost:8080/jambox/playlist/?title=' +
             title +
             '&userid=' +
-            userId,
+            user.id,
         });
         console.log(response.data);
-        updatePlaylists();
+        dispatch(setPlaylists(response.data));
         hide();
       } catch (error) {
         console.log(error);

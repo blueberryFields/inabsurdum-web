@@ -26,17 +26,17 @@ const UploadModal = ({ hide }) => {
     showCreatePlaylist: false,
   });
 
-  const updatePlaylists = useCallback(async () => {
-    try {
-      const response = await axios.request({
-        method: 'get',
-        url: 'http://localhost:8080/jambox/playlist/' + user.id,
-      });
-      dispatch(setPlaylists(response.data));
-    } catch (error) {
-      console.log('ERROR: ', error);
-    }
-  }, [dispatch, user.id]);
+  // const updatePlaylists = useCallback(async () => {
+  //   try {
+  //     const response = await axios.request({
+  //       method: 'get',
+  //       url: 'http://localhost:8080/jambox/playlist/' + user.id,
+  //     });
+  //     dispatch(setPlaylists(response.data));
+  //   } catch (error) {
+  //     console.log('ERROR: ', error);
+  //   }
+  // }, [dispatch, user.id]);
 
   const selectFile = (e) => {
     setState({
@@ -87,7 +87,6 @@ const UploadModal = ({ hide }) => {
         <CreatePlaylist
           hide={hideCreatePlaylist}
           userId={user.id}
-          updatePlaylists={updatePlaylists}
         />
       ) : (
         <PlaylistSelect
