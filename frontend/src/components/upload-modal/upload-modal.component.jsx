@@ -47,7 +47,13 @@ const UploadModal = ({ hide }) => {
         setState({ ...state, loading: false });
       } catch (error) {
         console.log('ERROR: ', error);
-        setState({ ...state, loading: false });
+        setState({
+          ...state,
+          title: '',
+          selectedPlaylist: null,
+          selectedFile: null,
+          loading: false,
+        });
       }
     }
   };

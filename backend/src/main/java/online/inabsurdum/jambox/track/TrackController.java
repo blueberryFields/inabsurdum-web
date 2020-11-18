@@ -82,9 +82,11 @@ public class TrackController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TrackDTO> rename(@PathVariable long id, @RequestParam(name = "newtitle") String newTitle) {
+    @CrossOrigin
+    public ResponseEntity<List<PlaylistDTO>> rename(@PathVariable long id, @RequestParam(name = "newtitle") String newTitle, @RequestParam(name = "userid") long userId) {
         try {
-            TrackDTO result = trackService.rename(id, newTitle);
+            trackService.rename(id, newTitle);
+            List<PlaylistDTO> result = playlistService.findByUserId(userId);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,10 +95,12 @@ public class TrackController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable long id) {
+    @CrossOrigin
+    public ResponseEntity<List<PlaylistDTO>> delete(@PathVariable long id, @RequestParam(name = "userid") long userId) {
         try {
             trackService.delete(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            List<PlaylistDTO> result = playlistService.findByUserId(userId);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);

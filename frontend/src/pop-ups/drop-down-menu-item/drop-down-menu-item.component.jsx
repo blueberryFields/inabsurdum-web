@@ -6,15 +6,17 @@ const DropDownMenuItem = ({ doubletap, action, children, hide }) => {
   const [tapCount, setTapCount] = useState(0);
 
   const handleClick = () => {
-    if (doubletap) {
-      if (tapCount > 0) {
+    if (action) {
+      if (doubletap) {
+        if (tapCount > 0) {
+          action();
+          hide();
+        }
+        setTapCount(tapCount + 1);
+      } else {
         action();
         hide();
       }
-      setTapCount(tapCount + 1);
-    } else {
-      action();
-      hide();
     }
   };
 

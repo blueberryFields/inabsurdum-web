@@ -1,18 +1,43 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import useObjectURL from 'use-object-url';
 
+import { setPlaylists } from '../../redux/player/player.actions';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
 import DropDownMenu from '../../pop-ups/drop-down-menu/drop-down-menu.component';
 import DropDownMenuItem from '../../pop-ups/drop-down-menu-item/drop-down-menu-item.component';
 
 import './track-options.styles.scss';
 
 const TrackOptions = ({ hide, track }) => {
-  const removeTrack = () => {
-    console.log('remove track:', track.title);
+  const dispatch = useDispatch();
+
+  const user = useSelector(selectCurrentUser);
+
+  // const { objectURL } = useObjectURL(
+  //   'http://localhost:8080/jambox/track/load/' + track.checksum
+  // );
+
+  const removeTrack = async () => {
+    try {
+      const response = await axios.request({
+        method: 'delete',
+        url:
+          'http://localhost:8080/jambox/track/' +
+          track.id +
+          '?userid=' +
+          user.id,
+      });
+      dispatch(setPlaylists(response.data));
+    } catch (error) {
+      console.log('ERROR: ', error);
+    }
   };
 
-  const downloadTrack = () => {
-    console.log('download track:', track.title);
-  };
+  // const downloadTrack = () => {
+  //   console.log('download track:', track.title);
+  // };
 
   return (
     <div className="track-options">
@@ -20,8 +45,10 @@ const TrackOptions = ({ hide, track }) => {
         <DropDownMenuItem doubletap action={removeTrack} hide={hide}>
           Ta bort spår
         </DropDownMenuItem>
-        <DropDownMenuItem action={downloadTrack} hide={hide}>
-          Ladda ner spår
+        <DropDownMenuItem hide={hide}>
+          <a href={'http://localhost:8080/jambox/track/load/' + track.checksum} target="_blank" rel="noopener noreferrer" download={track.title}>
+            Ladda ner
+          </a>
         </DropDownMenuItem>
       </DropDownMenu>
     </div>

@@ -62,6 +62,7 @@ public class PlaylistController {
     }
 
     @PutMapping("/{id}")
+    @CrossOrigin
     public ResponseEntity<List<PlaylistDTO>> rename(@PathVariable long id, @RequestParam(name = "newtitle") String newTitle, @RequestParam(name = "userid") long userId) {
         try {
             List<PlaylistDTO> result = playlistService.rename(id, newTitle, userId);
