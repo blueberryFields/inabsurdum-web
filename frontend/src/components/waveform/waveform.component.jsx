@@ -101,7 +101,7 @@ const Waveform = ({ selectedTrack }) => {
       <div className="title">
         {selectedTrack.title} {currentTime}
       </div>
-      {showSpinner && <LoadingSpinner isWaveformSpinner />}
+      {showSpinner && <LoadingSpinner absolutePosition />}
       <div ref={waveformRef} />
     </div>
   );

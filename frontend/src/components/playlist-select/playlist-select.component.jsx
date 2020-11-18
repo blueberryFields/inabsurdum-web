@@ -19,7 +19,7 @@ const PlaylistSelect = ({
         <option value="">Välj spellista</option>
         {playlists.map((playlist, index) => {
           return (
-            <option key={index} value={playlist.title}>
+            <option key={index} value={playlist.id}>
               {playlist.title}
             </option>
           );

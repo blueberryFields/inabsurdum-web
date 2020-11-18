@@ -1,5 +1,7 @@
 package online.inabsurdum.jambox.playlist;
 
+import online.inabsurdum.jambox.track.Track;
+import online.inabsurdum.jambox.track.TrackService;
 import online.inabsurdum.jambox.user.User;
 import online.inabsurdum.jambox.user.UserRepository;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,12 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     private final PlaylistRepository playlistRepository;
     private final UserRepository userRepository;
+    private final TrackService trackService;
 
-    public PlaylistServiceImpl(PlaylistRepository playlistRepository, UserRepository userRepository) {
+    public PlaylistServiceImpl(PlaylistRepository playlistRepository, UserRepository userRepository, TrackService trackService) {
         this.playlistRepository = playlistRepository;
         this.userRepository = userRepository;
+        this.trackService = trackService;
     }
 
     @Override
@@ -86,6 +90,11 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public List<PlaylistDTO> delete(long id, long userId) {
+        Playlist playlist = playlistRepository.findById(id);
+        for (Track track: playlist.getTracks()) {
+            trackService.delete(track.getId());
+        }
+
         playlistRepository.deleteById(id);
         return findByUserId(userId);
     }

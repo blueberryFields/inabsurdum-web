@@ -1,6 +1,8 @@
 package online.inabsurdum.jambox.track;
 
+import online.inabsurdum.jambox.playlist.PlaylistDTO;
 import online.inabsurdum.jambox.playlist.PlaylistNotFoundException;
+import online.inabsurdum.jambox.playlist.PlaylistService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,9 +21,11 @@ import java.util.List;
 public class TrackController {
 
     private final TrackService trackService;
+    private final PlaylistService playlistService;
 
-    public TrackController(TrackService trackService) {
+    public TrackController(TrackService trackService, PlaylistService playlistService) {
         this.trackService = trackService;
+        this.playlistService = playlistService;
     }
 
     @GetMapping("/findall")
@@ -48,7 +52,7 @@ public class TrackController {
             }
 
             // Fallback to the default content type if type could not be determined
-            if(contentType == null) {
+            if (contentType == null) {
                 contentType = "application/octet-stream";
             }
 
@@ -63,9 +67,10 @@ public class TrackController {
     }
 
     @PostMapping
-    public ResponseEntity<TrackDTO> uploadTrack(@RequestParam("file") MultipartFile file, @RequestParam(name = "playlistid") long playlistId, @RequestParam(name = "title") String title) {
+    public ResponseEntity<List<PlaylistDTO>> uploadTrack(@RequestParam("file") MultipartFile file, @RequestParam(name = "playlistid") long playlistId, @RequestParam(name = "title") String title, @RequestParam(name = "userid") long userId) {
         try {
-            TrackDTO result = trackService.upload(title, playlistId, file);
+            trackService.upload(title, playlistId, file);
+            List<PlaylistDTO> result = playlistService.findByUserId(userId);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (PlaylistNotFoundException e) {
             e.printStackTrace();

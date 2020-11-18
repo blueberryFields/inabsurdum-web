@@ -5,11 +5,11 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 import './loading-spinner.styles.scss';
 
-const LoadingSpinner = ({ isWaveformSpinner }) => {
+const LoadingSpinner = ({ absolutePosition }) => {
   return (
     <div
       className={`${
-        isWaveformSpinner ? 'position-absolute' : ''
+        absolutePosition ? 'position-absolute' : ''
       } loading-spinner`}
       // className="position-absolute loading-spinner"
     >

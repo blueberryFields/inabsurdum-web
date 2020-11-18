@@ -24,7 +24,7 @@ public class Playlist {
     @NotNull
     private String title;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "playlist_id")
     private List<Track> tracks;
 

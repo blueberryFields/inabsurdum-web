@@ -20,29 +20,43 @@ const UploadModal = ({ hide }) => {
   const user = useSelector(selectCurrentUser);
 
   const [state, setState] = useState({
-    name: '',
-    selectedPlaylist: '',
+    title: '',
+    selectedPlaylist: null,
     selectedFile: null,
     showCreatePlaylist: false,
+    loading: false,
   });
 
-  // const updatePlaylists = useCallback(async () => {
-  //   try {
-  //     const response = await axios.request({
-  //       method: 'get',
-  //       url: 'http://localhost:8080/jambox/playlist/' + user.id,
-  //     });
-  //     dispatch(setPlaylists(response.data));
-  //   } catch (error) {
-  //     console.log('ERROR: ', error);
-  //   }
-  // }, [dispatch, user.id]);
+  const uploadTrack = async () => {
+    if (state.selectedFile && state.title && state.selectedPlaylist) {
+      setState({ ...state, loading: true });
+
+      const bodyFormData = new FormData();
+      bodyFormData.set('title', state.title);
+      bodyFormData.set('playlistid', state.selectedPlaylist);
+      bodyFormData.set('userid', user.id);
+      bodyFormData.append('file', state.selectedFile);
+      try {
+        const response = await axios.request({
+          method: 'post',
+          url: 'http://localhost:8080/jambox/track',
+          data: bodyFormData,
+        });
+
+        dispatch(setPlaylists(response.data));
+        setState({ ...state, loading: false });
+      } catch (error) {
+        console.log('ERROR: ', error);
+        setState({ ...state, loading: false });
+      }
+    }
+  };
 
   const selectFile = (e) => {
     setState({
       ...state,
       selectedFile: e.target.files[0],
-      name: state.name || e.target.files[0].name,
+      title: state.title || e.target.files[0].name,
     });
   };
 
@@ -68,26 +82,24 @@ const UploadModal = ({ hide }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    uploadTrack();
   };
 
   return (
     <form onSubmit={handleSubmit} className="upload-modal">
-      {state.loading && <LoadingSpinner />}
+      {state.loading && <LoadingSpinner absolutePosition />}
       <h2 className="title">LADDA UPP</h2>
       <FileUploader selectedFile={state.selectedFile} selectFile={selectFile} />
       <ModalFormInput
-        name="name"
+        name="title"
         type="text"
-        value={state.name}
+        value={state.title}
         onChange={handleChange}
         placeholder="Namn"
         required
       />
       {state.showCreatePlaylist ? (
-        <CreatePlaylist
-          hide={hideCreatePlaylist}
-          userId={user.id}
-        />
+        <CreatePlaylist hide={hideCreatePlaylist} userId={user.id} />
       ) : (
         <PlaylistSelect
           handleChange={handleChange}
@@ -97,7 +109,7 @@ const UploadModal = ({ hide }) => {
         />
       )}
       <div className="buttons">
-        <CustomButton inverted onClick={() => {}}>
+        <CustomButton type="submit" inverted>
           Ladda upp
         </CustomButton>
         <CustomButton inverted onClick={hide}>
