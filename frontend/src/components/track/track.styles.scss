@@ -31,7 +31,9 @@
 
   .title {
     width: 55%;
+    max-width: 3rem;
     text-overflow: clip;
+    overflow: hidden;
   }
 
   .length {

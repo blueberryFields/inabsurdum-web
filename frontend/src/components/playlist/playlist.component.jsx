@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -21,6 +21,11 @@ const Playlist = ({ playlist }) => {
   const toggleIsCollapsed = () => {
     if (tracks.length > 0) setIsCollapsed(!isCollapsed);
   };
+
+  // If all tracks is removed, collapse the playlist
+  useEffect(() => {
+    if (tracks.length === 0) setIsCollapsed(true);
+  }, [tracks]);
 
   return (
     <div className="playlist">

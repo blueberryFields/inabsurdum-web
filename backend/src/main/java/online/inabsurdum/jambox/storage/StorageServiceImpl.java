@@ -71,16 +71,21 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public Resource loadFileAsResourceWithOriginalFilename(String checksum, String originalFilename) {
+    public File loadFileWithOriginalFilename(String checksum, String originalFilename) {
+        Path source = trackRootLoc.resolve(checksum);
+        Path destination = tempFileRootLoc.resolve(originalFilename);
         try {
-            Path source = trackRootLoc.resolve(checksum);
-            Path destination = tempFileRootLoc.resolve(originalFilename);
-
             Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new StorageException("Failed to copy and rename audio file: " + checksum, e);
         }
-        return loadFileAsResource(UploadLocation.TEMPFILE, originalFilename);
+        File file = null;
+        try {
+            file = new File(String.valueOf(destination));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 
 

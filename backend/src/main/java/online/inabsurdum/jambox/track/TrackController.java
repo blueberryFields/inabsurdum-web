@@ -11,10 +11,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.util.FileCopyUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 @RestController
 @RequestMapping("/track")
@@ -43,7 +49,18 @@ public class TrackController {
     public ResponseEntity<Resource> load(@PathVariable String checksum, HttpServletRequest request) {
         try {
             Resource track = trackService.loadFileAsResource(checksum);
-            String contentType = getContentType(track, request);
+//            String contentType = getContentType(track, request);
+            String contentType = null;
+            try {
+                contentType = request.getServletContext().getMimeType(track.getFile().getAbsolutePath());
+            } catch (IOException ex) {
+                System.out.println("Could not determine file type.");
+            }
+
+            // Fallback to the default content type if type could not be determined
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
 
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(contentType))
@@ -56,37 +73,37 @@ public class TrackController {
     }
 
     @GetMapping("/download/{checksum}")
-    public ResponseEntity<Resource> download(@PathVariable String checksum, HttpServletRequest request) {
+    public void download(@PathVariable String checksum, HttpServletRequest request, HttpServletResponse response) {
         try {
-            Resource track = trackService.loadFileAsResourceWithOriginalFilename(checksum);
-            String contentType = getContentType(track, request);
+            File file = trackService.loadFileWithOriginalFilename(checksum);
 
+            String contentType = null;
+            contentType = request.getServletContext().getMimeType(file.getAbsolutePath());
 
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(contentType))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + track.getFilename() + "\"")
-                    .body(track);
+            // Fallback to the default content type if type could not be determined
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+
+            response.setContentType(contentType);
+            response.setHeader("Content-disposition", "attachment; filename=" + file.getName());
+
+            OutputStream out = response.getOutputStream();
+            FileInputStream in = new FileInputStream(file);
+
+            // copy from in to out
+            FileCopyUtils.copy(in,out);
+
+            out.close();
+            in.close();
+
+            trackService.deleteDownloadedTempFile(checksum);
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
-
-    private String getContentType(Resource track, HttpServletRequest request) {
-        String contentType = null;
-        try {
-            contentType = request.getServletContext().getMimeType(track.getFile().getAbsolutePath());
-        } catch (IOException ex) {
-            System.out.println("Could not determine file type.");
-        }
-
-        // Fallback to the default content type if type could not be determined
-        if (contentType == null) {
-            contentType = "application/octet-stream";
-        }
-        return contentType;
-    }
-
 
     @PostMapping
     public ResponseEntity<List<PlaylistDTO>> uploadTrack(@RequestParam("file") MultipartFile file, @RequestParam(name = "playlistid") long playlistId, @RequestParam(name = "title") String title, @RequestParam(name = "userid") long userId) {

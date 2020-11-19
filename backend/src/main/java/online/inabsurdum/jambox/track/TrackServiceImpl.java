@@ -201,9 +201,9 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
-    public Resource loadFileAsResourceWithOriginalFilename(String checksum) {
+    public File loadFileWithOriginalFilename(String checksum) {
         Track track = trackRepository.findFirstByChecksum(checksum);
-        return storageService.loadFileAsResourceWithOriginalFilename(checksum, track.getOriginalFilename());
+        return storageService.loadFileWithOriginalFilename(checksum, track.getOriginalFilename());
     }
 
     @Override
