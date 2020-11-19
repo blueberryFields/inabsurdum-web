@@ -19,8 +19,14 @@ public class JamboxApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**");
+				registry.addMapping("/**")
+
+				//        CORS-ERROR fix?
+        .allowedHeaders("GET", "POST", "PUT", "DELETE").allowedOrigins("*")
+        .allowedHeaders("*");
 			}
 		};
 	}
 }
+
+

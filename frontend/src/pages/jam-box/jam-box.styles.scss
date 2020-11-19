@@ -1,15 +1,17 @@
 .jam-box {
   height: 100%;
   background: black;
-  overflow: scroll;
+  overflow: hidden;
 
   display: flex;
   flex-direction: column;
 
   .playlist-area {
     margin: 0 auto;
-    height: 100%;
-    overflow-y: scroll;
+    // height: 100%;
+    // align-self: stretch;
+    flex: 1;
+    overflow-y: auto;
     width: 100%;
 
     @media screen and (min-width: 992px) {
@@ -35,5 +37,12 @@
         width: 30%;
       }
     }
+  }
+
+  // This adds some space to the bottom in case client is ios safari to give som space
+  // for the bar, otherwise the audioplayer will be obfuscated
+  @supports (-webkit-touch-callout: none) {
+    /* CSS specific to iOS devices */
+    padding-bottom: 70px; //resize
   }
 }
