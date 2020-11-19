@@ -32,8 +32,9 @@
   .title {
     width: 55%;
     max-width: 3rem;
-    text-overflow: clip;
+    text-overflow: ellipsis;
     overflow: hidden;
+    white-space: nowrap;
   }
 
   .length {
@@ -43,7 +44,7 @@
   .options {
     display: flex;
     flex-direction: row;
-    width: 30%;
+    min-width: 20%;
     
     .icon {
       // font-size: 1rem;

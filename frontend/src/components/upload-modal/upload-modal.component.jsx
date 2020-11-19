@@ -21,14 +21,14 @@ const UploadModal = ({ hide }) => {
 
   const [state, setState] = useState({
     title: '',
-    selectedPlaylist: null,
+    selectedPlaylist: 'Välj spellista',
     selectedFile: null,
     showCreatePlaylist: false,
     loading: false,
   });
 
   const uploadTrack = async () => {
-    if (state.selectedFile && state.title && state.selectedPlaylist) {
+    if (state.selectedFile && state.title && state.selectedPlaylist !== 'Välj spellista') {
       setState({ ...state, loading: true });
 
       const bodyFormData = new FormData();
@@ -44,16 +44,16 @@ const UploadModal = ({ hide }) => {
         });
 
         dispatch(setPlaylists(response.data));
-        setState({ ...state, loading: false });
-      } catch (error) {
-        console.log('ERROR: ', error);
         setState({
           ...state,
           title: '',
-          selectedPlaylist: null,
+          selectedPlaylist: 'Välj spellista',
           selectedFile: null,
           loading: false,
         });
+      } catch (error) {
+        console.log('ERROR: ', error);
+        setState({ ...state, loading: false });
       }
     }
   };

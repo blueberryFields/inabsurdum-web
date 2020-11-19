@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import useObjectURL from 'use-object-url';
 
 import { setPlaylists } from '../../redux/player/player.actions';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
@@ -14,10 +13,6 @@ const TrackOptions = ({ hide, track }) => {
   const dispatch = useDispatch();
 
   const user = useSelector(selectCurrentUser);
-
-  // const { objectURL } = useObjectURL(
-  //   'http://localhost:8080/jambox/track/load/' + track.checksum
-  // );
 
   const removeTrack = async () => {
     try {
