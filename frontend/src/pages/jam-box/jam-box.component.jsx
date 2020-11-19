@@ -25,7 +25,7 @@ const JamBoxPage = () => {
         setLoading(true);
         const response = await axios.request({
           method: 'get',
-          url: 'http://localhost:8080/jambox/playlist/' + user.id,
+          url: 'api/playlist/' + user.id,
         });
         dispatch(setPlaylists(response.data));
         setLoading(false);

@@ -18,7 +18,7 @@ const PlaylistOptions = ({ hide, playlist }) => {
       const response = await axios.request({
         method: 'delete',
         url:
-          'http://localhost:8080/jambox/playlist/' +
+          'api/playlist/' +
           playlist.id +
           '?userid=' +
           user.id,

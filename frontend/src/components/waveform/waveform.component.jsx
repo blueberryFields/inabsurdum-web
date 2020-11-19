@@ -80,7 +80,7 @@ const Waveform = ({ selectedTrack }) => {
     if (checksum && peaks) {
       setShowSpinner(true);
       wavesurfer.current.load(
-        'http://localhost:8080/jambox/track/load/' + checksum,
+        'api/track/load/' + checksum,
         peaks.data
       );
     }

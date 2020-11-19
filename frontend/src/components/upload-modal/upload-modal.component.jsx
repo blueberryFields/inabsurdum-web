@@ -39,7 +39,7 @@ const UploadModal = ({ hide }) => {
       try {
         const response = await axios.request({
           method: 'post',
-          url: 'http://localhost:8080/jambox/track',
+          url: 'api/track',
           data: bodyFormData,
         });
 

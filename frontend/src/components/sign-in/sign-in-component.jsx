@@ -30,7 +30,7 @@ const SignIn = () => {
       try {
         const response = await axios({
           method: 'post',
-          url: 'http://localhost:8080/jambox/user/login',
+          url: 'api/user/login',
           data: {
             username: state.username,
             password: state.password,

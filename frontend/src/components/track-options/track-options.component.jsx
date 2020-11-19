@@ -19,7 +19,7 @@ const TrackOptions = ({ hide, track }) => {
       const response = await axios.request({
         method: 'delete',
         url:
-          'http://localhost:8080/jambox/track/' +
+          'api/track/' +
           track.id +
           '?userid=' +
           user.id,
@@ -41,7 +41,7 @@ const TrackOptions = ({ hide, track }) => {
           Ta bort spår
         </DropDownMenuItem>
         <DropDownMenuItem action={hide} hide={hide}>
-          <a href={'http://localhost:8080/jambox/track/download/' + track.checksum} target="_blank" rel="noopener noreferrer" download={track.title}>
+          <a href={'api/track/download/' + track.checksum} target="_blank" rel="noopener noreferrer" download={track.title}>
             Ladda ner
           </a>
         </DropDownMenuItem>
