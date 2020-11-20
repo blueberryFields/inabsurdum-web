@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Entry points
         http.authorizeRequests()//
                 .antMatchers("/user/login").permitAll()
-                .antMatchers("/user/create").permitAll()
+                .antMatchers("/user/create").hasRole("ADMIN")
                 .antMatchers("/playlist").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/track/").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/track/load/*").permitAll() //.hasAnyRole("USER", "ADMIN")
