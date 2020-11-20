@@ -38,4 +38,3 @@ RUN chmod +x wait-for-mysql.sh
 RUN mkdir ./temp-files
 ENTRYPOINT ["./wait-for-mysql.sh", "mysql", "java", "-jar", "jambox-0.0.1-SNAPSHOT.jar"]
 
-
