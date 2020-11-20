@@ -2,11 +2,14 @@
   position: relative;
   box-sizing: border-box;
   min-width: 100%;
-  
+
   .title {
     position: absolute;
     bottom: 5px;
     left: 5px;
-     z-index: 10;
+    z-index: 10;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 }
