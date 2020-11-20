@@ -39,3 +39,7 @@ database/
 ### Audiofiles ### 
 tracks/
 temp-files
+
+### SSL-stuff ###
+ssl/
+ssl/*

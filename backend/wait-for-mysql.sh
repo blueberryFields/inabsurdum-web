@@ -13,7 +13,7 @@ shift
 cmd="$@"
 
 # check for a connection to the database server
-check=$(curl -s --fail $host:3306 --output - | tr -d '\0')
+check=$(curl -s --http0.9 --fail $host:3306 --output - | tr -d '\0')
 
 while [ -z "$check" ]; do
     # wait a moment
@@ -21,7 +21,7 @@ while [ -z "$check" ]; do
     sleep 1s
 
     # check again
-    check=$(curl -s --fail $host:3306 --output - | tr -d '\0')
+    check=$(curl -s --http0.9 --fail $host:3306 --output - | tr -d '\0')
 done
 
 #If running, start container
