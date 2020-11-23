@@ -36,7 +36,6 @@ const SignIn = () => {
             password: state.password,
           },
         });
-        console.log(response);
         dispatch(setCurrentUser(response.data));
       } catch (error) {
         setState({
