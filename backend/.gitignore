@@ -40,6 +40,9 @@ database/
 tracks/
 temp-files
 
+### NGINX - need to have different files for production and development ###
+./nginx.conf
+
 ### SSL-stuff ###
 ssl/
 ssl/*
