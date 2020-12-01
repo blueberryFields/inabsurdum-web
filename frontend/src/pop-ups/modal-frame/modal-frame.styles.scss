@@ -15,6 +15,17 @@
     // display: flex;
 
     .modal-body {
+      .modal-header {
+        text-transform: uppercase;
+        width: 50%;
+        margin: auto auto 15px auto;
+        padding: 5px 15px;
+        letter-spacing: 0.75px;
+        font-weight: 200;
+        border-bottom: 1px solid grey;
+        text-align: center;
+      }
+
       box-sizing: border-box;
       position: relative;
       background: white;

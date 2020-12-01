@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
@@ -28,7 +28,11 @@ const UploadModal = ({ hide }) => {
   });
 
   const uploadTrack = async () => {
-    if (state.selectedFile && state.title && state.selectedPlaylist !== 'Välj spellista') {
+    if (
+      state.selectedFile &&
+      state.title &&
+      state.selectedPlaylist !== 'Välj spellista'
+    ) {
       setState({ ...state, loading: true });
 
       const bodyFormData = new FormData();
@@ -94,7 +98,6 @@ const UploadModal = ({ hide }) => {
   return (
     <form onSubmit={handleSubmit} className="upload-modal">
       {state.loading && <LoadingSpinner absolutePosition />}
-      <h2 className="title">LADDA UPP</h2>
       <FileUploader selectedFile={state.selectedFile} selectFile={selectFile} />
       <ModalFormInput
         name="title"

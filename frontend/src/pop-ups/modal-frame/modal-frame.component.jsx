@@ -4,8 +4,7 @@ import useOnclickOutside from 'react-cool-onclickoutside';
 
 import './modal-frame.styles.scss';
 
-const ModalFrame = ({ children, hide }) => {
-  
+const ModalFrame = ({ children, hide, header }) => {
   const ref = useOnclickOutside(() => {
     hide();
   });
@@ -13,7 +12,10 @@ const ModalFrame = ({ children, hide }) => {
   return ReactDOM.createPortal(
     <div className="modal">
       <div className="overlay">
-        <div ref={ref} className="modal-body">{children}</div>
+        <div ref={ref} className="modal-body">
+          <h2 className="modal-header">{header}</h2>
+          {children}
+        </div>
       </div>
     </div>,
     document.getElementById('modal-root')

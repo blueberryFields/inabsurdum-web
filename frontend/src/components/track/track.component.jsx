@@ -10,11 +10,14 @@ import {
   faEllipsisH,
 } from '@fortawesome/free-solid-svg-icons';
 
-import './track.styles.scss';
 import { selectIsTrackSelected } from '../../redux/player/player.selectors';
 import { selectTrack, togglePlaying } from '../../redux/player/player.actions';
 import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component';
-import TrackOptions from '../track-options/track-options.component';
+// import TrackOptions from '../track-options/track-options.component';
+import ModalFrame from '../../pop-ups/modal-frame/modal-frame.component';
+import TrackOptionsModal from '../track-options-modal/track-options-modal';
+
+import './track.styles.scss';
 
 const Track = ({ track }) => {
   const { title, duration, uploadedAt } = track;
@@ -69,7 +72,11 @@ const Track = ({ track }) => {
               icon={faEllipsisH}
             />
           )}
-          content={(hide) => <TrackOptions hide={hide} track={track} />}
+          content={(hide) => (
+            <ModalFrame hide={hide} header={'Redigera spår'}>
+              <TrackOptionsModal hide={hide} track={track} />
+            </ModalFrame>
+          )}
         />
       </td>
     </tr>

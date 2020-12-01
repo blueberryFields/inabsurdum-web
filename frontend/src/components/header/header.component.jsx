@@ -24,7 +24,7 @@ const Header = () => {
               <CustomButton onClick={show}>Ladda upp</CustomButton>
             )}
             content={(hide) => (
-              <ModalFrame hide={hide}>
+              <ModalFrame hide={hide} header={'Ladda upp'}>
                 <UploadModal hide={hide} />
               </ModalFrame>
             )}
