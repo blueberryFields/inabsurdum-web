@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface TrackService {
 
+    TrackDTO find(long id) throws TrackNotFoundException;
+
     TrackDTO upload(String title, long playlistId, MultipartFile file) throws PlaylistNotFoundException, NoSuchAlgorithmException, IOException, TrackDecodingException, PeakGenerationException, InterruptedException, PeakNormalizationException;
 
     List<TrackDTO> findAll();

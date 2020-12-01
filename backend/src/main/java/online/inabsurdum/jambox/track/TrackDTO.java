@@ -1,49 +1,44 @@
 package online.inabsurdum.jambox.track;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Date;
+import java.util.Map;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import online.inabsurdum.jambox.playlist.Playlist;
-import org.json.JSONObject;
-
-import java.util.Date;
-import java.util.Map;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public
-class TrackDTO {
+public class TrackDTO {
 
-    private Long id;
+  private Long id;
 
-    String title;
+  String title;
 
-    String duration;
+  String duration;
 
-    Date uploadedAt;
+  Date uploadedAt;
 
-    String checksum;
+  String checksum;
 
-    String originalFilename;
+  String originalFilename;
 
-    Map peaks;
+  Map peaks;
 
-    public TrackDTO(Track track) {
-        this.id = track.getId();
-        this.title = track.getTitle();
-        this.duration = track.getDuration();
-        this.uploadedAt = track.getUploadedAt();
-        this.checksum = track.getChecksum();
-        this.originalFilename = track.getOriginalFilename();
-        // Convert string to map so it can be correctly serialized to JSON by Jackson
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            this.peaks = objectMapper.readValue(track.getPeaks(), Map.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+  public TrackDTO(Track track) {
+    this.id = track.getId();
+    this.title = track.getTitle();
+    this.duration = track.getDuration();
+    this.uploadedAt = track.getUploadedAt();
+    this.checksum = track.getChecksum();
+    this.originalFilename = track.getOriginalFilename();
+    // Convert string to map so it can be correctly serialized to JSON by Jackson
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+      this.peaks = objectMapper.readValue(track.getPeaks(), Map.class);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 }

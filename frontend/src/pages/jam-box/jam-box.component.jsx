@@ -25,7 +25,7 @@ const JamBoxPage = () => {
         setLoading(true);
         const response = await axios.request({
           method: 'get',
-          url: 'api/playlist/' + user.id,
+          url: 'api/playlist/reduced/' + user.id,
         });
         dispatch(setPlaylists(response.data));
         setLoading(false);
