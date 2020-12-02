@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import online.inabsurdum.jambox.playlist.PlaylistDTO;
 import online.inabsurdum.jambox.playlist.PlaylistNotFoundException;
 import online.inabsurdum.jambox.playlist.PlaylistService;
+import online.inabsurdum.jambox.playlist.ReducedPlaylistDTO;
+
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -97,14 +99,14 @@ public class TrackController {
     }
   }
 
-  @GetMapping("/download/{checksum}")
+  @GetMapping("/download/{id}")
   public void download(
-    @PathVariable String checksum,
+    @PathVariable long id,
     HttpServletRequest request,
     HttpServletResponse response
   ) {
     try {
-      File file = trackService.loadFileWithOriginalFilename(checksum);
+      File file = trackService.loadFileWithOriginalFilename(id);
 
       String contentType = null;
       contentType =
@@ -130,7 +132,7 @@ public class TrackController {
       out.close();
       in.close();
 
-      trackService.deleteDownloadedTempFile(checksum);
+      trackService.deleteDownloadedTempFile(id);
     } catch (Exception e) {
       e.printStackTrace();
       throw new ResponseStatusException(
@@ -141,7 +143,7 @@ public class TrackController {
   }
 
   @PostMapping
-  public ResponseEntity<List<PlaylistDTO>> uploadTrack(
+  public ResponseEntity<List<ReducedPlaylistDTO>> uploadTrack(
     @RequestParam("file") MultipartFile file,
     @RequestParam(name = "playlistid") long playlistId,
     @RequestParam(name = "title") String title,
@@ -149,7 +151,7 @@ public class TrackController {
   ) {
     try {
       trackService.upload(title, playlistId, file);
-      List<PlaylistDTO> result = playlistService.findByUserId(userId);
+      List<ReducedPlaylistDTO> result = playlistService.findReducedByUserId(userId);
       return new ResponseEntity<>(result, HttpStatus.CREATED);
     } catch (PlaylistNotFoundException e) {
       e.printStackTrace();
@@ -162,14 +164,17 @@ public class TrackController {
 
   @PutMapping("/{id}")
   @CrossOrigin
-  public ResponseEntity<List<PlaylistDTO>> rename(
+  public ResponseEntity<List<ReducedPlaylistDTO>> update(
     @PathVariable long id,
-    @RequestParam(name = "newtitle") String newTitle,
+    @RequestParam(name = "currentPlaylistid") long currentPlaylistId,
+    @RequestParam(name = "newPlaylistid") long newPlaylistId,
+    @RequestParam(name = "title") String title,
     @RequestParam(name = "userid") long userId
   ) {
     try {
-      trackService.rename(id, newTitle);
-      List<PlaylistDTO> result = playlistService.findByUserId(userId);
+      trackService.rename(id, title);
+      trackService.changePlaylist(id, currentPlaylistId, newPlaylistId);
+      List<ReducedPlaylistDTO> result = playlistService.findReducedByUserId(userId);
       return new ResponseEntity<>(result, HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
@@ -179,13 +184,13 @@ public class TrackController {
 
   @DeleteMapping("/{id}")
   @CrossOrigin
-  public ResponseEntity<List<PlaylistDTO>> delete(
+  public ResponseEntity<List<ReducedPlaylistDTO>> delete(
     @PathVariable long id,
     @RequestParam(name = "userid") long userId
   ) {
     try {
       trackService.delete(id);
-      List<PlaylistDTO> result = playlistService.findByUserId(userId);
+      List<ReducedPlaylistDTO> result = playlistService.findReducedByUserId(userId);
       return new ResponseEntity<>(result, HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();

@@ -4,7 +4,6 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.json.JSONObject;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,10 +17,10 @@ public class Track {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    Long id;
 
     @NotNull
-    private String title;
+    String title;
 
     @NotNull
     String duration;

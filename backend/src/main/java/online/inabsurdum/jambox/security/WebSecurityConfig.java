@@ -41,14 +41,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/create").hasRole("ADMIN")
                 .antMatchers("/playlist").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/track/").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/track/download/*").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/track/load/*").permitAll() //.hasAnyRole("USER", "ADMIN")
-                .antMatchers("/track/download/*").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
-
-        // If a user try to access a resource without having enough permissions
-        // TODO: is this doing anything?
-        // http.exceptionHandling().accessDeniedPage("/login");
 
         // Apply JWT
         http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));

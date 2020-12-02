@@ -226,10 +226,39 @@ public class TrackServiceImpl implements TrackService {
   }
 
   @Override
-  public TrackDTO rename(long id, java.lang.String newTitle) {
+  public void rename(long id, String title) {
     Track track = trackRepository.findById(id);
-    track.setTitle(newTitle);
-    return new TrackDTO(trackRepository.save(track));
+    if (title != track.getTitle()) {
+      track.setTitle(title);
+      trackRepository.save(track);
+    }
+  }
+
+  @Override
+  public void changePlaylist(
+    long id,
+    long currentPlaylistId,
+    long newPlaylistId
+  )
+    throws PlaylistNotFoundException {
+    Track track = trackRepository.findById(id);
+
+    //Remove track from current playlist
+    Playlist currentPlaylist = playlistRepository.findById(currentPlaylistId);
+    if (currentPlaylist == null) throw new PlaylistNotFoundException();
+    List<Track> tracks = currentPlaylist.getTracks();
+    tracks.removeIf(obj -> obj.id == id);
+    currentPlaylist.setTracks(tracks);
+
+    playlistRepository.save(currentPlaylist);
+
+    //Add track to new playlist
+    Playlist newPlaylist = playlistRepository.findById(newPlaylistId);
+    if (newPlaylist == null) throw new PlaylistNotFoundException();
+    tracks = newPlaylist.getTracks();
+    tracks.add(track);
+    newPlaylist.setTracks(tracks);
+    playlistRepository.save(newPlaylist);
   }
 
   @Override
@@ -253,17 +282,20 @@ public class TrackServiceImpl implements TrackService {
   }
 
   @Override
-  public File loadFileWithOriginalFilename(String checksum) {
-    Track track = trackRepository.findFirstByChecksum(checksum);
+  public File loadFileWithOriginalFilename(long id) {
+    Track track = trackRepository.findById(id);
+    System.out.println(
+      track.getChecksum() + ", " + track.getOriginalFilename()
+    );
     return storageService.loadFileWithOriginalFilename(
-      checksum,
+      track.getChecksum(),
       track.getOriginalFilename()
     );
   }
 
   @Override
-  public void deleteDownloadedTempFile(String checksum) {
-    Track track = trackRepository.findFirstByChecksum(checksum);
+  public void deleteDownloadedTempFile(long id) {
+    Track track = trackRepository.findById(id);
     storageService.deleteByFilename(
       track.getOriginalFilename(),
       UploadLocation.TEMPFILE
@@ -284,7 +316,7 @@ public class TrackServiceImpl implements TrackService {
     if (track != null) {
       return new TrackDTO(track);
     } else {
-        throw new TrackNotFoundException("Track with id " + id +" not found.");
+      throw new TrackNotFoundException("Track with id " + id + " not found.");
     }
   }
 }

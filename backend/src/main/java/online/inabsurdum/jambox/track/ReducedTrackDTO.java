@@ -18,10 +18,13 @@ public class ReducedTrackDTO {
 
   Date uploadedAt;
 
+  String originalFilename;
+
   public ReducedTrackDTO(Track track) {
     this.id = track.getId();
     this.title = track.getTitle();
     this.duration = track.getDuration();
     this.uploadedAt = track.getUploadedAt();
+    this.originalFilename = track.getOriginalFilename();
   }
 }

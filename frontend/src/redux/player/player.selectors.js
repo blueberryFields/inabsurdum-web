@@ -8,6 +8,15 @@ export const selectPlaylists = createSelector(
   (player) => player.playlists
 );
 
+export const selectPlaylistContainingTrack = memoize((trackId) =>
+  createSelector([selectPlayer], (player) => {
+    const playlist = player.playlists.filter((playlist) =>
+      playlist.tracks.some((track) => track.id === trackId)
+    );
+    return playlist[0];
+  })
+);
+
 export const selectSelectedTrack = createSelector(
   [selectPlayer],
   (player) => player.selectedTrack
@@ -24,4 +33,3 @@ export const selectShowControls = createSelector(
   [selectPlayer],
   (player) => player.showControls
 );
-

@@ -1,4 +1,8 @@
 .track-options-modal {
+  .first {
+    margin-bottom: 15px;
+  }
+
   .buttons {
     display: flex;
     flex-direction: row;
@@ -8,5 +12,4 @@
       margin-right: 15px;
     }
   }
-
 }

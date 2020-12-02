@@ -1,29 +1,30 @@
 package online.inabsurdum.jambox.track;
 
-import online.inabsurdum.jambox.playlist.PlaylistNotFoundException;
-import org.springframework.core.io.Resource;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import online.inabsurdum.jambox.playlist.PlaylistNotFoundException;
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface TrackService {
+  TrackDTO find(long id) throws TrackNotFoundException;
 
-    TrackDTO find(long id) throws TrackNotFoundException;
+  TrackDTO upload(String title, long playlistId, MultipartFile file)
+    throws PlaylistNotFoundException, NoSuchAlgorithmException, IOException, TrackDecodingException, PeakGenerationException, InterruptedException, PeakNormalizationException;
 
-    TrackDTO upload(String title, long playlistId, MultipartFile file) throws PlaylistNotFoundException, NoSuchAlgorithmException, IOException, TrackDecodingException, PeakGenerationException, InterruptedException, PeakNormalizationException;
+  List<TrackDTO> findAll();
 
-    List<TrackDTO> findAll();
+  void rename(long id, String newTitle);
 
-    TrackDTO rename(long id, java.lang.String newTitle);
+  void changePlaylist(long id, long currentPlaylistId, long newPlaylistId) throws PlaylistNotFoundException;
 
-    void delete(long id);
+  void delete(long id);
 
-    Resource loadFileAsResource(String checksum);
+  Resource loadFileAsResource(String checksum);
 
-    File loadFileWithOriginalFilename(String checksum);
+  File loadFileWithOriginalFilename(long id);
 
-    void deleteDownloadedTempFile(String checksum);
+  void deleteDownloadedTempFile(long id);
 }
