@@ -31,7 +31,7 @@ const UploadModal = ({ hide }) => {
     if (
       state.selectedFile &&
       state.title &&
-      state.selectedPlaylist !== 'Välj spellista'
+      state.selectedPlaylist
     ) {
       setState({ ...state, loading: true });
 

@@ -35,29 +35,31 @@ const TrackOptionsModal = ({
   });
 
   const updateTrack = async () => {
-    setState({ ...state, loading: true });
+    if (state.title && state.selectedPlaylist) {
+      setState({ ...state, loading: true });
 
-    const bodyFormData = new FormData();
-    bodyFormData.set('title', state.title);
-    bodyFormData.set('currentPlaylistid', currentPlaylist.id);
-    bodyFormData.set('newPlaylistid', state.selectedPlaylist);
-    bodyFormData.set('userid', user.id);
-    try {
-      const response = await axios.request({
-        method: 'put',
-        url: 'api/track/' + id,
-        data: bodyFormData,
-      });
+      const bodyFormData = new FormData();
+      bodyFormData.set('title', state.title);
+      bodyFormData.set('currentPlaylistid', currentPlaylist.id);
+      bodyFormData.set('newPlaylistid', state.selectedPlaylist);
+      bodyFormData.set('userid', user.id);
+      try {
+        const response = await axios.request({
+          method: 'put',
+          url: 'api/track/' + id,
+          data: bodyFormData,
+        });
 
-      dispatch(setPlaylists(response.data));
-      setState({
-        ...state,
-        loading: false,
-      });
-      hide();
-    } catch (error) {
-      console.log('ERROR: ', error);
-      setState({ ...state, loading: false });
+        dispatch(setPlaylists(response.data));
+        setState({
+          ...state,
+          loading: false,
+        });
+        hide();
+      } catch (error) {
+        console.log('ERROR: ', error);
+        setState({ ...state, loading: false });
+      }
     }
   };
 
