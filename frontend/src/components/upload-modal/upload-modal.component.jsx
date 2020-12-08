@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
@@ -7,6 +7,7 @@ import FileUploader from '../file-uploader/file-uploader.component';
 import SelectOrCreatePlaylist from '../select-or-create-playlist/select-or-create-playlist';
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import LoadingSpinner from '../loading-spinner/loading-spinner.component';
+import LoadingProgBar from '../loading-prog-bar/loading-prog-bar.component';
 import { selectPlaylists } from '../../redux/player/player.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { setPlaylists } from '../../redux/player/player.actions';
@@ -22,69 +23,11 @@ const UploadModal = ({ hide }) => {
     title: '',
     selectedPlaylist: 'Välj spellista',
     selectedFile: null,
-    loading: false,
     message: '',
+    showLoadingSpinner: false,
+    showProgbar: false,
+    uploadProgress: 0,
   });
-
-  const uploadTrack = async () => {
-    if (validateSelectedFile()) {
-      if (state.title && state.selectedPlaylist !== 'Välj spellista') {
-        setState({ ...state, loading: true });
-
-        const bodyFormData = new FormData();
-        bodyFormData.set('title', state.title);
-        bodyFormData.set('playlistid', state.selectedPlaylist);
-        bodyFormData.set('userid', user.id);
-        bodyFormData.append('file', state.selectedFile);
-        try {
-          const response = await axios.request({
-            method: 'post',
-            url: 'api/track',
-            data: bodyFormData,
-          });
-
-          dispatch(setPlaylists(response.data));
-          setState({
-            ...state,
-            title: '',
-            selectedPlaylist: 'Välj spellista',
-            selectedFile: null,
-            loading: false,
-            message: '',
-          });
-        } catch (error) {
-          console.log('ERROR: ', error);
-          setState({
-            ...state,
-            loading: false,
-            message: 'Någonting gick fel.',
-          });
-        }
-      } else {
-        setState({
-          ...state,
-          message: 'Namn eller spellista saknas.',
-        });
-      }
-    } else {
-      setState({
-        ...state,
-        message: 'Fil saknas eller är av olämpligt format.',
-      });
-    }
-  };
-
-  const validateSelectedFile = () => {
-    if (state.selectedFile) {
-      const fileType = state.selectedFile.type;
-      return (
-        fileType === 'audio/mpeg' ||
-        fileType === 'audio/x-wav' ||
-        fileType === 'audio/wave' ||
-        fileType === 'audio/aiff'
-      );
-    } else return false;
-  };
 
   const selectFile = (e) => {
     setState({
@@ -102,12 +45,99 @@ const UploadModal = ({ hide }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    uploadTrack();
+    validateAndSubmitForm();
   };
+
+  const validateAndSubmitForm = () => {
+    if (validateSelectedFile()) {
+      if (state.title && state.selectedPlaylist !== 'Välj spellista') {
+        uploadTrack();
+      } else {
+        setState((prevState) => ({
+          ...prevState,
+          message: 'Namn eller spellista saknas.',
+        }));
+      }
+    } else {
+      setState((prevState) => ({
+        ...prevState,
+        message: 'Fil saknas eller är av olämpligt format.',
+      }));
+    }
+  };
+
+  const validateSelectedFile = () => {
+    if (state.selectedFile) {
+      const fileType = state.selectedFile.type;
+      return (
+        fileType === 'audio/mpeg' ||
+        fileType === 'audio/x-wav' ||
+        fileType === 'audio/wave' ||
+        fileType === 'audio/aiff'
+      );
+    } else return false;
+  };
+
+  const uploadTrack = async () => {
+    setState((prevState) => ({
+      ...prevState,
+      showProgbar: true,
+      message: '',
+    }));
+
+    const bodyFormData = new FormData();
+    bodyFormData.set('title', state.title);
+    bodyFormData.set('playlistid', state.selectedPlaylist);
+    bodyFormData.set('userid', user.id);
+    bodyFormData.append('file', state.selectedFile);
+
+    try {
+      const response = await axios.request({
+        method: 'post',
+        url: 'api/track',
+        onUploadProgress: (progressEvent) => {
+          let percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          setState((prevState) => ({
+            ...prevState,
+            uploadProgress: percentCompleted,
+          }));
+        },
+        data: bodyFormData,
+      });
+
+      dispatch(setPlaylists(response.data));
+      setState((prevState) => ({
+        ...prevState,
+        title: '',
+        selectedPlaylist: 'Välj spellista',
+        selectedFile: null,
+        showLoadingSpinner: false,
+        message: 'Filuppladdning lyckades.',
+      }));
+    } catch (error) {
+      setState((prevState) => ({
+        ...prevState,
+        showLoadingSpinner: false,
+        message: 'Någonting gick fel.',
+      }));
+    }
+  };
+
+  useEffect(() => {
+    if (state.uploadProgress === 100)
+      setState((prevState) => ({
+        ...prevState,
+        showLoadingSpinner: true,
+        showProgbar: false,
+      }));
+  }, [state.uploadProgress]);
 
   return (
     <form onSubmit={handleSubmit} className="upload-modal">
-      {state.loading && <LoadingSpinner absolutePosition />}
+      {state.showProgbar && <LoadingProgBar progress={state.uploadProgress} />}
+      {state.showLoadingSpinner && <LoadingSpinner absolutePosition />}
       <FileUploader selectedFile={state.selectedFile} selectFile={selectFile} />
       <ModalFormInput
         name="title"
