@@ -32,6 +32,7 @@ const TrackOptionsModal = ({
     selectedPlaylist: currentPlaylist.id,
     showCreatePlaylist: false,
     loading: false,
+    message: '',
   });
 
   const updateTrack = async () => {
@@ -54,12 +55,22 @@ const TrackOptionsModal = ({
         setState({
           ...state,
           loading: false,
+          message: '',
         });
         hide();
       } catch (error) {
         console.log('ERROR: ', error);
-        setState({ ...state, loading: false });
+        setState({
+          ...state,
+          loading: false,
+          message: 'Någonting gick fel.',
+        });
       }
+    } else {
+      setState({
+        ...state,
+        message: 'Någonting saknas.',
+      });
     }
   };
 
@@ -148,6 +159,7 @@ const TrackOptionsModal = ({
           Stäng
         </CustomButton>
       </div>
+      <div className="message">{state.message}</div>
     </form>
   );
 };

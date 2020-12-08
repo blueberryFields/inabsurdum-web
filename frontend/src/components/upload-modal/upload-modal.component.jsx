@@ -25,13 +25,14 @@ const UploadModal = ({ hide }) => {
     selectedFile: null,
     showCreatePlaylist: false,
     loading: false,
+    message: '',
   });
 
   const uploadTrack = async () => {
     if (
       state.selectedFile &&
       state.title &&
-      state.selectedPlaylist
+      state.selectedPlaylist !== 'Välj spellista'
     ) {
       setState({ ...state, loading: true });
 
@@ -54,11 +55,21 @@ const UploadModal = ({ hide }) => {
           selectedPlaylist: 'Välj spellista',
           selectedFile: null,
           loading: false,
+          message: '',
         });
       } catch (error) {
         console.log('ERROR: ', error);
-        setState({ ...state, loading: false });
+        setState({
+          ...state,
+          loading: false,
+          message: 'Någonting gick fel.',
+        });
       }
+    } else {
+      setState({
+        ...state,
+        message: 'Någonting saknas.',
+      });
     }
   };
 
@@ -125,6 +136,7 @@ const UploadModal = ({ hide }) => {
           Stäng
         </CustomButton>
       </div>
+      <div className="message">{state.message}</div>
     </form>
   );
 };
