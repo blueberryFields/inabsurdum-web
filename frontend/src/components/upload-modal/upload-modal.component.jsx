@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
@@ -28,47 +28,66 @@ const UploadModal = ({ hide }) => {
     message: '',
   });
 
+  useEffect(() => {
+    if (state.selectedFile) console.log(state.selectedFile.type);
+  }, [state.selectedFile]);
+
+  const validateSelectedFile = () => {
+    if (state.selectedFile) {
+      const fileType = state.selectedFile.type;
+      return (
+        fileType === 'audio/mpeg' ||
+        fileType === 'audio/x-wav' ||
+        fileType === 'audio/wave' ||
+        fileType === 'audio/aiff'
+      );
+    } else return false;
+  };
+
   const uploadTrack = async () => {
-    if (
-      state.selectedFile &&
-      state.title &&
-      state.selectedPlaylist !== 'Välj spellista'
-    ) {
-      setState({ ...state, loading: true });
+    if (validateSelectedFile()) {
+      if (state.title && state.selectedPlaylist !== 'Välj spellista') {
+        setState({ ...state, loading: true });
 
-      const bodyFormData = new FormData();
-      bodyFormData.set('title', state.title);
-      bodyFormData.set('playlistid', state.selectedPlaylist);
-      bodyFormData.set('userid', user.id);
-      bodyFormData.append('file', state.selectedFile);
-      try {
-        const response = await axios.request({
-          method: 'post',
-          url: 'api/track',
-          data: bodyFormData,
-        });
+        const bodyFormData = new FormData();
+        bodyFormData.set('title', state.title);
+        bodyFormData.set('playlistid', state.selectedPlaylist);
+        bodyFormData.set('userid', user.id);
+        bodyFormData.append('file', state.selectedFile);
+        try {
+          const response = await axios.request({
+            method: 'post',
+            url: 'api/track',
+            data: bodyFormData,
+          });
 
-        dispatch(setPlaylists(response.data));
+          dispatch(setPlaylists(response.data));
+          setState({
+            ...state,
+            title: '',
+            selectedPlaylist: 'Välj spellista',
+            selectedFile: null,
+            loading: false,
+            message: '',
+          });
+        } catch (error) {
+          console.log('ERROR: ', error);
+          setState({
+            ...state,
+            loading: false,
+            message: 'Någonting gick fel.',
+          });
+        }
+      } else {
         setState({
           ...state,
-          title: '',
-          selectedPlaylist: 'Välj spellista',
-          selectedFile: null,
-          loading: false,
-          message: '',
-        });
-      } catch (error) {
-        console.log('ERROR: ', error);
-        setState({
-          ...state,
-          loading: false,
-          message: 'Någonting gick fel.',
+          message: 'Namn eller spellista saknas.',
         });
       }
     } else {
       setState({
         ...state,
-        message: 'Någonting saknas.',
+        message: 'Fil saknas eller är av olämpligt format.',
       });
     }
   };
