@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import CustomButton from '../custom-button/custom-button.component';
 import FileUploader from '../file-uploader/file-uploader.component';
-import PlaylistSelect from '../playlist-select/playlist-select.component';
-import CreatePlaylist from '../create-playlist/create-playlist.component';
+import SelectOrCreatePlaylist from '../select-or-create-playlist/select-or-create-playlist';
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import { selectPlaylists } from '../../redux/player/player.selectors';
@@ -23,26 +22,9 @@ const UploadModal = ({ hide }) => {
     title: '',
     selectedPlaylist: 'Välj spellista',
     selectedFile: null,
-    showCreatePlaylist: false,
     loading: false,
     message: '',
   });
-
-  useEffect(() => {
-    if (state.selectedFile) console.log(state.selectedFile.type);
-  }, [state.selectedFile]);
-
-  const validateSelectedFile = () => {
-    if (state.selectedFile) {
-      const fileType = state.selectedFile.type;
-      return (
-        fileType === 'audio/mpeg' ||
-        fileType === 'audio/x-wav' ||
-        fileType === 'audio/wave' ||
-        fileType === 'audio/aiff'
-      );
-    } else return false;
-  };
 
   const uploadTrack = async () => {
     if (validateSelectedFile()) {
@@ -92,25 +74,23 @@ const UploadModal = ({ hide }) => {
     }
   };
 
+  const validateSelectedFile = () => {
+    if (state.selectedFile) {
+      const fileType = state.selectedFile.type;
+      return (
+        fileType === 'audio/mpeg' ||
+        fileType === 'audio/x-wav' ||
+        fileType === 'audio/wave' ||
+        fileType === 'audio/aiff'
+      );
+    } else return false;
+  };
+
   const selectFile = (e) => {
     setState({
       ...state,
       selectedFile: e.target.files[0],
       title: state.title || e.target.files[0].name,
-    });
-  };
-
-  const showCreatePlaylist = () => {
-    setState({
-      ...state,
-      showCreatePlaylist: true,
-    });
-  };
-
-  const hideCreatePlaylist = () => {
-    setState({
-      ...state,
-      showCreatePlaylist: false,
     });
   };
 
@@ -137,16 +117,12 @@ const UploadModal = ({ hide }) => {
         placeholder="Namn"
         required
       />
-      {state.showCreatePlaylist ? (
-        <CreatePlaylist hide={hideCreatePlaylist} userId={user.id} />
-      ) : (
-        <PlaylistSelect
-          handleChange={handleChange}
-          playlists={playlists}
-          selectedPlaylist={state.selectedPlaylist}
-          showCreatePlaylist={showCreatePlaylist}
-        />
-      )}
+      <SelectOrCreatePlaylist
+        userId={user.id}
+        handleChange={handleChange}
+        playlists={playlists}
+        selectedPlaylist={state.selectedPlaylist}
+      />
       <div className="buttons">
         <CustomButton type="submit" inverted>
           Ladda upp
