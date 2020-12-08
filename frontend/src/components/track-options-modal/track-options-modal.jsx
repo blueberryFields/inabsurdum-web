@@ -5,8 +5,9 @@ import fileDownload from 'react-file-download';
 
 import CustomButton from '../custom-button/custom-button.component';
 import DoubletapButton from '../doubletap-button/doubletap-button';
-import PlaylistSelect from '../playlist-select/playlist-select.component';
-import CreatePlaylist from '../create-playlist/create-playlist.component';
+import SelectOrCreatePlaylist from '../select-or-create-playlist/select-or-create-playlist';
+// import PlaylistSelect from '../playlist-select/playlist-select.component';
+// import CreatePlaylist from '../create-playlist/create-playlist.component';
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import {
@@ -30,7 +31,7 @@ const TrackOptionsModal = ({
   const [state, setState] = useState({
     title,
     selectedPlaylist: currentPlaylist.id,
-    showCreatePlaylist: false,
+    // showCreatePlaylist: false,
     loading: false,
     message: '',
   });
@@ -100,19 +101,19 @@ const TrackOptionsModal = ({
     }
   };
 
-  const showCreatePlaylist = () => {
-    setState({
-      ...state,
-      showCreatePlaylist: true,
-    });
-  };
+  // const showCreatePlaylist = () => {
+  //   setState({
+  //     ...state,
+  //     showCreatePlaylist: true,
+  //   });
+  // };
 
-  const hideCreatePlaylist = () => {
-    setState({
-      ...state,
-      showCreatePlaylist: false,
-    });
-  };
+  // const hideCreatePlaylist = () => {
+  //   setState({
+  //     ...state,
+  //     showCreatePlaylist: false,
+  //   });
+  // };
 
   const handleChange = (event) => {
     const { value, name } = event.target;
@@ -135,7 +136,13 @@ const TrackOptionsModal = ({
         placeholder="Namn"
         required
       />
-      {state.showCreatePlaylist ? (
+      <SelectOrCreatePlaylist
+        userId={user.id}
+        handleChange={handleChange}
+        playlists={playlists}
+        selectedPlaylist={state.selectedPlaylist}
+      />
+      {/* {state.showCreatePlaylist ? (
         <CreatePlaylist hide={hideCreatePlaylist} userId={user.id} />
       ) : (
         <PlaylistSelect
@@ -144,7 +151,7 @@ const TrackOptionsModal = ({
           selectedPlaylist={state.selectedPlaylist}
           showCreatePlaylist={showCreatePlaylist}
         />
-      )}
+      )} */}
       <div className="buttons first">
         <CustomButton type="button" inverted onClick={downloadTrack}>
           Ladda ner
