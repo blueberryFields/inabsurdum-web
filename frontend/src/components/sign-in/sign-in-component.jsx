@@ -23,6 +23,13 @@ const SignIn = () => {
     setState({ ...state, [name]: value });
   };
 
+  const setMessage = (message) => {
+    setState({
+      ...state,
+      message,
+    });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -38,11 +45,10 @@ const SignIn = () => {
         });
         dispatch(setCurrentUser(response.data));
       } catch (error) {
-        setState({
-          ...state,
-          message: 'Fel användarnamn eller lösenord!',
-        });
-        console.log(error);
+        if (error.response.status === 500) {
+          setMessage('Fel användarnamn eller lösenord!');
+        } else 
+        setMessage('Någonting gick fel.')
       }
     } else {
       setState({
