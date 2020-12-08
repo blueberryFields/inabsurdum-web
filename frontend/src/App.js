@@ -1,28 +1,23 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
-
-import Header from './components/header/header.component';
-import JamBoxPage from './pages/jam-box/jam-box.component';
-import SignInPage from './pages/sign-in-page/sign-in-page.component';
-import { selectIsUserAuthenticated } from './redux/user/user.selectors';
-import { selectCurrentUser } from './redux/user/user.selectors';
-
-import './App.scss';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import isEmpty from 'lodash.isempty';
 
-function App() {
-  const isAuthenticated = useSelector(selectIsUserAuthenticated);
-  const user = useSelector(selectCurrentUser);
+import JamBoxPage from './pages/jam-box/jam-box.component';
+import SignInPage from './pages/sign-in-page/sign-in-page.component';
+import {
+  selectCurrentUser,
+  selectIsAuthenticated,
+} from './redux/user/user.selectors';
+import { setAuthenticated } from './redux/user/user.actions';
+import { validateJwt } from './utils/utils';
 
-  // TODO: Not sure if this is the ideal place to put this???
-  axios.interceptors.request.use((req) => {
-    if (!isEmpty(user) && isAuthenticated) {
-      req.headers.authorization = `Bearer ${user.jwt}`;
-    }
-    return req;
-  });
+import './App.scss';
+
+function App() {
+  const user = useSelector(selectCurrentUser);
+  const userIsAuthenticated = useSelector(selectIsAuthenticated);
+
+  const dispatch = useDispatch();
 
   window.mobileAndTabletCheck = function () {
     let check = false;
@@ -40,18 +35,19 @@ function App() {
     return check;
   };
 
+  // Check if user is authenticated and set redux value accordingly,
+  // but only if its not already correct
+  // useEffect(() => {
+  //   if (!isEmpty(user) && validateJwt(user.jwt)) {
+  //     if (!userIsAuthenticated) dispatch(setAuthenticated(true));
+  //   } else {
+  //     if (userIsAuthenticated) dispatch(setAuthenticated(false));
+  //   }
+  // }, []);
+
   return (
     <div className="App">
-      {isAuthenticated ? (
-        <>
-          <Header />
-          <Switch>
-            <Route path="/" component={JamBoxPage} />
-          </Switch>
-        </>
-      ) : (
-        <SignInPage />
-      )}
+      {userIsAuthenticated ? <JamBoxPage /> : <SignInPage />}
     </div>
   );
 }

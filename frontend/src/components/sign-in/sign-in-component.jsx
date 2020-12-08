@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import CustomButton from '../custom-button/custom-button.component';
 import FormInput from '../form-input/form-input.component';
-import { setCurrentUser } from '../../redux/user/user.actions';
+import { signIn } from '../../redux/user/user.actions';
 
 import './sign-in.styles.scss';
 
@@ -43,12 +43,11 @@ const SignIn = () => {
             password: state.password,
           },
         });
-        dispatch(setCurrentUser(response.data));
+        dispatch(signIn(response.data));
       } catch (error) {
         if (error.response.status === 500) {
           setMessage('Fel användarnamn eller lösenord!');
-        } else 
-        setMessage('Någonting gick fel.')
+        } else setMessage('Någonting gick fel.');
       }
     } else {
       setState({

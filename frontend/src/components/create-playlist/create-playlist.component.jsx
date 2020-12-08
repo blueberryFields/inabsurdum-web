@@ -19,18 +19,13 @@ const CreatePlaylist = ({ hide }) => {
       try {
         const response = await axios.request({
           method: 'post',
-          url:
-            'api/playlist/?title=' +
-            title +
-            '&userid=' +
-            user.id,
+          url: 'api/playlist/?title=' + title + '&userid=' + user.id,
         });
         console.log(response.data);
         dispatch(setPlaylists(response.data));
         hide();
       } catch (error) {
         console.log(error);
-        alert('Something went wrong!');
       }
     }
   };

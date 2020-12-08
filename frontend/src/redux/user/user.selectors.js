@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import { validateJwt } from './user.utils';
 
 const selectUser = (state) => state.user;
 
@@ -8,11 +7,7 @@ export const selectCurrentUser = createSelector(
   (user) => user.currentUser
 );
 
-export const selectIsUserAuthenticated = createSelector(
+export const selectIsAuthenticated = createSelector(
   [selectUser],
-  (user) => {
-    if (user.currentUser) {
-      return validateJwt(user.currentUser.jwt);
-    } else return false;
-  }
+  (user) => user.isAuthenticated
 );
