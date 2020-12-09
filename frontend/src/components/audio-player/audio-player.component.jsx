@@ -41,6 +41,17 @@ const AudioPlayer = () => {
     return ret;
   };
 
+  // This ref is needed to be able to configure waveform creation 
+  // without triggering the useEffect every time user changes scroll lock
+  const scrollLockRef = useRef(false);
+  const [scrollIsLocked, setScrollIsLocked] = useState(false);
+
+  const toggleScroll = () => {
+    scrollLockRef.current = !scrollLockRef.current;
+    setScrollIsLocked(!scrollIsLocked);
+    wavesurfer.current.toggleScroll();
+  };
+
   // Create waveform and start listen to events
   useEffect(() => {
     wavesurfer.current = WaveSurfer.create({
@@ -48,7 +59,7 @@ const AudioPlayer = () => {
       waveColor: 'white',
       progressColor: 'grey',
       cursorColor: 'lightgrey',
-      scrollParent: true,
+      scrollParent: scrollLockRef.current,
       autoCenter: true,
       backend: 'MediaElement',
       barWidth: 2,
@@ -98,15 +109,12 @@ const AudioPlayer = () => {
       playing ? wavesurfer.current.play() : wavesurfer.current.pause();
   }, [playing]);
 
-  const toggleScroll = () => {
-    wavesurfer.current.toggleScroll();
-  };
-
   return (
     <div className="audio-player">
       <TrackControls
         selectedTrack={selectedTrack}
         toggleScroll={toggleScroll}
+        scrollIsLocked={scrollIsLocked}
       />
       <div className="waveform">
         <div className="title">

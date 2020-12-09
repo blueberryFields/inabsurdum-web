@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import axios from 'axios';
@@ -22,15 +22,14 @@ import {
 
 import './track-controls.styles.scss';
 
-const TrackControls = ({ selectedTrack, toggleScroll }) => {
+const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
   const dispatch = useDispatch();
   const nextTrack = useSelector(selectNextTrack);
   const previousTrack = useSelector(selectPreviousTrack);
-  const [scrollIsLocked, setScrollIsLocked] = useState(true);
 
+  
   const toggleScrollParent = () => {
     toggleScroll();
-    setScrollIsLocked(!scrollIsLocked);
   };
 
   const handleTogglePlay = () => {
