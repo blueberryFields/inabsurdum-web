@@ -9,7 +9,7 @@ import AudioPlayer from '../../components/audio-player/audio-player.component';
 import LoadingSpinner from '../../components/loading-spinner/loading-spinner.component';
 import { selectPlaylists } from '../../redux/player/player.selectors';
 import { setPlaylists } from '../../redux/player/player.actions';
-import { setAuthenticated } from '../../redux/user/user.actions';
+import { signOut } from '../../redux/user/user.actions';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { validateJwt } from '../../utils/utils';
 
@@ -37,7 +37,7 @@ const JamBoxPage = () => {
     },
     (error) => {
       if (error.response.status === 403) {
-        dispatch(setAuthenticated(false));
+        dispatch(signOut());
       }
     }
   );

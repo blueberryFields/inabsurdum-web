@@ -6,18 +6,18 @@ import JamBoxPage from './pages/jam-box/jam-box.component';
 import SignInPage from './pages/sign-in-page/sign-in-page.component';
 import {
   selectCurrentUser,
-  selectIsAuthenticated,
+  // selectIsAuthenticated,
 } from './redux/user/user.selectors';
-import { setAuthenticated } from './redux/user/user.actions';
-import { validateJwt } from './utils/utils';
+// import { setAuthenticated } from './redux/user/user.actions';
+// import { validateJwt } from './utils/utils';
 
 import './App.scss';
 
 function App() {
   const user = useSelector(selectCurrentUser);
-  const userIsAuthenticated = useSelector(selectIsAuthenticated);
+  // const userIsAuthenticated = useSelector(selectIsAuthenticated);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   window.mobileAndTabletCheck = function () {
     let check = false;
@@ -46,9 +46,7 @@ function App() {
   // }, []);
 
   return (
-    <div className="App">
-      {userIsAuthenticated ? <JamBoxPage /> : <SignInPage />}
-    </div>
+    <div className="App">{isEmpty(user) ? <SignInPage /> : <JamBoxPage />}</div>
   );
 }
 

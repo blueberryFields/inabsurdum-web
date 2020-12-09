@@ -2,7 +2,7 @@ import { UserActionTypes } from './user.types';
 
 const INITIAL_STATE = {
   currentUser: null,
-  isAuthenticated: false,
+  // isAuthenticated: false,
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -11,19 +11,19 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentUser: action.payload,
-        isAuthenticated: true,
+        // isAuthenticated: true,
       };
     case UserActionTypes.SIGN_OUT:
       return {
         ...state,
         currentUser: null,
-        isAuthenticated: false,
+        // isAuthenticated: false,
       };
-    case UserActionTypes.SET_AUTHENTICATED:
-      return {
-        ...state,
-        isAuthenticated: action.payload,
-      };
+    // case UserActionTypes.SET_AUTHENTICATED:
+    //   return {
+    //     ...state,
+    //     isAuthenticated: action.payload,
+    //   };
     default:
       return state;
   }
