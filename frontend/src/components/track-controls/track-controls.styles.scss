@@ -1,4 +1,4 @@
-.audio-player-controls {
+.track-controls {
   z-index: 10;
   // min-width: 58px;
   position: absolute;
@@ -10,7 +10,36 @@
   box-sizing: border-box;
   width: 100%;
 
-  .control-panel {
+  .left-controls {
+    display: flex;
+    flex-direction: row;
+
+    .toggle-scroll {
+      z-index: 1;
+      margin: auto;
+      width: 1.5rem;
+      border-radius: 3px;
+      display: flex;
+      background: white;
+      box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.4),
+        0px 6px 8px 0px rgba(0, 0, 0, 0.5);
+      border: none;
+      color: black;
+      cursor: pointer;
+
+      &:hover {
+        color: grey;
+      }
+
+      .toggle-scroll-icon {
+        margin: auto;
+        font-size: 12px;
+        padding: 5px;
+      }
+    }
+  }
+
+  .playback-controls {
     grid-column: 2;
     margin: auto;
     display: flex;
@@ -87,27 +116,32 @@
     }
   }
 
-  .toggle-scroll {
-    z-index: 1;
-    margin: auto;
-    width: 1.5rem;
-    border-radius: 3px;
+  .right-controls {
     display: flex;
-    background: white;
-    box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.4),
-      0px 6px 8px 0px rgba(0, 0, 0, 0.5);
-    border: none;
-    color: black;
-    cursor: pointer;
+    flex-direction: row;
 
-    &:hover {
-      color: grey;
-    }
-
-    .toggle-scroll-icon {
+    .toggle-arrangement-view {
+      z-index: 1;
       margin: auto;
-      font-size: 12px;
-      padding: 5px;
+      // width: 1.5rem;
+      border-radius: 3px;
+      display: flex;
+      background: white;
+      box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.4),
+        0px 6px 8px 0px rgba(0, 0, 0, 0.5);
+      border: none;
+      color: black;
+      cursor: pointer;
+
+      &:hover {
+        color: grey;
+      }
+
+      .toggle-arrangement-view-icon {
+        margin: auto;
+        font-size: 12px;
+        padding: 5px;
+      }
     }
   }
 }

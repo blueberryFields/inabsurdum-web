@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import memoize from 'lodash.memoize';
+import { getNextTrack, getPreviousTrack } from './player.utils';
 
 const selectPlayer = (state) => state.player;
 
@@ -20,6 +21,14 @@ export const selectPlaylistContainingTrack = memoize((trackId) =>
 export const selectSelectedTrack = createSelector(
   [selectPlayer],
   (player) => player.selectedTrack
+);
+
+export const selectNextTrack = createSelector([selectPlayer], (player) =>
+  getNextTrack(player.playlists, player.selectedTrack)
+);
+
+export const selectPreviousTrack = createSelector([selectPlayer], (player) =>
+  getPreviousTrack(player.playlists, player.selectedTrack)
 );
 
 export const selectIsTrackSelected = memoize((track) =>

@@ -7,7 +7,7 @@ import { setPlaying } from '../../redux/player/player.actions';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { selectSelectedTrack } from '../../redux/player/player.selectors';
 
-import AudioPlayerControls from '../audio-player-controls/audio-player-controls.component';
+import TrackControls from '../track-controls/track-controls.component';
 
 import './audio-player.styles.scss';
 
@@ -104,7 +104,7 @@ const AudioPlayer = () => {
 
   return (
     <div className="audio-player">
-      <AudioPlayerControls
+      <TrackControls
         selectedTrack={selectedTrack}
         toggleScroll={toggleScroll}
       />
