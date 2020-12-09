@@ -31,6 +31,7 @@ const JamBoxPage = () => {
     return req;
   });
 
+  // If respone has errorcode 403, signout user
   axios.interceptors.response.use(
     (res) => {
       return res;
@@ -54,7 +55,6 @@ const JamBoxPage = () => {
         dispatch(setPlaylists(response.data));
         setLoading(false);
       } catch (error) {
-        console.log('ERROR: ', error);
         if (isSubscribed) setLoading(false);
       }
     })();

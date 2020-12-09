@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import fileDownload from 'react-file-download';
@@ -6,8 +6,6 @@ import fileDownload from 'react-file-download';
 import CustomButton from '../custom-button/custom-button.component';
 import DoubletapButton from '../doubletap-button/doubletap-button';
 import SelectOrCreatePlaylist from '../select-or-create-playlist/select-or-create-playlist';
-// import PlaylistSelect from '../playlist-select/playlist-select.component';
-// import CreatePlaylist from '../create-playlist/create-playlist.component';
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import {
@@ -31,7 +29,6 @@ const TrackOptionsModal = ({
   const [state, setState] = useState({
     title,
     selectedPlaylist: currentPlaylist.id,
-    // showCreatePlaylist: false,
     loading: false,
     message: '',
   });
@@ -45,6 +42,9 @@ const TrackOptionsModal = ({
       bodyFormData.set('currentPlaylistid', currentPlaylist.id);
       bodyFormData.set('newPlaylistid', state.selectedPlaylist);
       bodyFormData.set('userid', user.id);
+
+      isSubscribed.current = true;
+
       try {
         const response = await axios.request({
           method: 'put',
@@ -60,12 +60,12 @@ const TrackOptionsModal = ({
         });
         hide();
       } catch (error) {
-        console.log('ERROR: ', error);
-        setState({
-          ...state,
-          loading: false,
-          message: 'Någonting gick fel.',
-        });
+        if (isSubscribed.current === true)
+          setState({
+            ...state,
+            loading: false,
+            message: 'Någonting gick fel.',
+          });
       }
     } else {
       setState({
@@ -74,6 +74,11 @@ const TrackOptionsModal = ({
       });
     }
   };
+
+  const isSubscribed = useRef(false);
+  useEffect(() => {
+    return () => (isSubscribed.current = false);
+  });
 
   const removeTrack = async () => {
     try {
@@ -100,20 +105,6 @@ const TrackOptionsModal = ({
       console.log('ERROR: ', error);
     }
   };
-
-  // const showCreatePlaylist = () => {
-  //   setState({
-  //     ...state,
-  //     showCreatePlaylist: true,
-  //   });
-  // };
-
-  // const hideCreatePlaylist = () => {
-  //   setState({
-  //     ...state,
-  //     showCreatePlaylist: false,
-  //   });
-  // };
 
   const handleChange = (event) => {
     const { value, name } = event.target;
@@ -142,16 +133,6 @@ const TrackOptionsModal = ({
         playlists={playlists}
         selectedPlaylist={state.selectedPlaylist}
       />
-      {/* {state.showCreatePlaylist ? (
-        <CreatePlaylist hide={hideCreatePlaylist} userId={user.id} />
-      ) : (
-        <PlaylistSelect
-          handleChange={handleChange}
-          playlists={playlists}
-          selectedPlaylist={state.selectedPlaylist}
-          showCreatePlaylist={showCreatePlaylist}
-        />
-      )} */}
       <div className="buttons first">
         <CustomButton type="button" inverted onClick={downloadTrack}>
           Ladda ner

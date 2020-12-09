@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
@@ -91,6 +91,8 @@ const UploadModal = ({ hide }) => {
     bodyFormData.set('userid', user.id);
     bodyFormData.append('file', state.selectedFile);
 
+    isSubscribed.current = true;
+
     try {
       const response = await axios.request({
         method: 'post',
@@ -117,11 +119,12 @@ const UploadModal = ({ hide }) => {
         message: 'Filuppladdning lyckades.',
       }));
     } catch (error) {
-      setState((prevState) => ({
-        ...prevState,
-        showLoadingSpinner: false,
-        message: 'Någonting gick fel.',
-      }));
+      if (isSubscribed.current === true)
+        setState((prevState) => ({
+          ...prevState,
+          showLoadingSpinner: false,
+          message: 'Någonting gick fel.',
+        }));
     }
   };
 
@@ -133,6 +136,13 @@ const UploadModal = ({ hide }) => {
         showProgbar: false,
       }));
   }, [state.uploadProgress]);
+
+  // Cleanup, dont update state if this is set to false, otherwise there
+  // will be a memory leak
+  const isSubscribed = useRef(false);
+  useEffect(() => {
+    return () => (isSubscribed.current = false);
+  });
 
   return (
     <form onSubmit={handleSubmit} className="upload-modal">
