@@ -8,7 +8,6 @@ import {
   faPause,
   faStepForward,
   faStepBackward,
-  faSearch,
   faLock,
   faLockOpen,
 } from '@fortawesome/free-solid-svg-icons';

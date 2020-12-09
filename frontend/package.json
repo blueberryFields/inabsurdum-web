@@ -20,6 +20,7 @@
     "react-cool-onclickoutside": "^1.5.7",
     "react-dom": "^16.13.1",
     "react-file-download": "^0.3.5",
+    "react-keyboard-event-handler": "^1.5.4",
     "react-moment": "^1.0.0",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",

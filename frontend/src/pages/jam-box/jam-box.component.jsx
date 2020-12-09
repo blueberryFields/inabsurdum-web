@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import isEmpty from 'lodash.isempty';
+import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 import Header from '../../components/header/header.component';
 import Playlist from '../../components/playlist/playlist.component';
 import AudioPlayer from '../../components/audio-player/audio-player.component';
 import LoadingSpinner from '../../components/loading-spinner/loading-spinner.component';
 import { selectPlaylists } from '../../redux/player/player.selectors';
-import { setPlaylists } from '../../redux/player/player.actions';
+import { setPlaylists, togglePlaying } from '../../redux/player/player.actions';
 import { signOut } from '../../redux/user/user.actions';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { validateJwt } from '../../utils/utils';
@@ -64,6 +65,10 @@ const JamBoxPage = () => {
 
   return (
     <div className="jam-box">
+      <KeyboardEventHandler
+        handleKeys={['space']}
+        onKeyEvent={(key, e) => dispatch(togglePlaying())}
+      />
       <Header />
       <div className="playlist-area">
         {loading ? (

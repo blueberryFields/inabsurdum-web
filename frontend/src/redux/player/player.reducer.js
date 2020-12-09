@@ -1,5 +1,6 @@
 import PlayerActionTypes from './player.types';
 import { getNextTrack, getPreviousTrack } from './player.utils';
+import isEmpty from 'lodash.isempty';
 
 const INITIAL_STATE = {
   playlists: [],
@@ -43,10 +44,13 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case PlayerActionTypes.TOGGLE_PLAYING:
       return {
         ...state,
-        selectedTrack: {
-          ...state.selectedTrack,
-          playing: !state.selectedTrack.playing,
-        },
+        // Toggle only if there is a selected track
+        selectedTrack: isEmpty(state.selectedTrack)
+          ? {}
+          : {
+              ...state.selectedTrack,
+              playing: !state.selectedTrack.playing,
+            },
       };
     case PlayerActionTypes.SET_PLAYING:
       return {
