@@ -5,11 +5,13 @@
   top: -20px;
   // bottom: 100px;
   margin: auto;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   box-sizing: border-box;
   width: 100%;
 
   .control-panel {
+    grid-column: 2;
     margin: auto;
     display: flex;
     flex-direction: row;
@@ -61,6 +63,7 @@
     }
 
     .toggle-play {
+      grid-column: 3;
       z-index: 1;
       margin: auto;
       border-radius: 5px;
@@ -81,6 +84,30 @@
         font-size: 12px;
         padding: 15px;
       }
+    }
+  }
+
+  .toggle-scroll {
+    z-index: 1;
+    margin: auto;
+    width: 1.5rem;
+    border-radius: 3px;
+    display: flex;
+    background: white;
+    box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.4),
+      0px 6px 8px 0px rgba(0, 0, 0, 0.5);
+    border: none;
+    color: black;
+    cursor: pointer;
+
+    &:hover {
+      color: grey;
+    }
+
+    .toggle-scroll-icon {
+      margin: auto;
+      font-size: 12px;
+      padding: 5px;
     }
   }
 }

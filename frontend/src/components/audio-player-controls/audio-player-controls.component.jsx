@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { isEmpty } from 'lodash';
 
@@ -8,6 +8,9 @@ import {
   faPause,
   faStepForward,
   faStepBackward,
+  faSearch,
+  faLock,
+  faLockOpen,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   togglePlaying,
@@ -17,8 +20,14 @@ import {
 
 import './audio-player-controls.styles.scss';
 
-const AudioPlayerControls = ({ selectedTrack }) => {
+const AudioPlayerControls = ({ selectedTrack, toggleScroll }) => {
   const dispatch = useDispatch();
+  const [scrollIsLocked, setScrollIsLocked] = useState(true);
+
+  const toggleScrollParent = () => {
+    toggleScroll();
+    setScrollIsLocked(!scrollIsLocked);
+  };
 
   const handleTogglePlay = () => {
     if (!isEmpty(selectedTrack)) {
@@ -56,6 +65,12 @@ const AudioPlayerControls = ({ selectedTrack }) => {
         <div onClick={handleSelectNextTrack} className="step-forward">
           <FontAwesomeIcon className="step-forward-icon" icon={faStepForward} />
         </div>
+      </div>
+      <div className="toggle-scroll" onClick={toggleScrollParent}>
+        <FontAwesomeIcon
+          className="toggle-scroll-icon"
+          icon={scrollIsLocked ? faLock : faLockOpen}
+        />
       </div>
     </div>
   );
