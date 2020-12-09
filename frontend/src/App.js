@@ -1,23 +1,17 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import isEmpty from 'lodash.isempty';
 
 import JamBoxPage from './pages/jam-box/jam-box.component';
 import SignInPage from './pages/sign-in-page/sign-in-page.component';
 import {
   selectCurrentUser,
-  // selectIsAuthenticated,
 } from './redux/user/user.selectors';
-// import { setAuthenticated } from './redux/user/user.actions';
-// import { validateJwt } from './utils/utils';
 
 import './App.scss';
 
 function App() {
   const user = useSelector(selectCurrentUser);
-  // const userIsAuthenticated = useSelector(selectIsAuthenticated);
-
-  // const dispatch = useDispatch();
 
   window.mobileAndTabletCheck = function () {
     let check = false;
@@ -34,16 +28,6 @@ function App() {
     })(navigator.userAgent || navigator.vendor || window.opera);
     return check;
   };
-
-  // Check if user is authenticated and set redux value accordingly,
-  // but only if its not already correct
-  // useEffect(() => {
-  //   if (!isEmpty(user) && validateJwt(user.jwt)) {
-  //     if (!userIsAuthenticated) dispatch(setAuthenticated(true));
-  //   } else {
-  //     if (userIsAuthenticated) dispatch(setAuthenticated(false));
-  //   }
-  // }, []);
 
   return (
     <div className="App">{isEmpty(user) ? <SignInPage /> : <JamBoxPage />}</div>
