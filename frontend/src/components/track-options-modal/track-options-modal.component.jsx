@@ -4,8 +4,8 @@ import axios from 'axios';
 import fileDownload from 'react-file-download';
 
 import CustomButton from '../custom-button/custom-button.component';
-import DoubletapButton from '../doubletap-button/doubletap-button';
-import SelectOrCreatePlaylist from '../select-or-create-playlist/select-or-create-playlist';
+import DoubletapButton from '../doubletap-button/doubletap-button.component';
+import SelectOrCreatePlaylist from '../select-or-create-playlist/select-or-create-playlist.component';
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import {
@@ -15,7 +15,7 @@ import {
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { setPlaylists } from '../../redux/player/player.actions';
 
-import './track-options-modal.scss';
+import './track-options-modal.styles.scss';
 
 const TrackOptionsModal = ({
   track: { title, id, originalFilename },

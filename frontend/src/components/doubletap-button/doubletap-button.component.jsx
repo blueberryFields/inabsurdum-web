@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import CustomButton from '../custom-button/custom-button.component';
 
-import './doubletap-button.scss';
+import './doubletap-button.styles.scss';
 
 const DoubletapButton = ({ action, children }) => {
   const [tapped, setTapped] = useState(false);

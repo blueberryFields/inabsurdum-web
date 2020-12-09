@@ -41,7 +41,7 @@ const AudioPlayer = () => {
     return ret;
   };
 
-  window.mobileAndTabletCheck = function () {
+  window.mobileAndTabletCheck = () => {
     let check = false;
     (function (a) {
       if (

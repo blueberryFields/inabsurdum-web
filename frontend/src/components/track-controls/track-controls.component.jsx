@@ -12,7 +12,7 @@ import {
   faLock,
   faLockOpen,
   // faCubes,
-  // faChalkboardTeacher,
+  faChalkboardTeacher,
 } from '@fortawesome/free-solid-svg-icons';
 import { togglePlaying, selectTrack } from '../../redux/player/player.actions';
 import {
@@ -90,13 +90,13 @@ const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
         </div>
       </div>
       <div className="right-controls">
-        {/* <div className="toggle-arrangement-view" onClick={() => {}}>
+        <div className="toggle-arrangement-view" onClick={() => {}}>
           <FontAwesomeIcon
             className="toggle-arrangement-view-icon"
             // faChalkboardTeacher or faCubes
             icon={faChalkboardTeacher}
           />
-        </div> */}
+        </div>
       </div>
     </div>
   );

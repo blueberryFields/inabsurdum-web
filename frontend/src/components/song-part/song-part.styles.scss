@@ -1,0 +1,19 @@
+.song-part {
+  border-top: 1px solid lightgrey;
+
+  .part-header {
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    .title {
+      margin: auto auto auto 0;
+    }
+
+    .time-indication {
+      margin: auto 10px auto auto;
+    }
+  }
+}

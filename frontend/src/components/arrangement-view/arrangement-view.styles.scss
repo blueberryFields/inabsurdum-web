@@ -1,0 +1,14 @@
+.arrangement-view {
+  margin: 10px;
+  padding: 0 20px;
+
+  box-shadow: inset 0px 0px 12px 0px rgba(0, 0, 0, 0.4);
+  background: white;
+  border-radius: 5px;
+
+  white-space: pre-wrap;
+
+  .buttons {
+    margin: 10px auto 20px 0;
+  }
+}

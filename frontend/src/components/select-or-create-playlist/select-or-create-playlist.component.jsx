@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import CreatePlaylist from '../create-playlist/create-playlist.component';
 import PlaylistSelect from '../playlist-select/playlist-select.component';
 
-import './select-or-create-playlist.scss';
+import './select-or-create-playlist.styles.scss';
 
 const SelectOrCreatePlaylist = ({
   userId,

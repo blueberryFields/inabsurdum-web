@@ -7,6 +7,7 @@ import KeyboardEventHandler from 'react-keyboard-event-handler';
 import Header from '../../components/header/header.component';
 import Playlist from '../../components/playlist/playlist.component';
 import AudioPlayer from '../../components/audio-player/audio-player.component';
+import ArrangementView from '../../components/arrangement-view/arrangement-view.component';
 import LoadingSpinner from '../../components/loading-spinner/loading-spinner.component';
 import { selectPlaylists } from '../../redux/player/player.selectors';
 import { setPlaylists, togglePlaying } from '../../redux/player/player.actions';
@@ -70,14 +71,17 @@ const JamBoxPage = () => {
         onKeyEvent={(key, e) => dispatch(togglePlaying())}
       />
       <Header />
-      <div className="playlist-area">
-        {loading ? (
-          <LoadingSpinner />
-        ) : (
-          playlists.map((playlist, idx) => (
-            <Playlist key={idx} playlist={playlist} />
-          ))
-        )}
+      <div className="body">
+        <div className="playlist-area">
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
+            playlists.map((playlist, idx) => (
+              <Playlist key={idx} playlist={playlist} />
+            ))
+          )}
+        </div>
+        <ArrangementView />
       </div>
       <AudioPlayer />
     </div>

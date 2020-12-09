@@ -6,37 +6,52 @@
   display: flex;
   flex-direction: column;
 
-  .playlist-area {
-    margin: 0 auto;
-    // height: 100%;
-    // align-self: stretch;
+  .body {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    .playlist-area {
+      grid-column: 1/5;
+      margin: 0 auto;
+      // height: 100%;
+      // align-self: stretch;
+      // flex: 1;
+      overflow-y: auto;
+      width: 100vw;
+      
+      @media screen and (min-width: 992px) {
+        & {
+          grid-column: 2/4;
+          width: 60vw;
+        }
+      }
+
+      @media screen and (min-width: 1200px) {
+        & {
+          width: 50vw;
+        }
+      }
+
+      @media screen and (min-width: 1600px) {
+        & {
+          width: 40vw;
+        }
+      }
+
+      @media screen and (min-width: 2000px) {
+        & {
+          width: 30vw;
+        }
+      }
+    }
+  }
+
+  .arrangement-view {
+    grid-column: 4;
+    // width: 90%;
+    display: flex;
+    flex-direction: column;
     flex: 1;
-    overflow-y: auto;
-    width: 100%;
-
-    @media screen and (min-width: 992px) {
-      & {
-        width: 60%;
-      }
-    }
-
-    @media screen and (min-width: 1200px) {
-      & {
-        width: 50%;
-      }
-    }
-
-    @media screen and (min-width: 1600px) {
-      & {
-        width: 40%;
-      }
-    }
-
-    @media screen and (min-width: 2000px) {
-      & {
-        width: 30%;
-      }
-    }
   }
 
   // This adds some space to the bottom in case client is ios safari to give som space

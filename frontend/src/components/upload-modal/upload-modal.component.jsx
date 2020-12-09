@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import CustomButton from '../custom-button/custom-button.component';
 import FileUploader from '../file-uploader/file-uploader.component';
-import SelectOrCreatePlaylist from '../select-or-create-playlist/select-or-create-playlist';
+import SelectOrCreatePlaylist from '../select-or-create-playlist/select-or-create-playlist.component';
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import LoadingProgBar from '../loading-prog-bar/loading-prog-bar.component';

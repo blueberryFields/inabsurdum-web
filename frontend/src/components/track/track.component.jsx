@@ -15,7 +15,7 @@ import { selectTrack, togglePlaying } from '../../redux/player/player.actions';
 import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component';
 // import TrackOptions from '../track-options/track-options.component';
 import ModalFrame from '../../pop-ups/modal-frame/modal-frame.component';
-import TrackOptionsModal from '../track-options-modal/track-options-modal';
+import TrackOptionsModal from '../track-options-modal/track-options-modal.component';
 
 import './track.styles.scss';
 
