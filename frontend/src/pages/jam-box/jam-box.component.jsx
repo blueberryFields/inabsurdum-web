@@ -72,23 +72,22 @@ const JamBoxPage = () => {
     <div className="jam-box">
       <KeyboardEventHandler
         handleKeys={['space']}
-        onKeyEvent={(key, e) => dispatch(togglePlaying())}
+        onKeyEvent={() => dispatch(togglePlaying())}
       />
       <Header />
+
       <div className="body">
-        <div className="playlist-area">
-          {loading ? (
-            <LoadingSpinner />
-          ) : (
-            playlists.map((playlist, idx) => (
-              <Playlist key={idx} playlist={playlist} />
-            ))
-          )}
-        </div>
-        <div className="arrangement-area">
-          {showArrangementView && <ArrangementView />}
-        </div>
+        {showArrangementView ? (
+          <ArrangementView />
+        ) : loading ? (
+          <LoadingSpinner />
+        ) : (
+          playlists.map((playlist, idx) => (
+            <Playlist key={idx} playlist={playlist} />
+          ))
+        )}
       </div>
+
       <AudioPlayer />
     </div>
   );

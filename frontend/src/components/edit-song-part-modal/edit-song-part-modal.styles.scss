@@ -1,0 +1,17 @@
+.edit-song-part-modal {
+
+  label {
+    display:inline-block;
+    margin-bottom: 5px;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    
+    button {
+      margin-left: 0;
+      margin-right: 15px;
+    }
+  }
+}

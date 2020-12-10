@@ -7,14 +7,33 @@
     flex-direction: row;
     margin-top: 10px;
     margin-bottom: 10px;
-    
+
     .title {
       font-weight: 600;
       margin: auto auto auto 0;
     }
 
     .time-indication {
-      margin: auto 10px auto auto;
+      margin: auto 30px auto auto;
+    }
+
+    .edit-buttons {
+      display: flex;
+      flex-direction: row;
+
+      .icon {
+        cursor: pointer;
+        margin: auto 5px auto 0;
+      }
+
+      .caret {
+        font-size: 20px;
+      }
+      // .carets {
+      //   height: 0.5rem;
+      //   display: flex;
+      //   flex-direction: column;
+      // }
     }
   }
 }

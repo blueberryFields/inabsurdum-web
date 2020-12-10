@@ -2,13 +2,23 @@ import React from 'react';
 
 import './modal-form-input.styles.scss';
 
-const ModalFormInput = ({ handleChange, ...otherProps }) => {
+const ModalFormInput = ({ handleChange, textArea, ...otherProps }) => {
   return (
-    <input
-      className="modal-form-input"
-      onChange={handleChange}
-      {...otherProps}
-    />
+    <>
+      {textArea ? (
+        <textarea
+          className="modal-form-input"
+          onChange={handleChange}
+          {...otherProps}
+        />
+      ) : (
+        <input
+          className="modal-form-input"
+          onChange={handleChange}
+          {...otherProps}
+        />
+      )}
+    </>
   );
 };
 

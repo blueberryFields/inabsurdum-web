@@ -11,3 +11,18 @@ input {
   font-size: 1rem;
   margin-bottom: 15px;
 }
+
+textarea {
+  font-family: 'Open Sans Condensed';
+  letter-spacing: 0.75px;
+  box-sizing: border-box;
+  width: 100%;
+  background: black;
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  resize: vertical;
+}
