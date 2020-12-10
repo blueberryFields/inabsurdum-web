@@ -33,7 +33,6 @@ export const setPlaying = (boolean) => ({
   payload: boolean,
 });
 
-export const setShowControls = (boolean) => ({
-  type: PlayerActionTypes.SET_SHOW_CONTROLS,
-  payload: boolean,
+export const toggleShowArrangmentView = () => ({
+  type: PlayerActionTypes.TOGGLE_SHOW_ARRANGEMENT_VIEW,
 });

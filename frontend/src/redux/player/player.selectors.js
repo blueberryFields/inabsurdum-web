@@ -38,7 +38,7 @@ export const selectIsTrackSelected = memoize((track) =>
   }))
 );
 
-export const selectShowControls = createSelector(
+export const selectShowArrangementView = createSelector(
   [selectPlayer],
-  (player) => player.showControls
+  (player) => player.showArrangementView
 );

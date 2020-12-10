@@ -14,7 +14,11 @@ import {
   // faCubes,
   faChalkboardTeacher,
 } from '@fortawesome/free-solid-svg-icons';
-import { togglePlaying, selectTrack } from '../../redux/player/player.actions';
+import {
+  togglePlaying,
+  selectTrack,
+  toggleShowArrangmentView,
+} from '../../redux/player/player.actions';
 import {
   selectNextTrack,
   selectPreviousTrack,
@@ -27,10 +31,13 @@ const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
   const nextTrack = useSelector(selectNextTrack);
   const previousTrack = useSelector(selectPreviousTrack);
 
-  
   const toggleScrollParent = () => {
     toggleScroll();
   };
+
+  const handleToggleArrangmentView = () => {
+    dispatch(toggleShowArrangmentView())
+  }
 
   const handleTogglePlay = () => {
     if (!isEmpty(selectedTrack)) {
@@ -90,7 +97,10 @@ const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
         </div>
       </div>
       <div className="right-controls">
-        <div className="toggle-arrangement-view" onClick={() => {}}>
+        <div
+          className="toggle-arrangement-view"
+          onClick={handleToggleArrangmentView}
+        >
           <FontAwesomeIcon
             className="toggle-arrangement-view-icon"
             // faChalkboardTeacher or faCubes

@@ -5,7 +5,7 @@ import isEmpty from 'lodash.isempty';
 const INITIAL_STATE = {
   playlists: [],
   selectedTrack: {},
-  showControls: false,
+  showArrangementView: false,
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
@@ -60,10 +60,10 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           playing: action.payload,
         },
       };
-    case PlayerActionTypes.SET_SHOW_CONTROLS:
+    case PlayerActionTypes.TOGGLE_SHOW_ARRANGEMENT_VIEW:
       return {
         ...state,
-        showControls: action.payload,
+        showArrangementView: !state.showArrangementView,
       };
     default:
       return state;

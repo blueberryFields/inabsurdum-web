@@ -9,7 +9,10 @@ import Playlist from '../../components/playlist/playlist.component';
 import AudioPlayer from '../../components/audio-player/audio-player.component';
 import ArrangementView from '../../components/arrangement-view/arrangement-view.component';
 import LoadingSpinner from '../../components/loading-spinner/loading-spinner.component';
-import { selectPlaylists } from '../../redux/player/player.selectors';
+import {
+  selectPlaylists,
+  selectShowArrangementView,
+} from '../../redux/player/player.selectors';
 import { setPlaylists, togglePlaying } from '../../redux/player/player.actions';
 import { signOut } from '../../redux/user/user.actions';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
@@ -20,6 +23,7 @@ import './jam-box.styles.scss';
 const JamBoxPage = () => {
   const user = useSelector(selectCurrentUser);
   const playlists = useSelector(selectPlaylists);
+  const showArrangementView = useSelector(selectShowArrangementView);
 
   const [loading, setLoading] = useState(false);
 
@@ -81,7 +85,9 @@ const JamBoxPage = () => {
             ))
           )}
         </div>
-        <ArrangementView />
+        <div className="arrangement-area">
+          {showArrangementView && <ArrangementView />}
+        </div>
       </div>
       <AudioPlayer />
     </div>
