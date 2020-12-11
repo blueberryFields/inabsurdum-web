@@ -23,6 +23,11 @@ export const selectSelectedTrack = createSelector(
   (player) => player.selectedTrack
 );
 
+export const selectArrangement = createSelector(
+  [selectSelectedTrack],
+  (selectedTrack) => selectedTrack.arrangement
+);
+
 export const selectNextTrack = createSelector([selectPlayer], (player) =>
   getNextTrack(player.playlists, player.selectedTrack)
 );

@@ -6,6 +6,7 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import online.inabsurdum.jambox.arrangement.ArrangementDTO;
 
 @Getter
 @Setter
@@ -26,6 +27,8 @@ public class TrackDTO {
 
   Map peaks;
 
+  ArrangementDTO arrangement;
+
   public TrackDTO(Track track) {
     this.id = track.getId();
     this.title = track.getTitle();
@@ -40,5 +43,6 @@ public class TrackDTO {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    this.arrangement = new ArrangementDTO(track.getArrangement());
   }
 }

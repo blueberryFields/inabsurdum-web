@@ -7,12 +7,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import online.inabsurdum.jambox.arrangement.Arrangement;
+import online.inabsurdum.jambox.arrangement.ArrangementRepository;
 import online.inabsurdum.jambox.playlist.Playlist;
 import online.inabsurdum.jambox.playlist.PlaylistNotFoundException;
 import online.inabsurdum.jambox.playlist.PlaylistRepository;
 import online.inabsurdum.jambox.storage.StorageService;
 import online.inabsurdum.jambox.storage.UploadLocation;
-import org.hibernate.cfg.CreateKeySecondPass;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.springframework.core.io.Resource;
@@ -23,17 +24,20 @@ import org.springframework.web.multipart.MultipartFile;
 public class TrackServiceImpl implements TrackService {
 
   private final TrackRepository trackRepository;
-  private final PlaylistRepository playlistRepository;
   private final StorageService storageService;
+  private final PlaylistRepository playlistRepository;
+  private final ArrangementRepository arrangementRepository;
 
   public TrackServiceImpl(
     TrackRepository trackRepository,
     PlaylistRepository playlistRepository,
-    StorageService storageService
+    StorageService storageService,
+    ArrangementRepository arrangementRepository
   ) {
     this.trackRepository = trackRepository;
     this.playlistRepository = playlistRepository;
     this.storageService = storageService;
+    this.arrangementRepository = arrangementRepository;
   }
 
   @Override
@@ -206,6 +210,9 @@ public class TrackServiceImpl implements TrackService {
     track.setChecksum(checksum);
     track.setPeaks(peaks);
     track.setOriginalFilename(originalFilename);
+    Arrangement arragement = new Arrangement();
+    arrangementRepository.save(arragement);
+    track.setArrangement(arragement);
 
     track = trackRepository.save(track);
 
@@ -317,6 +324,19 @@ public class TrackServiceImpl implements TrackService {
       return new TrackDTO(track);
     } else {
       throw new TrackNotFoundException("Track with id " + id + " not found.");
+    }
+  }
+
+  @Override
+  public void addArrToAllTracksWhereItsNull() {
+    List<Track> tracks = trackRepository.findAll();
+    for (Track track : tracks) {
+      if (track.getArrangement() == null) {
+        Arrangement arr = new Arrangement();
+        arrangementRepository.save(arr);
+        track.setArrangement(arr);
+        trackRepository.save(track);
+      }
     }
   }
 }

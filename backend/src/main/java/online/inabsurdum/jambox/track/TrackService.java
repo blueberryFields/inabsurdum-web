@@ -27,4 +27,6 @@ public interface TrackService {
   File loadFileWithOriginalFilename(long id);
 
   void deleteDownloadedTempFile(long id);
+
+  void addArrToAllTracksWhereItsNull();
 }

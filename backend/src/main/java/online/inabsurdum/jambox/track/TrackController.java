@@ -7,11 +7,9 @@ import java.io.OutputStream;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import online.inabsurdum.jambox.playlist.PlaylistDTO;
 import online.inabsurdum.jambox.playlist.PlaylistNotFoundException;
 import online.inabsurdum.jambox.playlist.PlaylistService;
 import online.inabsurdum.jambox.playlist.ReducedPlaylistDTO;
-
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -151,7 +149,9 @@ public class TrackController {
   ) {
     try {
       trackService.upload(title, playlistId, file);
-      List<ReducedPlaylistDTO> result = playlistService.findReducedByUserId(userId);
+      List<ReducedPlaylistDTO> result = playlistService.findReducedByUserId(
+        userId
+      );
       return new ResponseEntity<>(result, HttpStatus.CREATED);
     } catch (PlaylistNotFoundException e) {
       e.printStackTrace();
@@ -174,7 +174,9 @@ public class TrackController {
     try {
       trackService.rename(id, title);
       trackService.changePlaylist(id, currentPlaylistId, newPlaylistId);
-      List<ReducedPlaylistDTO> result = playlistService.findReducedByUserId(userId);
+      List<ReducedPlaylistDTO> result = playlistService.findReducedByUserId(
+        userId
+      );
       return new ResponseEntity<>(result, HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
@@ -190,11 +192,20 @@ public class TrackController {
   ) {
     try {
       trackService.delete(id);
-      List<ReducedPlaylistDTO> result = playlistService.findReducedByUserId(userId);
+      List<ReducedPlaylistDTO> result = playlistService.findReducedByUserId(
+        userId
+      );
       return new ResponseEntity<>(result, HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  // TODO: remove this after the fix is fixed in production
+  @GetMapping("/fixmissingarr")
+  public ResponseEntity<Void> addArrToAllTracksWhereItsNull() {
+    trackService.addArrToAllTracksWhereItsNull();
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }

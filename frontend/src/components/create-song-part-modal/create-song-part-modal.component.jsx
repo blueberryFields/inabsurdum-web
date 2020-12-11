@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
+import { setArrangement } from '../../redux/player/player.actions';
 
 import './create-song-part-modal.styles.scss';
 
-const CreateSongPartModal = ({ hide }) => {
+const CreateSongPartModal = ({ hide, id }) => {
+  const dispatch = useDispatch();
+
   const [state, setState] = useState({
     title: '',
     startingAt: '',
@@ -21,7 +26,27 @@ const CreateSongPartModal = ({ hide }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // validateAndSubmitForm();
+    create();
+  };
+
+  const create = async () => {
+    try {
+      const response = await axios.request({
+        method: 'post',
+        url: 'api/arrangement/createsongpart/' + id,
+        data: {
+          title: state.title,
+          startingAt: state.startingAt,
+          endingAt: state.endingAt,
+          lyrics: state.lyrics,
+        },
+      });
+      console.log(response.data);
+      dispatch(setArrangement(response.data));
+      hide();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -35,7 +60,7 @@ const CreateSongPartModal = ({ hide }) => {
           placeholder="Namn"
           required
         />
-        <label for="startingAt">Börjar vid:</label>
+        <label htmlFor="startingAt">Börjar vid:</label>
         <ModalFormInput
           name="startingAt"
           type="time"
@@ -44,7 +69,7 @@ const CreateSongPartModal = ({ hide }) => {
           placeholder="Startar vid"
           step="1"
         />
-        <label for="startingAt">Slutar vid:</label>
+        <label htmlFor="startingAt">Slutar vid:</label>
         <ModalFormInput
           name="endingAt"
           type="time"

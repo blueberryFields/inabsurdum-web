@@ -36,3 +36,8 @@ export const setPlaying = (boolean) => ({
 export const toggleShowArrangmentView = () => ({
   type: PlayerActionTypes.TOGGLE_SHOW_ARRANGEMENT_VIEW,
 });
+
+export const setArrangement = (arrangement) => ({
+  type: PlayerActionTypes.SET_ARRANGEMENT,
+  payload: arrangement,
+});

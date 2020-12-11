@@ -65,6 +65,14 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         ...state,
         showArrangementView: !state.showArrangementView,
       };
+    case PlayerActionTypes.SET_ARRANGEMENT:
+      return {
+        ...state,
+        selectedTrack: {
+          ...state.selectedTrack,
+          arrangement: action.payload,
+        },
+      };
     default:
       return state;
   }
