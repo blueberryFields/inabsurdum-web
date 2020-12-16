@@ -11,4 +11,6 @@ public interface SongPartRepository extends CrudRepository<SongPart, Long> {
     nativeQuery = true
   )
   int findMaxArrSequensNo(long id);
+
+  void deleteById(long id);
 }

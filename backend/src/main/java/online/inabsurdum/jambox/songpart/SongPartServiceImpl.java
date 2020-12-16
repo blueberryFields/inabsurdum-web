@@ -37,4 +37,32 @@ public class SongPartServiceImpl implements SongPartService {
     songPart.setLyrics(songPartDTO.getLyrics());
     return songPartRepository.save(songPart);
   }
+
+  @Override
+  public void remove(long id) {
+    songPartRepository.deleteById(id);
+  }
+
+  @Override
+  public void setArrSequenceNo(long id, int arrSequenceNo) {
+    SongPart songPart = songPartRepository.findById(id);
+    songPart.setArrSequenceNo(arrSequenceNo);
+    songPartRepository.save(songPart);
+  }
+
+  @Override
+  public SongPart moveUp(long id) {
+    SongPart songPart = songPartRepository.findById(id);
+    int arrSequenceNo = songPart.getArrSequenceNo();
+    if (arrSequenceNo > 0) songPart.setArrSequenceNo(arrSequenceNo - 1);
+    return songPartRepository.save(songPart);
+  }
+
+  @Override
+  public SongPart moveDown(long id) {
+    SongPart songPart = songPartRepository.findById(id);
+    int arrSequenceNo = songPart.getArrSequenceNo();
+    songPart.setArrSequenceNo(arrSequenceNo + 1);
+    return songPartRepository.save(songPart);
+  }
 }

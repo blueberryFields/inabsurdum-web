@@ -46,7 +46,6 @@ const EditSongPartModal = ({
           lyrics: state.lyrics,
         },
       });
-      console.log(response.data);
       dispatch(setArrangement(response.data));
       hide();
     } catch (error) {

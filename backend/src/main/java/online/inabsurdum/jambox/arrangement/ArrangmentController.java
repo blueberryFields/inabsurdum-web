@@ -55,7 +55,51 @@ public class ArrangmentController {
       songPartService.update(songPartDTO);
       Arrangement arrangement = arrangementService.findById(arrangementId);
 
-      return new ResponseEntity<>(arrangement, HttpStatus.CREATED);
+      return new ResponseEntity<>(arrangement, HttpStatus.OK);
+    } catch (Exception e) {
+      System.out.println(e);
+      throw new ResponseStatusException(
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        e.getMessage()
+      );
+    }
+  }
+
+  @CrossOrigin
+  @DeleteMapping("/removesongpart/{arrangementid}/{songpartid}")
+  public ResponseEntity<Arrangement> removeSongPart(
+    @PathVariable(name = "arrangementid") long arrangementId,
+    @PathVariable(name = "songpartid") long songPartId
+  ) {
+    try {
+      songPartService.remove(songPartId);
+
+      //TODO: Reorder sequenceOrderNo
+
+      Arrangement arrangement = arrangementService.findById(arrangementId);
+
+      return new ResponseEntity<>(arrangement, HttpStatus.OK);
+    } catch (Exception e) {
+      System.out.println(e);
+      throw new ResponseStatusException(
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        e.getMessage()
+      );
+    }
+  }
+
+  @CrossOrigin
+  @PutMapping("/movesongpartup/{arrangementid}/{songpartid}")
+  public ResponseEntity<Arrangement> moveUp(
+    @PathVariable(name = "arrangementid") long arrangementId,
+    @PathVariable(name = "songpartid") long songPartId
+  ) {
+    try {
+      arrangementService.moveSongPartUp(songPartId, arrangementId);
+
+      Arrangement arrangement = arrangementService.findById(arrangementId);
+
+      return new ResponseEntity<>(arrangement, HttpStatus.OK);
     } catch (Exception e) {
       System.out.println(e);
       throw new ResponseStatusException(

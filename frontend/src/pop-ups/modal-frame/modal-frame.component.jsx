@@ -13,7 +13,7 @@ const ModalFrame = ({ children, hide, header }) => {
     <div className="modal">
       <div className="overlay">
         <div ref={ref} className="modal-body">
-          <h2 className="modal-header">{header}</h2>
+          {header && <h2 className="modal-header">{header}</h2>}
           {children}
         </div>
       </div>

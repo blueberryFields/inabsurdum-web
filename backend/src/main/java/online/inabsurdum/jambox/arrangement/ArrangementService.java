@@ -9,4 +9,6 @@ public interface ArrangementService {
     throws ArrangementNotFoundException;
 
   Arrangement findById(long id);
+
+  void moveSongPartUp(long songPartId, long arrangementId);
 }
