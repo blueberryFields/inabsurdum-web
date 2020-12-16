@@ -22,7 +22,7 @@ const ArrangementView = () => {
     <div className="arrangement-view">
       <h3 className="arrangement-header">{title}</h3>
       {arrangement.songParts.map((part, idx) => (
-        <SongPart key={idx} part={part} />
+        <SongPart key={idx} part={part} arrangementId={arrangement.id} />
       ))}
       <ToggleContent
         toggle={(show) => (

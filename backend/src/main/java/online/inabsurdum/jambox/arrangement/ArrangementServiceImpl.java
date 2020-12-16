@@ -19,13 +19,21 @@ public class ArrangementServiceImpl implements ArrangementService {
   }
 
   @Override
-  public Arrangement insertNewSongPart(long id, SongPart songPart) throws ArrangementNotFoundException {
+  public Arrangement insertNewSongPart(long id, SongPart songPart)
+    throws ArrangementNotFoundException {
     Arrangement arrangement = arrangementRepository.findById(id);
-    if(arrangement == null ) {
-      throw new ArrangementNotFoundException("Arrangement with id: " + id + " was not found.");
+    if (arrangement == null) {
+      throw new ArrangementNotFoundException(
+        "Arrangement with id: " + id + " was not found."
+      );
     }
     arrangement.getSongParts().add(songPart);
     arrangementRepository.save(arrangement);
     return arrangement;
+  }
+
+  @Override
+  public Arrangement findById(long id) {
+    return arrangementRepository.findById(id);
   }
 }

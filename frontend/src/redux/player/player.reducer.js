@@ -63,7 +63,8 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case PlayerActionTypes.TOGGLE_SHOW_ARRANGEMENT_VIEW:
       return {
         ...state,
-        showArrangementView: !state.showArrangementView,
+        showArrangementView:
+          !isEmpty(state.selectedTrack) && !state.showArrangementView,
       };
     case PlayerActionTypes.SET_ARRANGEMENT:
       return {

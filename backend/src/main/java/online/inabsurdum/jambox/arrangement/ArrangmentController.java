@@ -23,16 +23,13 @@ public class ArrangmentController {
     this.songPartService = songPartService;
   }
 
-  @PostMapping("/createsongpart/{id}")
+  @PostMapping("/createsongpart/{arrangementid}")
   public ResponseEntity<Arrangement> createSongPart(
-    @PathVariable(name = "id") long arrangementId,
-    @RequestBody SongPartDTO songpartDTO
+    @PathVariable(name = "arrangementid") long arrangementId,
+    @RequestBody SongPartDTO songPartDTO
   ) {
     try {
-      SongPart songPart = songPartService.createSongPart(
-        arrangementId,
-        songpartDTO
-      );
+      SongPart songPart = songPartService.create(arrangementId, songPartDTO);
       Arrangement arrangement = arrangementService.insertNewSongPart(
         arrangementId,
         songPart
@@ -40,7 +37,31 @@ public class ArrangmentController {
 
       return new ResponseEntity<>(arrangement, HttpStatus.CREATED);
     } catch (Exception e) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+      System.out.println(e);
+      throw new ResponseStatusException(
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        e.getMessage()
+      );
+    }
+  }
+
+  @CrossOrigin
+  @PutMapping("/updatesongpart/{arrangementid}")
+  public ResponseEntity<Arrangement> updateSongPart(
+    @PathVariable(name = "arrangementid") long arrangementId,
+    @RequestBody SongPartDTO songPartDTO
+  ) {
+    try {
+      songPartService.update(songPartDTO);
+      Arrangement arrangement = arrangementService.findById(arrangementId);
+
+      return new ResponseEntity<>(arrangement, HttpStatus.CREATED);
+    } catch (Exception e) {
+      System.out.println(e);
+      throw new ResponseStatusException(
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        e.getMessage()
+      );
     }
   }
 }

@@ -12,7 +12,7 @@ import EditSongPartModal from '../edit-song-part-modal/edit-song-part-modal.comp
 
 import './song-part.styles.scss';
 
-const SongPart = ({ part }) => {
+const SongPart = ({ part, arrangementId }) => {
   const { title, startingAt, endingAt, lyrics } = part;
 
   return (
@@ -29,7 +29,11 @@ const SongPart = ({ part }) => {
             )}
             content={(hide) => (
               <ModalFrame hide={hide} header={'Redigera låt-del'}>
-                <EditSongPartModal part={part} hide={hide} />
+                <EditSongPartModal
+                  arrangementId={arrangementId}
+                  part={part}
+                  hide={hide}
+                />
               </ModalFrame>
             )}
           />

@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
+import { setArrangement } from '../../redux/player/player.actions';
 
 import './edit-song-part-modal.styles.scss';
 
 const EditSongPartModal = ({
-  part: { title, startingAt, endingAt, lyrics },
+  arrangementId,
+  part: { id, title, startingAt, endingAt, lyrics },
   hide,
 }) => {
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     title,
     startingAt,
@@ -24,7 +30,28 @@ const EditSongPartModal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // validateAndSubmitForm();
+    update();
+  };
+
+  const update = async () => {
+    try {
+      const response = await axios.request({
+        method: 'put',
+        url: 'api/arrangement/updatesongpart/' + arrangementId,
+        data: {
+          id,
+          title: state.title,
+          startingAt: state.startingAt,
+          endingAt: state.endingAt,
+          lyrics: state.lyrics,
+        },
+      });
+      console.log(response.data);
+      dispatch(setArrangement(response.data));
+      hide();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -66,7 +93,7 @@ const EditSongPartModal = ({
       />
       <div className="buttons">
         <CustomButton inverted type="submit">
-          Spara
+          Uppdatera
         </CustomButton>
         <CustomButton inverted onClick={hide}>
           Stäng

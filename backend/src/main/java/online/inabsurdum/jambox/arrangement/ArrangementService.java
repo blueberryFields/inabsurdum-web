@@ -4,5 +4,9 @@ import online.inabsurdum.jambox.songpart.SongPart;
 
 public interface ArrangementService {
   Arrangement create(long trackId);
-  Arrangement insertNewSongPart(long arrangementId, SongPart songPart) throws ArrangementNotFoundException;
+
+  Arrangement insertNewSongPart(long arrangementId, SongPart songPart)
+    throws ArrangementNotFoundException;
+
+  Arrangement findById(long id);
 }

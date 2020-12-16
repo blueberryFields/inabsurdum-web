@@ -1,5 +1,6 @@
 package online.inabsurdum.jambox.songpart;
 
 public interface SongPartService {
-  SongPart createSongPart(long arrangementId, SongPartDTO songpart);
+  SongPart create(long arrangementId, SongPartDTO songpart);
+  SongPart update(SongPartDTO songPartDTO);
 }
