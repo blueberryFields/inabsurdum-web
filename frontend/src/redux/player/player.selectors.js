@@ -47,3 +47,4 @@ export const selectShowArrangementView = createSelector(
   [selectPlayer],
   (player) => player.showArrangementView
 );
+

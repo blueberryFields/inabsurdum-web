@@ -1,5 +1,5 @@
 import PlayerActionTypes from './player.types';
-import { getNextTrack, getPreviousTrack } from './player.utils';
+import { getNextTrack, getPreviousTrack, checkCollapsed } from './player.utils';
 import isEmpty from 'lodash.isempty';
 
 const INITIAL_STATE = {
@@ -13,8 +13,12 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case PlayerActionTypes.SET_PLAYLISTS:
       return {
         ...state,
-        playlists: action.payload,
+        playlists: action.payload.map((playlist) => ({
+          ...playlist,
+          isCollapsed: checkCollapsed(state.playlists, playlist),
+        })),
       };
+
     case PlayerActionTypes.SELECT_TRACK:
       return {
         ...state,
@@ -73,6 +77,24 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           ...state.selectedTrack,
           arrangement: action.payload,
         },
+      };
+    case PlayerActionTypes.TOGGLE_IS_PLAYLIST_COLLAPSED:
+      return {
+        ...state,
+        playlists: state.playlists.map((playlist) =>
+          playlist.id === action.payload.id
+            ? { ...playlist, isCollapsed: playlist.isCollapsed ? false : true }
+            : playlist
+        ),
+      };
+    case PlayerActionTypes.SET_PLAYLIST_IS_COLLAPSED:
+      return {
+        ...state,
+        playlists: state.playlists.map((playlist) =>
+          playlist.id === action.payload.playlist.id
+            ? { ...playlist, isCollapsed: action.payload.boolean }
+            : playlist
+        ),
       };
     default:
       return state;

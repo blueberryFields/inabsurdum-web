@@ -91,8 +91,6 @@ const UploadModal = ({ hide }) => {
     bodyFormData.set('userid', user.id);
     bodyFormData.append('file', state.selectedFile);
 
-    isSubscribed.current = true;
-
     try {
       const response = await axios.request({
         method: 'post',

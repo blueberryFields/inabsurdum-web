@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -10,22 +11,29 @@ import {
 import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component';
 import Track from '../../components/track/track.component';
 import PlaylistOptions from '../playlist-options/playlist-options.component';
+import {
+  toggleIsPlaylistCollapsed,
+  setPlaylistIsCollapsed,
+} from '../../redux/player/player.actions';
 
 import './playlist.styles.scss';
 
 const Playlist = ({ playlist }) => {
   const { title, tracks } = playlist;
 
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const dispatch = useDispatch();
 
   const toggleIsCollapsed = () => {
-    if (tracks.length > 0) setIsCollapsed(!isCollapsed);
+    if (tracks.length > 0) {
+      dispatch(toggleIsPlaylistCollapsed(playlist));
+    }
   };
 
   // If all tracks is removed, collapse the playlist
   useEffect(() => {
-    if (tracks.length === 0) setIsCollapsed(true);
-  }, [tracks]);
+    if (tracks.length === 0)
+      !playlist.isCollapsed && dispatch(setPlaylistIsCollapsed(playlist, true));
+  }, [dispatch, playlist, tracks]);
 
   return (
     <div className="playlist">
@@ -54,10 +62,10 @@ const Playlist = ({ playlist }) => {
           onClick={toggleIsCollapsed}
           className={`${tracks.length > 0 ? 'clickable' : ''}
           toggle-collapse-icon`}
-          icon={isCollapsed ? faChevronDown : faChevronUp}
+          icon={playlist.isCollapsed ? faChevronDown : faChevronUp}
         />
       </div>
-      {!isCollapsed && (
+      {!playlist.isCollapsed && (
         <table>
           <tbody>
             {tracks.map((track, idx) => (

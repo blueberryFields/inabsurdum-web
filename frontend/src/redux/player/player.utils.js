@@ -1,3 +1,5 @@
+import isEmpty from 'lodash.isempty';
+
 const getFlattenedTracks = (playlists) => {
   let tracks = [];
 
@@ -34,4 +36,14 @@ export const getPreviousTrack = (playlists, selectedTrack) => {
   let nextTrack = tracks.find((_, index) => index === selectedTrackIndex - 1);
 
   return nextTrack || tracks[lastIndex(tracks)];
+};
+
+export const checkCollapsed = (prevPlaylists, newPlaylist) => {
+  if (!isEmpty(prevPlaylists)) {
+    const matchingPlaylist = prevPlaylists.find(
+      (prevPlaylist) => prevPlaylist.id === newPlaylist.id
+    );
+    console.log(matchingPlaylist);
+    return matchingPlaylist ? matchingPlaylist.isCollapsed : true;
+  } else return true;
 };

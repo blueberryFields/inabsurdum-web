@@ -41,3 +41,13 @@ export const setArrangement = (arrangement) => ({
   type: PlayerActionTypes.SET_ARRANGEMENT,
   payload: arrangement,
 });
+
+export const toggleIsPlaylistCollapsed = (playlist) => ({
+  type: PlayerActionTypes.TOGGLE_IS_PLAYLIST_COLLAPSED,
+  payload: playlist,
+});
+
+export const setPlaylistIsCollapsed = (playlist, boolean) => ({
+  type: PlayerActionTypes.SET_PLAYLIST_IS_COLLAPSED,
+  payload: { playlist, boolean },
+});

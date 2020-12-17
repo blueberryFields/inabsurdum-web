@@ -43,8 +43,6 @@ const TrackOptionsModal = ({
       bodyFormData.set('newPlaylistid', state.selectedPlaylist);
       bodyFormData.set('userid', user.id);
 
-      isSubscribed.current = true;
-
       try {
         const response = await axios.request({
           method: 'put',
@@ -53,12 +51,7 @@ const TrackOptionsModal = ({
         });
 
         dispatch(setPlaylists(response.data));
-        setState({
-          ...state,
-          loading: false,
-          message: '',
-        });
-        hide();
+        if (isSubscribed.current === true) hide();
       } catch (error) {
         if (isSubscribed.current === true)
           setState({
@@ -75,11 +68,6 @@ const TrackOptionsModal = ({
     }
   };
 
-  const isSubscribed = useRef(false);
-  useEffect(() => {
-    return () => (isSubscribed.current = false);
-  });
-
   const removeTrack = async () => {
     try {
       const response = await axios.request({
@@ -87,7 +75,7 @@ const TrackOptionsModal = ({
         url: 'api/track/' + id + '?userid=' + user.id,
       });
       dispatch(setPlaylists(response.data));
-      hide();
+      if (isSubscribed.current === true) hide();
     } catch (error) {
       console.log('ERROR: ', error);
     }
@@ -105,6 +93,13 @@ const TrackOptionsModal = ({
       console.log('ERROR: ', error);
     }
   };
+
+  // Cleanup, dont update state if this is set to false, otherwise there
+  // will be a memory leak
+  const isSubscribed = useRef(false);
+  useEffect(() => {
+    return () => (isSubscribed.current = false);
+  });
 
   const handleChange = (event) => {
     const { value, name } = event.target;
