@@ -13,13 +13,12 @@ import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component
 import ModalFrame from '../../pop-ups/modal-frame/modal-frame.component';
 import EditSongPartModal from '../edit-song-part-modal/edit-song-part-modal.component';
 import ConfirmModal from '../confirm-modal/confirm-modal.component';
-
 import { setArrangement } from '../../redux/player/player.actions';
 
 import './song-part.styles.scss';
 
-const SongPart = ({ part, arrangementId }) => {
-  const { id, title, startingAt, endingAt, lyrics } = part;
+const SongPart = ({ part, arrangementId, highestArrSeqNo }) => {
+  const { id, title, startingAt, endingAt, lyrics, arrSequenceNo } = part;
 
   const dispatch = useDispatch();
 
@@ -36,26 +35,30 @@ const SongPart = ({ part, arrangementId }) => {
   };
 
   const moveUp = async () => {
-    try {
-      const response = await axios.request({
-        method: 'put',
-        url: 'api/arrangement/movesongpartup/' + arrangementId + '/' + id,
-      });
-      dispatch(setArrangement(response.data));
-    } catch (error) {
-      console.log(error);
+    if (arrSequenceNo > 0) {
+      try {
+        const response = await axios.request({
+          method: 'put',
+          url: 'api/arrangement/movesongpartup/' + arrangementId + '/' + id,
+        });
+        dispatch(setArrangement(response.data));
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
   const moveDown = async () => {
-    try {
-      const response = await axios.request({
-        method: 'put',
-        url: 'api/arrangement/movesongpartup/' + arrangementId + '/' + id,
-      });
-      dispatch(setArrangement(response.data));
-    } catch (error) {
-      console.log(error);
+    if (arrSequenceNo < highestArrSeqNo) {
+      try {
+        const response = await axios.request({
+          method: 'put',
+          url: 'api/arrangement/movesongpartdown/' + arrangementId + '/' + id,
+        });
+        dispatch(setArrangement(response.data));
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

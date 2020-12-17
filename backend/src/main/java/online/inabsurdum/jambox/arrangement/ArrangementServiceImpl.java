@@ -1,7 +1,11 @@
 package online.inabsurdum.jambox.arrangement;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import online.inabsurdum.jambox.songpart.SongPart;
+import online.inabsurdum.jambox.songpart.SongPartCantBeMovedException;
+import online.inabsurdum.jambox.songpart.SongPartNotFoundException;
 import online.inabsurdum.jambox.songpart.SongPartService;
 import org.springframework.stereotype.Service;
 
@@ -41,11 +45,15 @@ public class ArrangementServiceImpl implements ArrangementService {
 
   @Override
   public Arrangement findById(long id) {
-    return arrangementRepository.findById(id);
+    Arrangement arrangement = arrangementRepository.findById(id);
+    List<SongPart> songParts = arrangement.getSongParts();
+    songParts.sort(Comparator.comparing(SongPart::getArrSequenceNo));
+    return arrangement;
   }
 
   @Override
-  public moveSongPartUp(long songPartId, long arrangementId) {
+  public void moveSongPartUp(long songPartId, long arrangementId)
+    throws SongPartNotFoundException, SongPartCantBeMovedException {
     Arrangement arrangement = arrangementRepository.findById(arrangementId);
     List<SongPart> songParts = arrangement.getSongParts();
 
@@ -55,37 +63,82 @@ public class ArrangementServiceImpl implements ArrangementService {
         partToMoveUp = songPart;
       }
     }
-    // TODO: throw exception if partToMoveUp.getArrSequenceNo() < 1
+    if (partToMoveUp == null) {
+      throw new SongPartNotFoundException("Couldnt find song part to move up");
+    }
+    if (
+      partToMoveUp.getArrSequenceNo() < 1
+    ) throw new SongPartCantBeMovedException(
+      "Song part already is at top of the order"
+    );
+
     SongPart partToMoveDown = null;
-    if (partToMoveUp != null) {
-      for (SongPart songPart : songParts) {
-        if (
-          songPart.getArrSequenceNo() == partToMoveUp.getArrSequenceNo() - 1
-        ) {
-          partToMoveDown = songPart;
-        }
+    for (SongPart songPart : songParts) {
+      if (songPart.getArrSequenceNo() == partToMoveUp.getArrSequenceNo() - 1) {
+        partToMoveDown = songPart;
       }
     }
-    System.out.println(
-      "To move up: id: " +
-      partToMoveUp.getId() +
-      ", arrSNo: " +
-      partToMoveUp.getArrSequenceNo()
+    if (partToMoveDown == null) throw new SongPartNotFoundException(
+      "Couldnt find song part to move down"
     );
-    System.out.println(
-      "To move down: id: " +
-      partToMoveDown.getId() +
-      ", arrSNo: " +
-      partToMoveDown.getArrSequenceNo()
-    );
-    //TODO: else throw exception
-    if (partToMoveUp != null && partToMoveDown != null) {
-      songPartService.moveUp(partToMoveUp.getId());
-      songPartService.moveDown(partToMoveDown.getId());
-    }
-    //TODO: else throw exception
 
-  
-    ;
+    songPartService.moveUp(partToMoveUp.getId());
+    songPartService.moveDown(partToMoveDown.getId());
+  }
+
+  @Override
+  public void moveSongPartDown(long songPartId, long arrangementId)
+    throws SongPartNotFoundException, SongPartCantBeMovedException {
+    Arrangement arrangement = arrangementRepository.findById(arrangementId);
+    List<SongPart> songParts = arrangement.getSongParts();
+
+    SongPart partToMoveDown = null;
+    for (SongPart songPart : songParts) {
+      if (songPart.getId() == songPartId) {
+        partToMoveDown = songPart;
+      }
+    }
+    if (partToMoveDown == null) {
+      throw new SongPartNotFoundException(
+        "Couldnt find song part to move down"
+      );
+    }
+    Optional<SongPart> highestArrSeqNo = songParts
+      .stream()
+      .max(Comparator.comparing(SongPart::getArrSequenceNo));
+    if (
+      partToMoveDown.getArrSequenceNo() ==
+      highestArrSeqNo.get().getArrSequenceNo()
+    ) throw new SongPartCantBeMovedException(
+      "Song part already is at bottom of the order"
+    );
+
+    SongPart partToMoveUp = null;
+    for (SongPart songPart : songParts) {
+      if (
+        songPart.getArrSequenceNo() == partToMoveDown.getArrSequenceNo() + 1
+      ) {
+        partToMoveUp = songPart;
+      }
+    }
+    if (partToMoveUp == null) throw new SongPartNotFoundException(
+      "Couldnt find song part to move up"
+    );
+
+    songPartService.moveUp(partToMoveUp.getId());
+    songPartService.moveDown(partToMoveDown.getId());
+  }
+
+  @Override
+  public void reorderArrSequence(long arrangementId) {
+    Arrangement arrangement = arrangementRepository.findById(arrangementId);
+    List<SongPart> songParts = arrangement.getSongParts();
+    songParts.sort(Comparator.comparing(SongPart::getArrSequenceNo));
+
+    for (int i = 0; i < songParts.size(); i++) {
+      SongPart songPart = songParts.get(i);
+      if (songPart.getArrSequenceNo() != i) songPart.setArrSequenceNo(i);
+    }
+    arrangementRepository.save(arrangement);
   }
 }

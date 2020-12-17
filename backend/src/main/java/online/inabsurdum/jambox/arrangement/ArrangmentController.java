@@ -74,7 +74,7 @@ public class ArrangmentController {
     try {
       songPartService.remove(songPartId);
 
-      //TODO: Reorder sequenceOrderNo
+      arrangementService.reorderArrSequence(arrangementId);
 
       Arrangement arrangement = arrangementService.findById(arrangementId);
 
@@ -96,6 +96,27 @@ public class ArrangmentController {
   ) {
     try {
       arrangementService.moveSongPartUp(songPartId, arrangementId);
+
+      Arrangement arrangement = arrangementService.findById(arrangementId);
+
+      return new ResponseEntity<>(arrangement, HttpStatus.OK);
+    } catch (Exception e) {
+      System.out.println(e);
+      throw new ResponseStatusException(
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        e.getMessage()
+      );
+    }
+  }
+
+  @CrossOrigin
+  @PutMapping("/movesongpartdown/{arrangementid}/{songpartid}")
+  public ResponseEntity<Arrangement> moveDown(
+    @PathVariable(name = "arrangementid") long arrangementId,
+    @PathVariable(name = "songpartid") long songPartId
+  ) {
+    try {
+      arrangementService.moveSongPartDown(songPartId, arrangementId);
 
       Arrangement arrangement = arrangementService.findById(arrangementId);
 

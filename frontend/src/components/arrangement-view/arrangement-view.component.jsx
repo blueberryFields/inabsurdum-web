@@ -22,7 +22,17 @@ const ArrangementView = () => {
     <div className="arrangement-view">
       <h3 className="arrangement-header">{title}</h3>
       {arrangement.songParts.map((part, idx) => (
-        <SongPart key={idx} part={part} arrangementId={arrangement.id} />
+        <SongPart
+          key={idx}
+          part={part}
+          arrangementId={arrangement.id}
+          highestArrSeqNo={Math.max.apply(
+            Math,
+            arrangement.songParts.map((o) => {
+              return o.arrSequenceNo;
+            })
+          )}
+        />
       ))}
       <ToggleContent
         toggle={(show) => (
