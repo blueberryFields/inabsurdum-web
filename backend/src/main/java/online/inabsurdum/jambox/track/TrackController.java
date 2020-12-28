@@ -201,16 +201,10 @@ public class TrackController {
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
-  // @GetMapping("/pastearrangement")
-  // public ResponseEntity<Arrangement> pasteArrangement() {
-
+  // Keeping this for reference
+  // @GetMapping("/fixmissingarr")
+  // public ResponseEntity<Void> addArrToAllTracksWhereItsNull() {
+  //   trackService.addArrToAllTracksWhereItsNull();
+  //   return new ResponseEntity<>(HttpStatus.OK);
   // }
-
-  // TODO: remove this after the fix is fixed in production
-  @GetMapping("/fixmissingarr")
-  public ResponseEntity<Void> addArrToAllTracksWhereItsNull() {
-    trackService.addArrToAllTracksWhereItsNull();
-    return new ResponseEntity<>(HttpStatus.OK);
-  }
 }
