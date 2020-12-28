@@ -42,6 +42,7 @@ const AudioPlayer = () => {
   useEffect(() => {
     currentSongPartRef.current = currentSongPart;
   }, [currentSongPart]);
+  const [currentSongPartTitle, setCurrentSongPartTitle] = useState('');
 
   const dispatch = useDispatch();
 
@@ -92,10 +93,14 @@ const AudioPlayer = () => {
           return currentTime > startingAt && currentTime < endingAt;
         });
         if (songPart) {
-          if (songPart.arrSequenceNo !== currentSongPartRef.current)
+          if (songPart.arrSequenceNo !== currentSongPartRef.current) {
             dispatch(setCurrentSongPart(songPart.arrSequenceNo));
-        } else if (currentSongPartRef.current !== null)
+            setCurrentSongPartTitle(songPart.title);
+          }
+        } else if (currentSongPartRef.current !== null) {
           dispatch(setCurrentSongPart(null));
+          setCurrentSongPartTitle('');
+        }
       }
     },
     [dispatch]
@@ -193,7 +198,7 @@ const AudioPlayer = () => {
       />
       <div className="waveform">
         <div className="title">
-          {selectedTrack.title} {currentTime}
+          {selectedTrack.title} {currentSongPartTitle} {currentTime}
         </div>
         {showSpinner && <LoadingSpinner absolutePosition />}
         <div ref={waveformRef} />
