@@ -44,14 +44,6 @@ const ArrangementView = () => {
     } catch (error) {
       console.log(error);
     }
-
-    // console.log(
-    //   'Paste arrangment(' +
-    //     arrangementClipBoard +
-    //     ') to ' +
-    //     arrangement.id +
-    //     '.'
-    // );
   };
 
   return (
