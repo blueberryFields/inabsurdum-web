@@ -23,6 +23,26 @@ export const selectSelectedTrack = createSelector(
   (player) => player.selectedTrack
 );
 
+export const selectPeaksFromSelectedTrack = createSelector(
+  [selectPlayer],
+  (player) => player.selectedTrack.peaks
+);
+
+export const selectArrangmentFromSelectedTrack = createSelector(
+  [selectPlayer],
+  (player) => player.selectedTrack.arrangement
+);
+
+export const selectChecksumFromSelectedTrack = createSelector(
+  [selectPlayer],
+  (player) => player.selectedTrack.checksum
+);
+
+export const selectPlayingFromSelectedTrack = createSelector(
+  [selectPlayer],
+  (player) => player.selectedTrack.playing
+);
+
 export const selectArrangement = createSelector(
   [selectSelectedTrack],
   (selectedTrack) => selectedTrack.arrangement

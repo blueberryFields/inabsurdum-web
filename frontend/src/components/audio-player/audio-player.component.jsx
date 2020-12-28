@@ -11,6 +11,10 @@ import { selectCurrentUser } from '../../redux/user/user.selectors';
 import {
   selectSelectedTrack,
   selectCurrentSongPart,
+  selectChecksumFromSelectedTrack,
+  selectPlayingFromSelectedTrack,
+  selectArrangmentFromSelectedTrack,
+  selectPeaksFromSelectedTrack,
 } from '../../redux/player/player.selectors';
 
 import TrackControls from '../track-controls/track-controls.component';
@@ -18,14 +22,23 @@ import TrackControls from '../track-controls/track-controls.component';
 import './audio-player.styles.scss';
 
 const AudioPlayer = () => {
-  const selectedTrack = useSelector(selectSelectedTrack);
-  const { checksum, playing, peaks, arrangement } = selectedTrack;
-
   const user = useSelector(selectCurrentUser);
 
-  const currentSongPart = useSelector(selectCurrentSongPart);
-  const currentSongPartRef = useRef(currentSongPart);
+  const selectedTrack = useSelector(selectSelectedTrack);
+  const peaks = useSelector(selectPeaksFromSelectedTrack);
+  const checksum = useSelector(selectChecksumFromSelectedTrack);
+  const playing = useSelector(selectPlayingFromSelectedTrack);
 
+  const arrangement = useSelector(selectArrangmentFromSelectedTrack);
+  // Needed to avoid useEffect retriggering via deps
+  const arrangementRef = useRef(arrangement);
+  useEffect(() => {
+    arrangementRef.current = arrangement;
+  }, [arrangement]);
+
+  const currentSongPart = useSelector(selectCurrentSongPart);
+  // Needed to avoid useEffect retriggering via deps
+  const currentSongPartRef = useRef(currentSongPart);
   useEffect(() => {
     currentSongPartRef.current = currentSongPart;
   }, [currentSongPart]);
@@ -72,23 +85,20 @@ const AudioPlayer = () => {
 
   const calculateAndSetCurrentSongPart = useCallback(
     (currentTime) => {
-      if (arrangement) {
-        const songPart = arrangement.songParts.find((part) => {
+      if (arrangementRef.current) {
+        const songPart = arrangementRef.current.songParts.find((part) => {
           const startingAt = hmsToSeconds(part.startingAt);
           const endingAt = hmsToSeconds(part.endingAt);
           return currentTime > startingAt && currentTime < endingAt;
         });
         if (songPart) {
-          if (songPart.arrSequenceNo !== currentSongPartRef.current) {
+          if (songPart.arrSequenceNo !== currentSongPartRef.current)
             dispatch(setCurrentSongPart(songPart.arrSequenceNo));
-            console.log('song part: ', songPart.arrSequenceNo);
-          }
-        } else if (currentSongPartRef.current !== null) {
+        } else if (currentSongPartRef.current !== null)
           dispatch(setCurrentSongPart(null));
-        }
       }
     },
-    [arrangement, dispatch]
+    [dispatch]
   );
 
   const hmsToSeconds = (hms) => {
