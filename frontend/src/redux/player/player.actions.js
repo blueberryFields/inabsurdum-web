@@ -42,6 +42,11 @@ export const setArrangement = (arrangement) => ({
   payload: arrangement,
 });
 
+export const setArrangementClipBoard = (arrangementId) => ({
+  type: PlayerActionTypes.SET_ARRANGEMENT_CLIPBOARD,
+  payload: arrangementId,
+});
+
 export const setCurrentSongPart = (arrSequenceNo) => ({
   type: PlayerActionTypes.SET_CURRENT_SONGPART,
   payload: arrSequenceNo,

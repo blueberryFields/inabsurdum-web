@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   selectedTrack: {},
   showArrangementView: false,
   currentSongPart: null,
+  arrangementClipBoard: null,
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
@@ -77,6 +78,11 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           ...state.selectedTrack,
           arrangement: action.payload,
         },
+      };
+    case PlayerActionTypes.SET_ARRANGEMENT_CLIPBOARD:
+      return {
+        ...state,
+        arrangementClipBoard: action.payload,
       };
     case PlayerActionTypes.SET_CURRENT_SONGPART:
       return {

@@ -13,9 +13,31 @@
   font-size: 11px;
 
   .arrangement-header {
-    font-weight: 500;
-    text-transform: uppercase;
-    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    .title {
+      grid-column: 2;
+      margin: auto;
+      font-weight: 500;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .copy-paste {
+      margin: auto 0 auto auto;
+      display: flex;
+      flex-direction: row;
+      font-size: 8px;
+
+      .clickable {
+        cursor: pointer;
+      }
+
+      & div:last-child {
+        margin-left: 5px;
+      }
+    }
   }
 
   .add-part-icon {
@@ -41,6 +63,12 @@
 
       .add-part-icon {
         font-size: 25px;
+      }
+
+      .arrangement-header {
+        .copy-paste {
+          font-size: 10px;
+        }
       }
     }
   }

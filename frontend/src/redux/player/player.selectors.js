@@ -33,6 +33,11 @@ export const selectArrangmentFromSelectedTrack = createSelector(
   (player) => player.selectedTrack.arrangement
 );
 
+export const selectArrangementClipBoard = createSelector(
+  [selectPlayer],
+  (player) => player.arrangementClipBoard
+);
+
 export const selectChecksumFromSelectedTrack = createSelector(
   [selectPlayer],
   (player) => player.selectedTrack.checksum
