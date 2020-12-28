@@ -1,12 +1,16 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 import {
   selectArrangement,
   selectCurrentSongPart,
   selectSelectedTrack,
   selectArrangementClipBoard,
 } from '../../redux/player/player.selectors';
-import { setArrangementClipBoard } from '../../redux/player/player.actions';
+import {
+  setArrangementClipBoard,
+  setArrangement,
+} from '../../redux/player/player.actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -26,14 +30,28 @@ const ArrangementView = () => {
 
   const dispatch = useDispatch();
 
-  const pasteArrangement = () => {
-    console.log(
-      'Paste arrangment(' +
-        arrangementClipBoard +
-        ') to ' +
-        arrangement.id +
-        '.'
-    );
+  const pasteArrangement = async () => {
+    try {
+      const response = await axios.request({
+        method: 'get',
+        url:
+          'api/arrangement/paste/' +
+          arrangementClipBoard +
+          '/' +
+          arrangement.id,
+      });
+      dispatch(setArrangement(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+
+    // console.log(
+    //   'Paste arrangment(' +
+    //     arrangementClipBoard +
+    //     ') to ' +
+    //     arrangement.id +
+    //     '.'
+    // );
   };
 
   return (

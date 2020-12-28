@@ -38,7 +38,7 @@ public class Track {
   String peaks;
   
   @NotNull
-  @OneToOne
+  @OneToOne()
   @JoinColumn(name = "arrangement_id")
   Arrangement arrangement;
 

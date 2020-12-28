@@ -1,5 +1,6 @@
 package online.inabsurdum.jambox.arrangement;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -140,5 +141,32 @@ public class ArrangementServiceImpl implements ArrangementService {
       if (songPart.getArrSequenceNo() != i) songPart.setArrSequenceNo(i);
     }
     arrangementRepository.save(arrangement);
+  }
+
+  @Override
+  public Arrangement pasteArrangement(long from, long to)
+    throws ArrangementNotFoundException {
+    Arrangement fromArrangement = arrangementRepository.findById(from);
+    Arrangement toArrangement = arrangementRepository.findById(to);
+    if (
+      fromArrangement == null || toArrangement == null
+    ) throw new ArrangementNotFoundException("Couldnt find arrangment");
+
+    List<SongPart> fromSongParts = fromArrangement.getSongParts();
+    List<SongPart> toSongParts = new ArrayList<>();
+
+    for (SongPart fromSongPart : fromSongParts) {
+      SongPart toSongPart = new SongPart();
+      toSongPart.setArrSequenceNo(fromSongPart.getArrSequenceNo());
+      toSongPart.setTitle(fromSongPart.getTitle());
+      toSongPart.setStartingAt(fromSongPart.getStartingAt());
+      toSongPart.setEndingAt(fromSongPart.getEndingAt());
+      toSongPart.setLyrics(fromSongPart.getLyrics());
+      toSongParts.add(toSongPart);
+    }
+
+    toArrangement.setSongParts(toSongParts);
+
+    return arrangementRepository.save(toArrangement);
   }
 }

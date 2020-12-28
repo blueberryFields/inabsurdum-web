@@ -37,7 +37,7 @@ public class ArrangmentController {
 
       return new ResponseEntity<>(arrangement, HttpStatus.CREATED);
     } catch (Exception e) {
-      System.out.println(e);
+      e.printStackTrace();
       throw new ResponseStatusException(
         HttpStatus.INTERNAL_SERVER_ERROR,
         e.getMessage()
@@ -57,7 +57,7 @@ public class ArrangmentController {
 
       return new ResponseEntity<>(arrangement, HttpStatus.OK);
     } catch (Exception e) {
-      System.out.println(e);
+      e.printStackTrace();
       throw new ResponseStatusException(
         HttpStatus.INTERNAL_SERVER_ERROR,
         e.getMessage()
@@ -80,7 +80,7 @@ public class ArrangmentController {
 
       return new ResponseEntity<>(arrangement, HttpStatus.OK);
     } catch (Exception e) {
-      System.out.println(e);
+      e.printStackTrace();
       throw new ResponseStatusException(
         HttpStatus.INTERNAL_SERVER_ERROR,
         e.getMessage()
@@ -101,7 +101,7 @@ public class ArrangmentController {
 
       return new ResponseEntity<>(arrangement, HttpStatus.OK);
     } catch (Exception e) {
-      System.out.println(e);
+      e.printStackTrace();
       throw new ResponseStatusException(
         HttpStatus.INTERNAL_SERVER_ERROR,
         e.getMessage()
@@ -122,7 +122,24 @@ public class ArrangmentController {
 
       return new ResponseEntity<>(arrangement, HttpStatus.OK);
     } catch (Exception e) {
-      System.out.println(e);
+      e.printStackTrace();
+      throw new ResponseStatusException(
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        e.getMessage()
+      );
+    }
+  }
+
+  @GetMapping("/paste/{from}/{to}")
+  public ResponseEntity<Arrangement> pasteArrangement(
+    @PathVariable(name = "from") long from,
+    @PathVariable(name = "to") long to
+  ) {
+    try {
+      Arrangement arrangement = arrangementService.pasteArrangement(from, to);
+      return new ResponseEntity<>(arrangement, HttpStatus.OK);
+    } catch (Exception e) {
+      e.printStackTrace();
       throw new ResponseStatusException(
         HttpStatus.INTERNAL_SERVER_ERROR,
         e.getMessage()

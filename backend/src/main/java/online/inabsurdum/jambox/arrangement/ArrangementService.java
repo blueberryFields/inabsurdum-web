@@ -19,4 +19,6 @@ public interface ArrangementService {
     throws SongPartNotFoundException, SongPartCantBeMovedException;
 
   void reorderArrSequence(long arrangementId);
+
+  Arrangement pasteArrangement(long from, long to) throws ArrangementNotFoundException;
 }
