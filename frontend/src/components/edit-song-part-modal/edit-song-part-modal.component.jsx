@@ -63,7 +63,7 @@ const EditSongPartModal = ({
         placeholder="Namn"
         required
       />
-      <label for="startingAt">Börjar vid:</label>
+      <label htmlFor="startingAt">Börjar vid:</label>
       <ModalFormInput
         name="startingAt"
         type="time"
@@ -72,7 +72,7 @@ const EditSongPartModal = ({
         placeholder="Startar vid"
         step="1"
       />
-      <label for="startingAt">Slutar vid:</label>
+      <label htmlFor="startingAt">Slutar vid:</label>
       <ModalFormInput
         name="endingAt"
         type="time"

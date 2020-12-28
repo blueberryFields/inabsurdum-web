@@ -42,6 +42,11 @@ export const setArrangement = (arrangement) => ({
   payload: arrangement,
 });
 
+export const setCurrentSongPart = (arrSequenceNo) => ({
+  type: PlayerActionTypes.SET_CURRENT_SONGPART,
+  payload: arrSequenceNo,
+});
+
 export const toggleIsPlaylistCollapsed = (playlist) => ({
   type: PlayerActionTypes.TOGGLE_IS_PLAYLIST_COLLAPSED,
   payload: playlist,

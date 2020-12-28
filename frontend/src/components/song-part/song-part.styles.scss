@@ -1,5 +1,14 @@
 .song-part {
   border-top: 1px solid lightgrey;
+  padding: 0 5px;
+
+  background: white;
+  color: black;
+
+  &.is-playing {
+    background: black;
+    color: white;
+  }
 
   .part-header {
     text-transform: uppercase;
@@ -29,11 +38,6 @@
       .caret {
         font-size: 20px;
       }
-      // .carets {
-      //   height: 0.5rem;
-      //   display: flex;
-      //   flex-direction: column;
-      // }
     }
   }
 }

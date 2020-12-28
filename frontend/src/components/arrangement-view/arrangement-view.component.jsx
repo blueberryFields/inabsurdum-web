@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectArrangement,
+  selectCurrentSongPart,
   selectSelectedTrack,
 } from '../../redux/player/player.selectors';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,6 +19,8 @@ const ArrangementView = () => {
   const arrangement = useSelector(selectArrangement);
   const { title } = useSelector(selectSelectedTrack);
 
+  const currentSongPart = useSelector(selectCurrentSongPart);
+
   return (
     <div className="arrangement-view">
       <h3 className="arrangement-header">{title}</h3>
@@ -26,6 +29,7 @@ const ArrangementView = () => {
           key={idx}
           part={part}
           arrangementId={arrangement.id}
+          isPlaying={part.arrSequenceNo === currentSongPart}
           highestArrSeqNo={Math.max.apply(
             Math,
             arrangement.songParts.map((o) => {

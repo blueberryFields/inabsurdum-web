@@ -1,11 +1,17 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import WaveSurfer from 'wavesurfer.js';
 import LoadingSpinner from '../loading-spinner/loading-spinner.component';
-import { setPlaying } from '../../redux/player/player.actions';
+import {
+  setPlaying,
+  setCurrentSongPart,
+} from '../../redux/player/player.actions';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import { selectSelectedTrack } from '../../redux/player/player.selectors';
+import {
+  selectSelectedTrack,
+  selectCurrentSongPart,
+} from '../../redux/player/player.selectors';
 
 import TrackControls from '../track-controls/track-controls.component';
 
@@ -13,9 +19,16 @@ import './audio-player.styles.scss';
 
 const AudioPlayer = () => {
   const selectedTrack = useSelector(selectSelectedTrack);
-  const { checksum, playing, peaks } = selectedTrack;
+  const { checksum, playing, peaks, arrangement } = selectedTrack;
 
   const user = useSelector(selectCurrentUser);
+
+  const currentSongPart = useSelector(selectCurrentSongPart);
+  const currentSongPartRef = useRef(currentSongPart);
+
+  useEffect(() => {
+    currentSongPartRef.current = currentSongPart;
+  }, [currentSongPart]);
 
   const dispatch = useDispatch();
 
@@ -55,6 +68,32 @@ const AudioPlayer = () => {
         check = true;
     })(navigator.userAgent || navigator.vendor || window.opera);
     return check;
+  };
+
+  const calculateAndSetCurrentSongPart = useCallback(
+    (currentTime) => {
+      if (arrangement) {
+        const songPart = arrangement.songParts.find((part) => {
+          const startingAt = hmsToSeconds(part.startingAt);
+          const endingAt = hmsToSeconds(part.endingAt);
+          return currentTime > startingAt && currentTime < endingAt;
+        });
+        if (songPart) {
+          if (songPart.arrSequenceNo !== currentSongPartRef.current) {
+            dispatch(setCurrentSongPart(songPart.arrSequenceNo));
+            console.log('song part: ', songPart.arrSequenceNo);
+          }
+        } else if (currentSongPartRef.current !== null) {
+          dispatch(setCurrentSongPart(null));
+        }
+      }
+    },
+    [arrangement, dispatch]
+  );
+
+  const hmsToSeconds = (hms) => {
+    let a = hms.split(':');
+    return +a[0] * 60 * 60 + +a[1] * 60 + +a[2];
   };
 
   // This ref is needed to be able to configure waveform creation
@@ -103,11 +142,15 @@ const AudioPlayer = () => {
     });
 
     wavesurfer.current.on('audioprocess', function () {
-      setCurrentTime(formatCurrentTime(wavesurfer.current.getCurrentTime()));
+      const currentTime = wavesurfer.current.getCurrentTime();
+      setCurrentTime(formatCurrentTime(currentTime));
+      calculateAndSetCurrentSongPart(currentTime);
     });
 
     wavesurfer.current.on('seek', function () {
-      setCurrentTime(formatCurrentTime(wavesurfer.current.getCurrentTime()));
+      const currentTime = wavesurfer.current.getCurrentTime();
+      setCurrentTime(formatCurrentTime(currentTime));
+      calculateAndSetCurrentSongPart(currentTime);
     });
 
     wavesurfer.current.on('finish', function () {
@@ -123,7 +166,7 @@ const AudioPlayer = () => {
     return () => {
       wavesurfer.current.destroy();
     };
-  }, [checksum, dispatch, peaks, user.jwt]);
+  }, [checksum, dispatch, peaks, calculateAndSetCurrentSongPart, user.jwt]);
 
   // If selected track is set to playing, start playback of wavesurfer
   useEffect(() => {

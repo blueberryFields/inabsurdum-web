@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   playlists: [],
   selectedTrack: {},
   showArrangementView: false,
+  currentSongPart: null,
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
@@ -18,7 +19,6 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           isCollapsed: checkCollapsed(state.playlists, playlist),
         })),
       };
-
     case PlayerActionTypes.SELECT_TRACK:
       return {
         ...state,
@@ -77,6 +77,11 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           ...state.selectedTrack,
           arrangement: action.payload,
         },
+      };
+    case PlayerActionTypes.SET_CURRENT_SONGPART:
+      return {
+        ...state,
+        currentSongPart: action.payload,
       };
     case PlayerActionTypes.TOGGLE_IS_PLAYLIST_COLLAPSED:
       return {

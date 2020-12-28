@@ -17,7 +17,7 @@ import { setArrangement } from '../../redux/player/player.actions';
 
 import './song-part.styles.scss';
 
-const SongPart = ({ part, arrangementId, highestArrSeqNo }) => {
+const SongPart = ({ part, arrangementId, highestArrSeqNo, isPlaying }) => {
   const { id, title, startingAt, endingAt, lyrics, arrSequenceNo } = part;
 
   const dispatch = useDispatch();
@@ -63,7 +63,7 @@ const SongPart = ({ part, arrangementId, highestArrSeqNo }) => {
   };
 
   return (
-    <div className="song-part">
+    <div className={`song-part ${isPlaying ? ' is-playing' : ''}`}>
       <div className="part-header">
         <h4 className="title">{title}</h4>
         <div className="time-indication">

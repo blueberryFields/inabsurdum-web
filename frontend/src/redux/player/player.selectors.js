@@ -28,6 +28,11 @@ export const selectArrangement = createSelector(
   (selectedTrack) => selectedTrack.arrangement
 );
 
+export const selectCurrentSongPart = createSelector(
+  [selectPlayer],
+  (player) => player.currentSongPart
+);
+
 export const selectNextTrack = createSelector([selectPlayer], (player) =>
   getNextTrack(player.playlists, player.selectedTrack)
 );
@@ -47,4 +52,3 @@ export const selectShowArrangementView = createSelector(
   [selectPlayer],
   (player) => player.showArrangementView
 );
-
