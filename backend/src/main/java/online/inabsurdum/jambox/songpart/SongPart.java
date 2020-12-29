@@ -25,6 +25,7 @@ public class SongPart {
 
   String endingAt;
 
+  @Column(length=4096)
   String lyrics;
 
   public SongPart(SongPartDTO songPartDTO) {

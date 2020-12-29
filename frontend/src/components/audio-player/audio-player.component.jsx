@@ -55,15 +55,17 @@ const AudioPlayer = () => {
   const calculateAndSetCurrentSongPart = useCallback(
     (currentTime) => {
       if (arrangementRef.current) {
-        const songPart = arrangementRef.current.songParts.find((part) => {
-          const startingAt = hmsToSeconds(part.startingAt);
-          const endingAt = hmsToSeconds(part.endingAt);
-          return currentTime > startingAt && currentTime < endingAt;
-        });
-        if (songPart) {
-          if (songPart.arrSequenceNo !== currentSongPartRef.current) {
-            dispatch(setCurrentSongPart(songPart.arrSequenceNo));
-            setCurrentSongPartTitle(songPart.title);
+        const currentSongPart = arrangementRef.current.songParts.find(
+          (part) => {
+            const startingAt = hmsToSeconds(part.startingAt);
+            const endingAt = hmsToSeconds(part.endingAt);
+            return currentTime > startingAt && currentTime < endingAt;
+          }
+        );
+        if (currentSongPart) {
+          if (currentSongPart.arrSequenceNo !== currentSongPartRef.current) {
+            dispatch(setCurrentSongPart(currentSongPart.arrSequenceNo));
+            setCurrentSongPartTitle(currentSongPart.title);
           }
         } else if (currentSongPartRef.current !== null) {
           dispatch(setCurrentSongPart(null));
