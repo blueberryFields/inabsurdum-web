@@ -109,8 +109,9 @@ const AudioPlayer = () => {
       autoCenter: true,
       backend: 'MediaElement',
       barWidth: 2,
+      // This does not work with backend: MediaElement
       // xhr: {
-      //   requestHeaders: [
+      //   headers: [
       //     {
       //       key: 'Authorization',
       //       value: 'Bearer ' + user.jwt,
