@@ -51,6 +51,7 @@ const TrackOptionsModal = ({
         });
 
         dispatch(setPlaylists(response.data));
+        console.log(isSubscribed.current);
         if (isSubscribed.current === true) hide();
       } catch (error) {
         if (isSubscribed.current === true)
@@ -69,6 +70,7 @@ const TrackOptionsModal = ({
   };
 
   const removeTrack = async () => {
+    isSubscribed.current = true;
     try {
       const response = await axios.request({
         method: 'delete',
@@ -96,8 +98,9 @@ const TrackOptionsModal = ({
 
   // Cleanup, dont update state if this is set to false, otherwise there
   // will be a memory leak
-  const isSubscribed = useRef(false);
+  const isSubscribed = useRef();
   useEffect(() => {
+    isSubscribed.current = true;
     return () => (isSubscribed.current = false);
   });
 
