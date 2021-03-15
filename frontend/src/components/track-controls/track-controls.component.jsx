@@ -36,8 +36,8 @@ const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
   };
 
   const handleToggleArrangmentView = () => {
-    dispatch(toggleShowArrangmentView())
-  }
+    dispatch(toggleShowArrangmentView());
+  };
 
   const handleTogglePlay = () => {
     if (!isEmpty(selectedTrack)) {
@@ -101,11 +101,12 @@ const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
           className="toggle-arrangement-view"
           onClick={handleToggleArrangmentView}
         >
-          <FontAwesomeIcon
+          {/* <FontAwesomeIcon
             className="toggle-arrangement-view-icon"
             // faChalkboardTeacher or faCubes
             icon={faChalkboardTeacher}
-          />
+          /> */}
+          <div className="toggle-arrangement-view-text">Arrangemang</div>
         </div>
       </div>
     </div>
