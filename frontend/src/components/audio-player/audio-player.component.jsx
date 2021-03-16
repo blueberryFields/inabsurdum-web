@@ -98,6 +98,12 @@ const AudioPlayer = () => {
     wavesurfer.current.toggleScroll();
   };
 
+  const [volume, setVolume] = useState(0.75);
+
+  useEffect(() => {
+    if (wavesurfer.current) wavesurfer.current.setVolume(volume);
+  }, [volume]);
+
   // Create waveform and start listen to events
   useEffect(() => {
     wavesurfer.current = WaveSurfer.create({
@@ -121,7 +127,7 @@ const AudioPlayer = () => {
     });
 
     wavesurfer.current.on('ready', function () {
-      wavesurfer.current.setVolume(0.9);
+      wavesurfer.current.setVolume(volume);
       wavesurfer.current.play();
       dispatch(setPlaying(true));
       setShowSpinner(false);
@@ -198,6 +204,8 @@ const AudioPlayer = () => {
         selectedTrack={selectedTrack}
         toggleScroll={toggleScroll}
         scrollIsLocked={scrollIsLocked}
+        volume={volume}
+        setVolume={setVolume}
       />
       <div className="waveform">
         <div className="title">

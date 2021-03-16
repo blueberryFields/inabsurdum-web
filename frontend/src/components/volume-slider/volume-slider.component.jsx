@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import './volume-slider.styles.scss';
 
-const VolumeSlider = () => {
-  const [volume, setVolume] = useState(75);
-
+const VolumeSlider = ({ setVolume, volume }) => {
   return (
     <div className="volume-slider">
       <input
         orient="vertical"
-        onChange={(e) => setVolume(e.target.value)}
+        onChange={(e) => setVolume(e.target.value / 100)}
         type="range"
-        min="1"
+        min="0"
         max="100"
-        value={volume}
+        value={volume * 100}
         className="slider"
-      ></input>
+      />
     </div>
   );
 };

@@ -12,6 +12,8 @@ import {
   faLock,
   faLockOpen,
   faVolumeUp,
+  faVolumeOff,
+  faVolumeMute,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   togglePlaying,
@@ -25,7 +27,13 @@ import {
 import VolumeSlider from '../volume-slider/volume-slider.component';
 import './track-controls.styles.scss';
 
-const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
+const TrackControls = ({
+  selectedTrack,
+  toggleScroll,
+  scrollIsLocked,
+  volume,
+  setVolume,
+}) => {
   const dispatch = useDispatch();
   const nextTrack = useSelector(selectNextTrack);
   const previousTrack = useSelector(selectPreviousTrack);
@@ -72,7 +80,6 @@ const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
 
   return (
     <div className="track-controls">
-      
       <div className="left-controls">
         <div className="toggle-scroll" onClick={toggleScrollParent}>
           <FontAwesomeIcon
@@ -85,12 +92,20 @@ const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
             className="volume-button"
             onClick={() => setShowVolumeSlider(!showVolumeSlider)}
           >
-            <FontAwesomeIcon className="toggle-volume-icon" icon={faVolumeUp} />
+            <FontAwesomeIcon
+              className="toggle-volume-icon"
+              icon={volume ? faVolumeUp : faVolumeMute}
+            />
           </div>
-          {showVolumeSlider && <VolumeSlider className="volume-slider" />}
+          {showVolumeSlider && (
+            <VolumeSlider
+              setVolume={setVolume}
+              volume={volume}
+              className="volume-slider"
+            />
+          )}
         </div>
       </div>
-      {/* </div> */}
       <div className="playback-controls">
         <div onClick={handleSelectPreviousTrack} className="step-backward">
           <FontAwesomeIcon
