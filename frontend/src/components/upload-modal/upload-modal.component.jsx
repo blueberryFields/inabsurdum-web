@@ -99,28 +99,33 @@ const UploadModal = ({ hide }) => {
           let percentCompleted = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
           );
-          setState((prevState) => ({
-            ...prevState,
-            uploadProgress: percentCompleted,
-          }));
+          if (isSubscribed.current === true)
+            setState((prevState) => ({
+              ...prevState,
+              uploadProgress: percentCompleted,
+            }));
         },
         data: bodyFormData,
       });
 
-      dispatch(setPlaylists(response.data));
-      setState((prevState) => ({
-        ...prevState,
-        title: '',
-        selectedPlaylist: 'Välj spellista',
-        selectedFile: null,
-        showLoadingSpinner: false,
-        message: 'Filuppladdning lyckades.',
-      }));
+      if (isSubscribed.current === true) {
+        console.log('Trying to set state!');
+        dispatch(setPlaylists(response.data));
+        setState((prevState) => ({
+          ...prevState,
+          title: '',
+          selectedPlaylist: 'Välj spellista',
+          selectedFile: null,
+          showLoadingSpinner: false,
+          message: 'Filuppladdning lyckades.',
+        }));
+      }
     } catch (error) {
       if (isSubscribed.current === true)
         setState((prevState) => ({
           ...prevState,
           showLoadingSpinner: false,
+          showProgbar: false,
           message: 'Någonting gick fel.',
         }));
     }
@@ -137,8 +142,9 @@ const UploadModal = ({ hide }) => {
 
   // Cleanup, dont update state if this is set to false, otherwise there
   // will be a memory leak
-  const isSubscribed = useRef(false);
+  const isSubscribed = useRef();
   useEffect(() => {
+    isSubscribed.current = true;
     return () => (isSubscribed.current = false);
   });
 

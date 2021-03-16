@@ -55,15 +55,17 @@ const AudioPlayer = () => {
   const calculateAndSetCurrentSongPart = useCallback(
     (currentTime) => {
       if (arrangementRef.current) {
-        const songPart = arrangementRef.current.songParts.find((part) => {
-          const startingAt = hmsToSeconds(part.startingAt);
-          const endingAt = hmsToSeconds(part.endingAt);
-          return currentTime > startingAt && currentTime < endingAt;
-        });
-        if (songPart) {
-          if (songPart.arrSequenceNo !== currentSongPartRef.current) {
-            dispatch(setCurrentSongPart(songPart.arrSequenceNo));
-            setCurrentSongPartTitle(songPart.title);
+        const currentSongPart = arrangementRef.current.songParts.find(
+          (part) => {
+            const startingAt = hmsToSeconds(part.startingAt);
+            const endingAt = hmsToSeconds(part.endingAt);
+            return currentTime > startingAt && currentTime < endingAt;
+          }
+        );
+        if (currentSongPart) {
+          if (currentSongPart.arrSequenceNo !== currentSongPartRef.current) {
+            dispatch(setCurrentSongPart(currentSongPart.arrSequenceNo));
+            setCurrentSongPartTitle(currentSongPart.title);
           }
         } else if (currentSongPartRef.current !== null) {
           dispatch(setCurrentSongPart(null));
@@ -96,6 +98,12 @@ const AudioPlayer = () => {
     wavesurfer.current.toggleScroll();
   };
 
+  const [volume, setVolume] = useState(0.75);
+
+  useEffect(() => {
+    if (wavesurfer.current) wavesurfer.current.setVolume(volume);
+  }, [volume]);
+
   // Create waveform and start listen to events
   useEffect(() => {
     wavesurfer.current = WaveSurfer.create({
@@ -107,8 +115,9 @@ const AudioPlayer = () => {
       autoCenter: true,
       backend: 'MediaElement',
       barWidth: 2,
+      // This does not work with backend: MediaElement
       // xhr: {
-      //   requestHeaders: [
+      //   headers: [
       //     {
       //       key: 'Authorization',
       //       value: 'Bearer ' + user.jwt,
@@ -118,7 +127,7 @@ const AudioPlayer = () => {
     });
 
     wavesurfer.current.on('ready', function () {
-      wavesurfer.current.setVolume(0.9);
+      wavesurfer.current.setVolume(volume);
       wavesurfer.current.play();
       dispatch(setPlaying(true));
       setShowSpinner(false);
@@ -195,6 +204,8 @@ const AudioPlayer = () => {
         selectedTrack={selectedTrack}
         toggleScroll={toggleScroll}
         scrollIsLocked={scrollIsLocked}
+        volume={volume}
+        setVolume={setVolume}
       />
       <div className="waveform">
         <div className="title">

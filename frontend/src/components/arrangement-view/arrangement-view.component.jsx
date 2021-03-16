@@ -50,6 +50,36 @@ const ArrangementView = () => {
     <div className="arrangement-view">
       <h3 className="arrangement-header">
         <div className="title">{title}</div>
+      </h3>
+      {arrangement.songParts.map((part, idx) => (
+        <SongPart
+          key={idx}
+          part={part}
+          arrangementId={arrangement.id}
+          isPlaying={part.arrSequenceNo === currentSongPart}
+          highestArrSeqNo={Math.max.apply(
+            Math,
+            arrangement.songParts.map((o) => {
+              return o.arrSequenceNo;
+            })
+          )}
+        />
+      ))}
+      <div className="footer">
+        <ToggleContent
+          toggle={(show) => (
+            <FontAwesomeIcon
+              className="add-part-icon"
+              icon={faPlusCircle}
+              onClick={show}
+            />
+          )}
+          content={(hide) => (
+            <ModalFrame hide={hide} header={'Skapa låt-del'}>
+              <CreateSongPartModal id={arrangement.id} hide={hide} />
+            </ModalFrame>
+          )}
+        />
         <div className="copy-paste">
           <div
             className={`${
@@ -75,35 +105,7 @@ const ArrangementView = () => {
             )}
           />
         </div>
-      </h3>
-      {arrangement.songParts.map((part, idx) => (
-        <SongPart
-          key={idx}
-          part={part}
-          arrangementId={arrangement.id}
-          isPlaying={part.arrSequenceNo === currentSongPart}
-          highestArrSeqNo={Math.max.apply(
-            Math,
-            arrangement.songParts.map((o) => {
-              return o.arrSequenceNo;
-            })
-          )}
-        />
-      ))}
-      <ToggleContent
-        toggle={(show) => (
-          <FontAwesomeIcon
-            className="add-part-icon"
-            icon={faPlusCircle}
-            onClick={show}
-          />
-        )}
-        content={(hide) => (
-          <ModalFrame hide={hide} header={'Skapa låt-del'}>
-            <CreateSongPartModal id={arrangement.id} hide={hide} />
-          </ModalFrame>
-        )}
-      />
+      </div>
     </div>
   );
 };

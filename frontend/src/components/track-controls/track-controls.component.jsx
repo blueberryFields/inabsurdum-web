@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import axios from 'axios';
@@ -11,8 +11,9 @@ import {
   faStepBackward,
   faLock,
   faLockOpen,
-  // faCubes,
-  faChalkboardTeacher,
+  faVolumeUp,
+  faVolumeOff,
+  faVolumeMute,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   togglePlaying,
@@ -23,21 +24,29 @@ import {
   selectNextTrack,
   selectPreviousTrack,
 } from '../../redux/player/player.selectors';
-
+import VolumeSlider from '../volume-slider/volume-slider.component';
 import './track-controls.styles.scss';
 
-const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
+const TrackControls = ({
+  selectedTrack,
+  toggleScroll,
+  scrollIsLocked,
+  volume,
+  setVolume,
+}) => {
   const dispatch = useDispatch();
   const nextTrack = useSelector(selectNextTrack);
   const previousTrack = useSelector(selectPreviousTrack);
+
+  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
 
   const toggleScrollParent = () => {
     toggleScroll();
   };
 
   const handleToggleArrangmentView = () => {
-    dispatch(toggleShowArrangmentView())
-  }
+    dispatch(toggleShowArrangmentView());
+  };
 
   const handleTogglePlay = () => {
     if (!isEmpty(selectedTrack)) {
@@ -78,6 +87,24 @@ const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
             icon={scrollIsLocked ? faLock : faLockOpen}
           />
         </div>
+        <div className="volume-control">
+          <div
+            className="volume-button"
+            onClick={() => setShowVolumeSlider(!showVolumeSlider)}
+          >
+            <FontAwesomeIcon
+              className="toggle-volume-icon"
+              icon={volume ? faVolumeUp : faVolumeMute}
+            />
+          </div>
+          {showVolumeSlider && (
+            <VolumeSlider
+              setVolume={setVolume}
+              volume={volume}
+              className="volume-slider"
+            />
+          )}
+        </div>
       </div>
       <div className="playback-controls">
         <div onClick={handleSelectPreviousTrack} className="step-backward">
@@ -101,11 +128,7 @@ const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
           className="toggle-arrangement-view"
           onClick={handleToggleArrangmentView}
         >
-          <FontAwesomeIcon
-            className="toggle-arrangement-view-icon"
-            // faChalkboardTeacher or faCubes
-            icon={faChalkboardTeacher}
-          />
+          <div className="toggle-arrangement-view-text">Arrangemang</div>
         </div>
       </div>
     </div>

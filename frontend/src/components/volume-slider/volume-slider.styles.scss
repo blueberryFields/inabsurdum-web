@@ -1,0 +1,29 @@
+.volume-slider {
+  z-index: 2;
+  .slider {
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-vertical; /* WebKit */
+    background: rgb(141, 141, 141); /* Grey background */
+    outline: none; /* Remove outline */
+    padding: 0;
+    width: 10px;
+    height: 75px;
+    margin: auto;
+    border-radius: 2px;
+  }
+}
+
+.slider::-webkit-slider-thumb {
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 10px;
+  border-radius: 2px;
+  background: white;
+  box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.4),
+    0px 6px 8px 0px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  border: none;
+}
