@@ -101,11 +101,6 @@ const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
           className="toggle-arrangement-view"
           onClick={handleToggleArrangmentView}
         >
-          {/* <FontAwesomeIcon
-            className="toggle-arrangement-view-icon"
-            // faChalkboardTeacher or faCubes
-            icon={faChalkboardTeacher}
-          /> */}
           <div className="toggle-arrangement-view-text">Arrangemang</div>
         </div>
       </div>

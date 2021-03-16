@@ -13,15 +13,28 @@
   font-size: 11px;
 
   .arrangement-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
 
     .title {
-      grid-column: 2;
       margin: auto;
       font-weight: 500;
       text-transform: uppercase;
       text-align: center;
+      max-width: 100%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+
+  .footer {
+    display: flex;
+
+    .add-part-icon {
+      font-size: 20px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      cursor: pointer;
     }
 
     .copy-paste {
@@ -40,46 +53,21 @@
     }
   }
 
-  .add-part-icon {
-    font-size: 20px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    cursor: pointer;
-  }
-
   @media screen and (min-width: 600px) {
     & {
       font-size: 13px;
-
-      .add-part-icon {
-        font-size: 25px;
-      }
     }
   }
 
   @media screen and (min-width: 992px) {
     & {
       font-size: 14px;
-
-      .add-part-icon {
-        font-size: 25px;
-      }
-
-      .arrangement-header {
-        .copy-paste {
-          font-size: 10px;
-        }
-      }
     }
   }
 
   @media screen and (min-width: 1300px) {
     & {
       font-size: 15px;
-
-      .add-part-icon {
-        font-size: 30px;
-      }
     }
   }
 
