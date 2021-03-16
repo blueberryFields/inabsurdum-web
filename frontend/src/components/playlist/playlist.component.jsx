@@ -51,19 +51,18 @@ const Playlist = ({ playlist }) => {
           )}
         />
 
-        <h3
-          className={`${tracks.length > 0 ? 'clickable' : ''}
-          title`}
+        <div
+          className={`${tracks.length > 0 ? 'clickable' : ''} click-area`}
           onClick={toggleIsCollapsed}
         >
-          {title.toUpperCase()}
-        </h3>
-        <FontAwesomeIcon
-          onClick={toggleIsCollapsed}
-          className={`${tracks.length > 0 ? 'clickable' : ''}
-          toggle-collapse-icon`}
-          icon={playlist.isCollapsed ? faChevronDown : faChevronUp}
-        />
+          <h3 className="title" >
+            {title.toUpperCase()}
+          </h3>
+          <FontAwesomeIcon
+            className="toggle-collapse-icon"
+            icon={playlist.isCollapsed ? faChevronDown : faChevronUp}
+          />
+        </div>
       </div>
       {!playlist.isCollapsed && (
         <table>
