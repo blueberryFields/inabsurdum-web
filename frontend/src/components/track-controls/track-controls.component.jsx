@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import axios from 'axios';
@@ -11,8 +11,7 @@ import {
   faStepBackward,
   faLock,
   faLockOpen,
-  // faCubes,
-  faChalkboardTeacher,
+  faVolumeUp,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   togglePlaying,
@@ -23,13 +22,15 @@ import {
   selectNextTrack,
   selectPreviousTrack,
 } from '../../redux/player/player.selectors';
-
+import VolumeSlider from '../volume-slider/volume-slider.component';
 import './track-controls.styles.scss';
 
 const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
   const dispatch = useDispatch();
   const nextTrack = useSelector(selectNextTrack);
   const previousTrack = useSelector(selectPreviousTrack);
+
+  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
 
   const toggleScrollParent = () => {
     toggleScroll();
@@ -71,6 +72,7 @@ const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
 
   return (
     <div className="track-controls">
+      
       <div className="left-controls">
         <div className="toggle-scroll" onClick={toggleScrollParent}>
           <FontAwesomeIcon
@@ -78,7 +80,17 @@ const TrackControls = ({ selectedTrack, toggleScroll, scrollIsLocked }) => {
             icon={scrollIsLocked ? faLock : faLockOpen}
           />
         </div>
+        <div className="volume-control">
+          <div
+            className="volume-button"
+            onClick={() => setShowVolumeSlider(!showVolumeSlider)}
+          >
+            <FontAwesomeIcon className="toggle-volume-icon" icon={faVolumeUp} />
+          </div>
+          {showVolumeSlider && <VolumeSlider className="volume-slider" />}
+        </div>
       </div>
+      {/* </div> */}
       <div className="playback-controls">
         <div onClick={handleSelectPreviousTrack} className="step-backward">
           <FontAwesomeIcon

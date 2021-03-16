@@ -1,4 +1,5 @@
 .track-controls {
+  
   z-index: 10;
   // min-width: 58px;
   position: absolute;
@@ -35,6 +36,42 @@
         margin: auto;
         font-size: 12px;
         padding: 5px;
+      }
+    }
+
+    .volume-control {
+      position: relative;
+      margin: auto;
+      display: flex;
+
+      .volume-button {
+        z-index: 1;
+        margin: auto;
+        width: 1.5rem;
+        border-radius: 3px;
+        display: flex;
+        background: white;
+        box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.4),
+          0px 6px 8px 0px rgba(0, 0, 0, 0.5);
+        border: none;
+        color: black;
+        cursor: pointer;
+
+        &:hover {
+          color: grey;
+        }
+
+        .toggle-volume-icon {
+          margin: auto;
+          font-size: 12px;
+          padding: 5px;
+        }
+      }
+
+      .volume-slider {
+        position: absolute;
+        left: 7px;
+        bottom: 22px;
       }
     }
   }
@@ -123,7 +160,6 @@
     .toggle-arrangement-view {
       z-index: 1;
       margin: auto;
-      // width: 1.5rem;
       border-radius: 3px;
       display: flex;
       background: white;
