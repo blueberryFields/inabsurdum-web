@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CustomButton from '../custom-button/custom-button.component';
@@ -11,28 +11,22 @@ import './sign-in.styles.scss';
 const SignIn = () => {
   const dispatch = useDispatch();
 
-  const [state, setState] = useState({
+  const [credentials, setCredentials] = useState({
     username: '',
     password: '',
-    message: '',
   });
+
+  const [message, setMessage] = useState();
 
   const handleChange = (event) => {
     const { value, name } = event.target;
 
-    setState({ ...state, [name]: value });
+    setCredentials({ ...credentials, [name]: value });
   };
-
-  const setMessage = useCallback((message) => {
-    setState((prevState) => ({
-      ...prevState,
-      message,
-    }));
-  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { username, password } = state;
+    const { username, password } = credentials;
     if (username && password) {
       dispatch(signInStart({ username, password }));
     } else {
@@ -40,6 +34,7 @@ const SignIn = () => {
     }
   };
 
+  // Check for errors and set message accordingly
   const error = useSelector(selectError);
   useEffect(() => {
     if (error) {
@@ -55,7 +50,7 @@ const SignIn = () => {
         <FormInput
           name="username"
           type="text"
-          value={state.username}
+          value={credentials.username}
           handleChange={handleChange}
           label="Användarnamn"
           required
@@ -63,13 +58,13 @@ const SignIn = () => {
         <FormInput
           name="password"
           type="password"
-          value={state.password}
+          value={credentials.password}
           handleChange={handleChange}
           label="Lösenord"
           required
         />
         <CustomButton type="submit">Logga in</CustomButton>
-        <div className="message">{state.message}</div>
+        <div className="message">{message}</div>
       </form>
     </div>
   );
