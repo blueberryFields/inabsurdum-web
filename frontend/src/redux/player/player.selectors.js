@@ -9,6 +9,11 @@ export const selectPlaylists = createSelector(
   (player) => player.playlists
 );
 
+export const selectIsLoading = createSelector(
+  [selectPlayer],
+  (player) => player.isLoading
+);
+
 export const selectPlaylistContainingTrack = memoize((trackId) =>
   createSelector([selectPlayer], (player) => {
     const playlist = player.playlists.filter((playlist) =>

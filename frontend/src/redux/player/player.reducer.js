@@ -8,7 +8,7 @@ const INITIAL_STATE = {
   showArrangementView: false,
   currentSongPart: null,
   arrangementClipBoard: null,
-  loading: false,
+  isLoading: false,
   error: null,
 };
 
@@ -17,7 +17,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case PlayerActionTypes.FETCH_PLAYLISTS_START:
       return {
         ...state,
-        loading: true,
+        isLoading: true,
       };
     case PlayerActionTypes.FETCH_PLAYLISTS_SUCCESS:
       return {
@@ -26,7 +26,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           ...playlist,
           isCollapsed: checkCollapsed(state.playlists, playlist),
         })),
-        loading: false,
+        isLoading: false,
         error: null,
       };
     case PlayerActionTypes.FETCH_PLAYLISTS_FAILURE:
