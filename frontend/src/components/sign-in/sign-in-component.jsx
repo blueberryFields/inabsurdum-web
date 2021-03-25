@@ -38,7 +38,7 @@ const SignIn = () => {
   const error = useSelector(selectError);
   useEffect(() => {
     if (error) {
-      if (error.response.status === 500) {
+      if (error.response && error.response.status === 500) {
         setMessage('Fel användarnamn eller lösenord!');
       } else setMessage('Någonting gick fel.');
     }

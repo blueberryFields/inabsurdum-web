@@ -8,6 +8,8 @@ const INITIAL_STATE = {
   showArrangementView: false,
   currentSongPart: null,
   arrangementClipBoard: null,
+  loading: false,
+  error: null,
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
