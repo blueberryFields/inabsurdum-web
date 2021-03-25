@@ -94,14 +94,28 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         showArrangementView:
           !isEmpty(state.selectedTrack) && !state.showArrangementView,
       };
-    case tracksActionTypes.SET_ARRANGEMENT:
+    case tracksActionTypes.PASTE_ARRANGEMENT_SUCCESS:
       return {
         ...state,
+        error: null,
         selectedTrack: {
           ...state.selectedTrack,
           arrangement: action.payload,
         },
       };
+    case tracksActionTypes.PASTE_ARRANGEMENT_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    // case tracksActionTypes.SET_ARRANGEMENT:
+    //   return {
+    //     ...state,
+    //     selectedTrack: {
+    //       ...state.selectedTrack,
+    //       arrangement: action.payload,
+    //     },
+    //   };
     case tracksActionTypes.SET_ARRANGEMENT_CLIPBOARD:
       return {
         ...state,

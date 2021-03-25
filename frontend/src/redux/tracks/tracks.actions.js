@@ -2,7 +2,7 @@ import tracksActionTypes from './tracks.types';
 
 export const fetchPlaylistsStart = (user) => ({
   type: tracksActionTypes.FETCH_PLAYLISTS_START,
-  payload: user
+  payload: user,
 });
 
 export const fetchPlaylistsSuccess = (playlists) => ({
@@ -50,6 +50,21 @@ export const setPlaying = (boolean) => ({
 
 export const toggleShowArrangmentView = () => ({
   type: tracksActionTypes.TOGGLE_SHOW_ARRANGEMENT_VIEW,
+});
+
+export const pasteArrangementStart = (arrangment) => ({
+  type: tracksActionTypes.PASTE_ARRANGEMENT_START,
+  payload: arrangment,
+});
+
+export const pasteArrangementSuccess = (arrangment) => ({
+  type: tracksActionTypes.PASTE_ARRANGEMENT_SUCCESS,
+  payload: arrangment,
+});
+
+export const pasteArrangementFailure = (error) => ({
+  type: tracksActionTypes.PASTE_ARRANGEMENT_FAILURE,
+  payload: error,
 });
 
 export const setArrangement = (arrangement) => ({

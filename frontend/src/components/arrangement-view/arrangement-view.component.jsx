@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
 import {
   selectArrangement,
   selectCurrentSongPart,
@@ -9,7 +8,7 @@ import {
 } from '../../redux/tracks/tracks.selectors';
 import {
   setArrangementClipBoard,
-  setArrangement,
+  pasteArrangementStart,
 } from '../../redux/tracks/tracks.actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
@@ -31,19 +30,25 @@ const ArrangementView = () => {
   const dispatch = useDispatch();
 
   const pasteArrangement = async () => {
-    try {
-      const response = await axios.request({
-        method: 'get',
-        url:
-          'api/arrangement/paste/' +
-          arrangementClipBoard +
-          '/' +
-          arrangement.id,
-      });
-      dispatch(setArrangement(response.data));
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(
+      pasteArrangementStart({
+        arrangement: arrangementClipBoard,
+        id: arrangement.id,
+      })
+    );
+    // try {
+    //   const response = await axios.request({
+    //     method: 'get',
+    //     url:
+    //       'api/arrangement/paste/' +
+    //       arrangementClipBoard +
+    //       '/' +
+    //       arrangement.id,
+    //   });
+    //   dispatch(setArrangement(response.data));
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   return (
