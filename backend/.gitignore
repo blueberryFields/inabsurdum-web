@@ -38,6 +38,7 @@ database/
 
 ### Audiofiles ### 
 tracks/
+tracks
 temp-files
 
 ### NGINX - need to have different files for production and development ###
