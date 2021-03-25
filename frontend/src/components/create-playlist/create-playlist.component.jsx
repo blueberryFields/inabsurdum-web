@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import { setPlaylists } from '../../redux/player/player.actions';
+import { setPlaylists } from '../../redux/tracks/tracks.actions';
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 

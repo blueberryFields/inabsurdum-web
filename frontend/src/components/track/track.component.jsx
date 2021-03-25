@@ -10,10 +10,9 @@ import {
   faEllipsisH,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { selectIsTrackSelected } from '../../redux/player/player.selectors';
-import { selectTrack, togglePlaying } from '../../redux/player/player.actions';
+import { selectIsTrackSelected } from '../../redux/tracks/tracks.selectors';
+import { selectTrack, togglePlaying } from '../../redux/tracks/tracks.actions';
 import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component';
-// import TrackOptions from '../track-options/track-options.component';
 import ModalFrame from '../../pop-ups/modal-frame/modal-frame.component';
 import TrackOptionsModal from '../track-options-modal/track-options-modal.component';
 

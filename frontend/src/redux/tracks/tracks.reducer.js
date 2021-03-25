@@ -1,5 +1,5 @@
-import PlayerActionTypes from './player.types';
-import { getNextTrack, getPreviousTrack, checkCollapsed } from './player.utils';
+import tracksActionTypes from './tracks.types';
+import { getNextTrack, getPreviousTrack, checkCollapsed } from './tracks.utils';
 import isEmpty from 'lodash.isempty';
 
 const INITIAL_STATE = {
@@ -14,12 +14,12 @@ const INITIAL_STATE = {
 
 const playerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case PlayerActionTypes.FETCH_PLAYLISTS_START:
+    case tracksActionTypes.FETCH_PLAYLISTS_START:
       return {
         ...state,
         isLoading: true,
       };
-    case PlayerActionTypes.FETCH_PLAYLISTS_SUCCESS:
+    case tracksActionTypes.FETCH_PLAYLISTS_SUCCESS:
       return {
         ...state,
         playlists: action.payload.map((playlist) => ({
@@ -29,13 +29,13 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         isLoading: false,
         error: null,
       };
-    case PlayerActionTypes.FETCH_PLAYLISTS_FAILURE:
+    case tracksActionTypes.FETCH_PLAYLISTS_FAILURE:
       return {
         ...state,
         isLoading: false,
         error: action.payload,
       };
-    case PlayerActionTypes.SET_PLAYLISTS:
+    case tracksActionTypes.SET_PLAYLISTS:
       return {
         ...state,
         playlists: action.payload.map((playlist) => ({
@@ -43,12 +43,12 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           isCollapsed: checkCollapsed(state.playlists, playlist),
         })),
       };
-    case PlayerActionTypes.SELECT_TRACK:
+    case tracksActionTypes.SELECT_TRACK:
       return {
         ...state,
         selectedTrack: { ...action.payload, playing: false },
       };
-    case PlayerActionTypes.SELECT_NEXT_TRACK:
+    case tracksActionTypes.SELECT_NEXT_TRACK:
       return {
         ...state,
         selectedTrack: {
@@ -56,7 +56,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           playing: false,
         },
       };
-    case PlayerActionTypes.SELECT_PREVIOUS_TRACK:
+    case tracksActionTypes.SELECT_PREVIOUS_TRACK:
       return {
         ...state,
         selectedTrack: {
@@ -64,12 +64,12 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           playing: false,
         },
       };
-    case PlayerActionTypes.UNSELECT_TRACK:
+    case tracksActionTypes.UNSELECT_TRACK:
       return {
         ...state,
         selectedTrack: {},
       };
-    case PlayerActionTypes.TOGGLE_PLAYING:
+    case tracksActionTypes.TOGGLE_PLAYING:
       return {
         ...state,
         // Toggle only if there is a selected track
@@ -80,7 +80,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
               playing: !state.selectedTrack.playing,
             },
       };
-    case PlayerActionTypes.SET_PLAYING:
+    case tracksActionTypes.SET_PLAYING:
       return {
         ...state,
         selectedTrack: {
@@ -88,13 +88,13 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           playing: action.payload,
         },
       };
-    case PlayerActionTypes.TOGGLE_SHOW_ARRANGEMENT_VIEW:
+    case tracksActionTypes.TOGGLE_SHOW_ARRANGEMENT_VIEW:
       return {
         ...state,
         showArrangementView:
           !isEmpty(state.selectedTrack) && !state.showArrangementView,
       };
-    case PlayerActionTypes.SET_ARRANGEMENT:
+    case tracksActionTypes.SET_ARRANGEMENT:
       return {
         ...state,
         selectedTrack: {
@@ -102,17 +102,17 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           arrangement: action.payload,
         },
       };
-    case PlayerActionTypes.SET_ARRANGEMENT_CLIPBOARD:
+    case tracksActionTypes.SET_ARRANGEMENT_CLIPBOARD:
       return {
         ...state,
         arrangementClipBoard: action.payload,
       };
-    case PlayerActionTypes.SET_CURRENT_SONGPART:
+    case tracksActionTypes.SET_CURRENT_SONGPART:
       return {
         ...state,
         currentSongPart: action.payload,
       };
-    case PlayerActionTypes.TOGGLE_IS_PLAYLIST_COLLAPSED:
+    case tracksActionTypes.TOGGLE_IS_PLAYLIST_COLLAPSED:
       return {
         ...state,
         playlists: state.playlists.map((playlist) =>
@@ -121,7 +121,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
             : playlist
         ),
       };
-    case PlayerActionTypes.SET_PLAYLIST_IS_COLLAPSED:
+    case tracksActionTypes.SET_PLAYLIST_IS_COLLAPSED:
       return {
         ...state,
         playlists: state.playlists.map((playlist) =>

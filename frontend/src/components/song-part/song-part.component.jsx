@@ -13,7 +13,7 @@ import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component
 import ModalFrame from '../../pop-ups/modal-frame/modal-frame.component';
 import EditSongPartModal from '../edit-song-part-modal/edit-song-part-modal.component';
 import ConfirmModal from '../confirm-modal/confirm-modal.component';
-import { setArrangement } from '../../redux/player/player.actions';
+import { setArrangement } from '../../redux/tracks/tracks.actions';
 
 import './song-part.styles.scss';
 

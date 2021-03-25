@@ -11,9 +11,9 @@ import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import {
   selectPlaylists,
   selectPlaylistContainingTrack,
-} from '../../redux/player/player.selectors';
+} from '../../redux/tracks/tracks.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import { setPlaylists } from '../../redux/player/player.actions';
+import { setPlaylists } from '../../redux/tracks/tracks.actions';
 
 import './track-options-modal.styles.scss';
 

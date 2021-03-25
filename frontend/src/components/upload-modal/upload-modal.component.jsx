@@ -8,9 +8,9 @@ import SelectOrCreatePlaylist from '../select-or-create-playlist/select-or-creat
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import LoadingProgBar from '../loading-prog-bar/loading-prog-bar.component';
-import { selectPlaylists } from '../../redux/player/player.selectors';
+import { selectPlaylists } from '../../redux/tracks/tracks.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import { setPlaylists } from '../../redux/player/player.actions';
+import { setPlaylists } from '../../redux/tracks/tracks.actions';
 
 import './upload-modal.styles.scss';
 

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
-import { setArrangement } from '../../redux/player/player.actions';
+import { setArrangement } from '../../redux/tracks/tracks.actions';
 
 import './create-song-part-modal.styles.scss';
 

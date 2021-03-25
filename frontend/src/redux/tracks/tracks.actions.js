@@ -1,78 +1,78 @@
-import PlayerActionTypes from './player.types';
+import tracksActionTypes from './tracks.types';
 
 export const fetchPlaylistsStart = (user) => ({
-  type: PlayerActionTypes.FETCH_PLAYLISTS_START,
+  type: tracksActionTypes.FETCH_PLAYLISTS_START,
   payload: user
 });
 
 export const fetchPlaylistsSuccess = (playlists) => ({
-  type: PlayerActionTypes.FETCH_PLAYLISTS_SUCCESS,
+  type: tracksActionTypes.FETCH_PLAYLISTS_SUCCESS,
   payload: playlists,
 });
 
 export const fetchPlaylistsFailure = (error) => ({
-  type: PlayerActionTypes.FETCH_PLAYLISTS_FAILURE,
+  type: tracksActionTypes.FETCH_PLAYLISTS_FAILURE,
   payload: error,
 });
 
 export const setPlaylists = (playlists) => ({
-  type: PlayerActionTypes.SET_PLAYLISTS,
+  type: tracksActionTypes.SET_PLAYLISTS,
   payload: playlists,
 });
 
 export const selectTrack = (track) => ({
-  type: PlayerActionTypes.SELECT_TRACK,
+  type: tracksActionTypes.SELECT_TRACK,
   payload: track,
 });
 
 export const selectNextTrack = (selectedTrack) => ({
-  type: PlayerActionTypes.SELECT_NEXT_TRACK,
+  type: tracksActionTypes.SELECT_NEXT_TRACK,
   payload: selectedTrack,
 });
 
 export const selectPreviousTrack = (selectedTrack) => ({
-  type: PlayerActionTypes.SELECT_PREVIOUS_TRACK,
+  type: tracksActionTypes.SELECT_PREVIOUS_TRACK,
   payload: selectedTrack,
 });
 
 export const unselectTrack = () => ({
-  type: PlayerActionTypes.UNSELECT_TRACK,
+  type: tracksActionTypes.UNSELECT_TRACK,
 });
 
 export const togglePlaying = () => ({
-  type: PlayerActionTypes.TOGGLE_PLAYING,
+  type: tracksActionTypes.TOGGLE_PLAYING,
 });
 
 export const setPlaying = (boolean) => ({
-  type: PlayerActionTypes.SET_PLAYING,
+  type: tracksActionTypes.SET_PLAYING,
   payload: boolean,
 });
 
 export const toggleShowArrangmentView = () => ({
-  type: PlayerActionTypes.TOGGLE_SHOW_ARRANGEMENT_VIEW,
+  type: tracksActionTypes.TOGGLE_SHOW_ARRANGEMENT_VIEW,
 });
 
 export const setArrangement = (arrangement) => ({
-  type: PlayerActionTypes.SET_ARRANGEMENT,
+  type: tracksActionTypes.SET_ARRANGEMENT,
   payload: arrangement,
 });
 
 export const setArrangementClipBoard = (arrangementId) => ({
-  type: PlayerActionTypes.SET_ARRANGEMENT_CLIPBOARD,
+  type: tracksActionTypes.SET_ARRANGEMENT_CLIPBOARD,
   payload: arrangementId,
 });
 
 export const setCurrentSongPart = (arrSequenceNo) => ({
-  type: PlayerActionTypes.SET_CURRENT_SONGPART,
+  type: tracksActionTypes.SET_CURRENT_SONGPART,
   payload: arrSequenceNo,
 });
 
 export const toggleIsPlaylistCollapsed = (playlist) => ({
-  type: PlayerActionTypes.TOGGLE_IS_PLAYLIST_COLLAPSED,
+  type: tracksActionTypes.TOGGLE_IS_PLAYLIST_COLLAPSED,
   payload: playlist,
 });
 
 export const setPlaylistIsCollapsed = (playlist, boolean) => ({
-  type: PlayerActionTypes.SET_PLAYLIST_IS_COLLAPSED,
+  type: tracksActionTypes.SET_PLAYLIST_IS_COLLAPSED,
   payload: { playlist, boolean },
 });

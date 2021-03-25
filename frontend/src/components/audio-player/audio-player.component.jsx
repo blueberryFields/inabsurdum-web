@@ -6,7 +6,7 @@ import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import {
   setPlaying,
   setCurrentSongPart,
-} from '../../redux/player/player.actions';
+} from '../../redux/tracks/tracks.actions';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import {
   selectSelectedTrack,
@@ -15,7 +15,7 @@ import {
   selectPlayingFromSelectedTrack,
   selectArrangmentFromSelectedTrack,
   selectPeaksFromSelectedTrack,
-} from '../../redux/player/player.selectors';
+} from '../../redux/tracks/tracks.selectors';
 
 import TrackControls from '../track-controls/track-controls.component';
 

@@ -1,8 +1,8 @@
 import { all, call } from 'redux-saga/effects';
 
 import { userSagas } from './user/user.sagas';
-import { playerSagas } from './player/player.sagas';
+import { tracksSagas } from './tracks/tracks.sagas';
 
 export default function* rootSaga() {
-  yield all([call(userSagas), call(playerSagas)]);
+  yield all([call(userSagas), call(tracksSagas)]);
 }

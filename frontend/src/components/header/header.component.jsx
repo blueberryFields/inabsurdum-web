@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { signOut } from '../../redux/user/user.actions';
-import { unselectTrack } from '../../redux/player/player.actions';
+import { unselectTrack } from '../../redux/tracks/tracks.actions';
 import CustomButton from '../custom-button/custom-button.component';
 import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component';
 import ModalFrame from '../../pop-ups/modal-frame/modal-frame.component';

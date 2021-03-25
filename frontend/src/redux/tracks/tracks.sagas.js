@@ -1,8 +1,8 @@
 import { takeLatest, put, all, call } from 'redux-saga/effects';
 import axios from 'axios';
 
-import PlayerActionTypes from './player.types';
-import { fetchPlaylistsSuccess, fetchPlaylistsFailure } from './player.actions';
+import tracksActionTypes from './tracks.types';
+import { fetchPlaylistsSuccess, fetchPlaylistsFailure } from './tracks.actions';
 
 export function* fetchPlaylists(action) {
   try {
@@ -17,9 +17,9 @@ export function* fetchPlaylists(action) {
 }
 
 export function* onFetchPlaylistsStart() {
-  yield takeLatest(PlayerActionTypes.FETCH_PLAYLISTS_START, fetchPlaylists);
+  yield takeLatest(tracksActionTypes.FETCH_PLAYLISTS_START, fetchPlaylists);
 }
 
-export function* playerSagas() {
+export function* tracksSagas() {
   yield all([call(onFetchPlaylistsStart)]);
 }

@@ -12,18 +12,17 @@ import {
   faLock,
   faLockOpen,
   faVolumeUp,
-  faVolumeOff,
   faVolumeMute,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   togglePlaying,
   selectTrack,
   toggleShowArrangmentView,
-} from '../../redux/player/player.actions';
+} from '../../redux/tracks/tracks.actions';
 import {
   selectNextTrack,
   selectPreviousTrack,
-} from '../../redux/player/player.selectors';
+} from '../../redux/tracks/tracks.selectors';
 import VolumeSlider from '../volume-slider/volume-slider.component';
 import './track-controls.styles.scss';
 

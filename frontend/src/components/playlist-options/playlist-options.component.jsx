@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setPlaylists } from '../../redux/player/player.actions';
+import { setPlaylists } from '../../redux/tracks/tracks.actions';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import DropDownMenu from '../../pop-ups/drop-down-menu/drop-down-menu.component';
 import DropDownMenuItem from '../../pop-ups/drop-down-menu-item/drop-down-menu-item.component';

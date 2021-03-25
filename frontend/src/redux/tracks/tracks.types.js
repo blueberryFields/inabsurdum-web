@@ -1,4 +1,4 @@
-const PlayerActionTypes = {
+const tracksActionTypes = {
   FETCH_PLAYLISTS_START: 'FETCH_PLAYLISTS_START',
   FETCH_PLAYLISTS_SUCCESS: 'FETCH_PLAYLISTS_SUCCESS',
   FETCH_PLAYLISTS_FAILURE: 'FETCH_PLAYLISTS_FAILURE',
@@ -17,4 +17,4 @@ const PlayerActionTypes = {
   SET_ARRANGEMENT_CLIPBOARD: 'SET_ARRANGEMENT_CLIPBOARD',
 };
 
-export default PlayerActionTypes;
+export default tracksActionTypes;

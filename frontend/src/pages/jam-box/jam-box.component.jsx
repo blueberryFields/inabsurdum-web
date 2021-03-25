@@ -13,11 +13,11 @@ import {
   selectPlaylists,
   selectShowArrangementView,
   selectIsLoading,
-} from '../../redux/player/player.selectors';
+} from '../../redux/tracks/tracks.selectors';
 import {
   fetchPlaylistsStart,
   togglePlaying,
-} from '../../redux/player/player.actions';
+} from '../../redux/tracks/tracks.actions';
 import { signOut } from '../../redux/user/user.actions';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { validateJwt } from '../../utils/utils';

@@ -14,7 +14,7 @@ import PlaylistOptions from '../playlist-options/playlist-options.component';
 import {
   toggleIsPlaylistCollapsed,
   setPlaylistIsCollapsed,
-} from '../../redux/player/player.actions';
+} from '../../redux/tracks/tracks.actions';
 
 import './playlist.styles.scss';
 

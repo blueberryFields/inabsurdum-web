@@ -6,11 +6,11 @@ import {
   selectCurrentSongPart,
   selectSelectedTrack,
   selectArrangementClipBoard,
-} from '../../redux/player/player.selectors';
+} from '../../redux/tracks/tracks.selectors';
 import {
   setArrangementClipBoard,
   setArrangement,
-} from '../../redux/player/player.actions';
+} from '../../redux/tracks/tracks.actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 

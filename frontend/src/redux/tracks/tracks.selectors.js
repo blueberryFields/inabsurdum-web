@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import memoize from 'lodash.memoize';
-import { getNextTrack, getPreviousTrack } from './player.utils';
+import { getNextTrack, getPreviousTrack } from './tracks.utils';
 
 const selectPlayer = (state) => state.player;
 
