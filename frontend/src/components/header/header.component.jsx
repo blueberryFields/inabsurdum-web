@@ -29,10 +29,7 @@ const Header = () => {
               </ModalFrame>
             )}
           />
-
           <h1 className="logo">{user.bandName}</h1>
-          {/* <FontAwesomeIcon className="menu-icon" icon={faBars} /> */}
-
           <div
             className="sign-out"
             onClick={() => {

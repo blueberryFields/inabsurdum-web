@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import axios from 'axios';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import CustomButton from '../custom-button/custom-button.component';
 import FormInput from '../form-input/form-input.component';
-import { signIn } from '../../redux/user/user.actions';
+import { signInStart } from '../../redux/user/user.actions';
+import { selectError } from '../../redux/user/user.selectors';
 
 import './sign-in.styles.scss';
 
@@ -23,39 +23,31 @@ const SignIn = () => {
     setState({ ...state, [name]: value });
   };
 
-  const setMessage = (message) => {
-    setState({
-      ...state,
+  const setMessage = useCallback((message) => {
+    setState((prevState) => ({
+      ...prevState,
       message,
-    });
-  };
+    }));
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    if (state.username && state.password) {
-      try {
-        const response = await axios({
-          method: 'post',
-          url: 'api/user/login',
-          data: {
-            username: state.username,
-            password: state.password,
-          },
-        });
-        dispatch(signIn(response.data));
-      } catch (error) {
-        if (error.response.status === 500) {
-          setMessage('Fel användarnamn eller lösenord!');
-        } else setMessage('Någonting gick fel.');
-      }
+    const { username, password } = state;
+    if (username && password) {
+      dispatch(signInStart({ username, password }));
     } else {
-      setState({
-        ...state,
-        message: 'Du måste skriva användarnamn och lösenord!',
-      });
+      setMessage('Du måste skriva användarnamn och lösenord!');
     }
   };
+
+  const error = useSelector(selectError);
+  useEffect(() => {
+    if (error) {
+      if (error.response.status === 500) {
+        setMessage('Fel användarnamn eller lösenord!');
+      } else setMessage('Någonting gick fel.');
+    }
+  }, [error, setMessage]);
 
   return (
     <div className="sign-in">

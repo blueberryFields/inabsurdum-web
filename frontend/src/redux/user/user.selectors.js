@@ -7,7 +7,4 @@ export const selectCurrentUser = createSelector(
   (user) => user.currentUser
 );
 
-export const selectIsAuthenticated = createSelector(
-  [selectUser],
-  (user) => user.isAuthenticated
-);
+export const selectError = createSelector([selectUser], (user) => user.error);

@@ -29,6 +29,8 @@ const JamBoxPage = () => {
 
   const dispatch = useDispatch();
 
+
+  // TODO : Maybe these two has to be moved to sagas or something to apply?
   // Add auth header to all api calls from this component and its children
   axios.interceptors.request.use((req) => {
     if (!isEmpty(user) && validateJwt(user.jwt)) {

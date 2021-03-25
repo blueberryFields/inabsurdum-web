@@ -1,13 +1,18 @@
-import { UserActionTypes } from './user.types';
+import UserActionTypes from './user.types';
 
-// export const setAuthenticated = (boolean) => ({
-//   type: UserActionTypes.SET_AUTHENTICATED,
-//   payload: boolean,
-// });
+export const signInStart = (userCredentials) => ({
+  type: UserActionTypes.SIGN_IN_START,
+  payload: userCredentials,
+});
 
-export const signIn = (user) => ({
-  type: UserActionTypes.SIGN_IN,
+export const signInSuccess = (user) => ({
+  type: UserActionTypes.SIGN_IN_SUCCESS,
   payload: user,
+});
+
+export const signInFailure = (error) => ({
+  type: UserActionTypes.SIGN_IN_FAILURE,
+  payload: error,
 });
 
 export const signOut = () => ({
