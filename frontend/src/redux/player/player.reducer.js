@@ -14,6 +14,27 @@ const INITIAL_STATE = {
 
 const playerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case PlayerActionTypes.FETCH_PLAYLISTS_START:
+      return {
+        ...state,
+        loading: true,
+      };
+    case PlayerActionTypes.FETCH_PLAYLISTS_SUCCESS:
+      return {
+        ...state,
+        playlists: action.payload.map((playlist) => ({
+          ...playlist,
+          isCollapsed: checkCollapsed(state.playlists, playlist),
+        })),
+        loading: false,
+        error: null,
+      };
+    case PlayerActionTypes.FETCH_PLAYLISTS_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      };
     case PlayerActionTypes.SET_PLAYLISTS:
       return {
         ...state,

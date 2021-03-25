@@ -13,7 +13,10 @@ import {
   selectPlaylists,
   selectShowArrangementView,
 } from '../../redux/player/player.selectors';
-import { setPlaylists, togglePlaying } from '../../redux/player/player.actions';
+import {
+  fetchPlaylistsStart,
+  togglePlaying,
+} from '../../redux/player/player.actions';
 import { signOut } from '../../redux/user/user.actions';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { validateJwt } from '../../utils/utils';
@@ -28,7 +31,6 @@ const JamBoxPage = () => {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
-
 
   // TODO : Maybe these two has to be moved to sagas or something to apply?
   // Add auth header to all api calls from this component and its children
@@ -52,23 +54,8 @@ const JamBoxPage = () => {
   );
 
   useEffect(() => {
-    let isSubscribed = true;
-    (async function () {
-      try {
-        setLoading(true);
-        const response = await axios.request({
-          method: 'get',
-          url: 'api/playlist/reduced/' + user.id,
-        });
-        dispatch(setPlaylists(response.data));
-        setLoading(false);
-      } catch (error) {
-        if (isSubscribed) setLoading(false);
-      }
-    })();
-
-    return () => (isSubscribed = false);
-  }, [dispatch, user.id, user.jwt]);
+    dispatch(fetchPlaylistsStart(user));
+  }, [dispatch, user]);
 
   return (
     <div className="jam-box">

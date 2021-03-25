@@ -1,5 +1,20 @@
 import PlayerActionTypes from './player.types';
 
+export const fetchPlaylistsStart = (user) => ({
+  type: PlayerActionTypes.FETCH_PLAYLISTS_START,
+  payload: user
+});
+
+export const fetchPlaylistsSuccess = (playlists) => ({
+  type: PlayerActionTypes.FETCH_PLAYLISTS_SUCCESS,
+  payload: playlists,
+});
+
+export const fetchPlaylistsFailure = (error) => ({
+  type: PlayerActionTypes.FETCH_PLAYLISTS_FAILURE,
+  payload: error,
+});
+
 export const setPlaylists = (playlists) => ({
   type: PlayerActionTypes.SET_PLAYLISTS,
   payload: playlists,
