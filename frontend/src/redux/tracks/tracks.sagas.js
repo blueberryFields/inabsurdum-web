@@ -9,6 +9,9 @@ import {
   pasteArrangementFailure,
   removePlaylistSuccess,
   removePlaylistFailure,
+  createPlaylistStart,
+  createPlaylistFailure,
+  createPlaylistSuccess,
 } from './tracks.actions';
 
 export function* onFetchPlaylistsStart() {
@@ -24,6 +27,23 @@ export function* fetchPlaylists(action) {
     yield put(fetchPlaylistsSuccess(response.data));
   } catch (error) {
     yield put(fetchPlaylistsFailure(error));
+  }
+}
+
+export function* onCreatePlaylistStart() {
+  yield takeLatest(tracksActionTypes.CREATE_PLAYLIST_START, createPlaylist);
+}
+
+export function* createPlaylist(action) {
+  const { title, userId } = action.payload;
+  try {
+    const response = yield axios.request({
+      method: 'post',
+      url: 'api/playlist/?title=' + title + '&userid=' + userId,
+    });
+    yield put(createPlaylistSuccess(response.data));
+  } catch (error) {
+    yield put(createPlaylistFailure(error));
   }
 }
 
@@ -67,6 +87,7 @@ export function* tracksSagas() {
   yield all([
     call(onFetchPlaylistsStart),
     call(onPasteArrangementStart),
+    call(onCreatePlaylistStart),
     call(onRemovePlaylistStart),
   ]);
 }

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import { setPlaylists } from '../../redux/tracks/tracks.actions';
+import { createPlaylistStart } from '../../redux/tracks/tracks.actions';
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 
@@ -16,17 +15,8 @@ const CreatePlaylist = ({ hide }) => {
 
   const createPlaylist = async () => {
     if (title) {
-      try {
-        const response = await axios.request({
-          method: 'post',
-          url: 'api/playlist/?title=' + title + '&userid=' + user.id,
-        });
-        console.log(response.data);
-        dispatch(setPlaylists(response.data));
-        hide();
-      } catch (error) {
-        console.log(error);
-      }
+      dispatch(createPlaylistStart({ title, userId: user.id }));
+      hide();
     }
   };
 

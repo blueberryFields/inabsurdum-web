@@ -15,10 +15,14 @@ const INITIAL_STATE = {
 const playerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case tracksActionTypes.FETCH_PLAYLISTS_START:
+    case tracksActionTypes.CREATE_PLAYLIST_START:
+    case tracksActionTypes.REMOVE_PLAYLIST_START:
       return {
         ...state,
         isLoading: true,
       };
+    case tracksActionTypes.CREATE_PLAYLIST_SUCCESS:
+    case tracksActionTypes.REMOVE_PLAYLIST_SUCCESS:
     case tracksActionTypes.FETCH_PLAYLISTS_SUCCESS:
       return {
         ...state,
@@ -30,34 +34,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         error: null,
       };
     case tracksActionTypes.FETCH_PLAYLISTS_FAILURE:
-      return {
-        ...state,
-        isLoading: false,
-        error: action.payload,
-      };
-    // TODO: think this should be removed once all async action is mooved to sagas?
-    case tracksActionTypes.SET_PLAYLISTS:
-      return {
-        ...state,
-        playlists: action.payload.map((playlist) => ({
-          ...playlist,
-          isCollapsed: checkCollapsed(state.playlists, playlist),
-        })),
-      };
-    case tracksActionTypes.REMOVE_PLAYLIST_START:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case tracksActionTypes.REMOVE_PLAYLIST_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        playlists: action.payload.map((playlist) => ({
-          ...playlist,
-          isCollapsed: checkCollapsed(state.playlists, playlist),
-        })),
-      };
+    case tracksActionTypes.CREATE_PLAYLIST_FAILURE:
     case tracksActionTypes.REMOVE_PLAYLIST_FAILURE:
       return {
         ...state,
@@ -129,14 +106,6 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         ...state,
         error: action.payload,
       };
-    // case tracksActionTypes.SET_ARRANGEMENT:
-    //   return {
-    //     ...state,
-    //     selectedTrack: {
-    //       ...state.selectedTrack,
-    //       arrangement: action.payload,
-    //     },
-    //   };
     case tracksActionTypes.SET_ARRANGEMENT_CLIPBOARD:
       return {
         ...state,
