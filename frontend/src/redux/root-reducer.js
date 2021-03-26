@@ -12,7 +12,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  player: tracksReducer,
+  tracks: tracksReducer,
   user: userReducer,
 });
 

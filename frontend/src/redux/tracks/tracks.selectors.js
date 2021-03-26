@@ -2,21 +2,26 @@ import { createSelector } from 'reselect';
 import memoize from 'lodash.memoize';
 import { getNextTrack, getPreviousTrack } from './tracks.utils';
 
-const selectPlayer = (state) => state.player;
+const selectTracks = (state) => state.tracks;
 
 export const selectPlaylists = createSelector(
-  [selectPlayer],
-  (player) => player.playlists
+  [selectTracks],
+  (tracks) => tracks.playlists
 );
 
 export const selectIsLoading = createSelector(
-  [selectPlayer],
-  (player) => player.isLoading
+  [selectTracks],
+  (tracks) => tracks.isLoading
+);
+
+export const selectPlaylistsIsLoaded = createSelector(
+  [selectTracks],
+  (tracks) => tracks.playlists.length > 0
 );
 
 export const selectPlaylistContainingTrack = memoize((trackId) =>
-  createSelector([selectPlayer], (player) => {
-    const playlist = player.playlists.filter((playlist) =>
+  createSelector([selectTracks], (tracks) => {
+    const playlist = tracks.playlists.filter((playlist) =>
       playlist.tracks.some((track) => track.id === trackId)
     );
     return playlist[0];
@@ -24,33 +29,33 @@ export const selectPlaylistContainingTrack = memoize((trackId) =>
 );
 
 export const selectSelectedTrack = createSelector(
-  [selectPlayer],
-  (player) => player.selectedTrack
+  [selectTracks],
+  (tracks) => tracks.selectedTrack
 );
 
 export const selectPeaksFromSelectedTrack = createSelector(
-  [selectPlayer],
-  (player) => player.selectedTrack.peaks
+  [selectTracks],
+  (tracks) => tracks.selectedTrack.peaks
 );
 
 export const selectArrangmentFromSelectedTrack = createSelector(
-  [selectPlayer],
-  (player) => player.selectedTrack.arrangement
+  [selectTracks],
+  (tracks) => tracks.selectedTrack.arrangement
 );
 
 export const selectArrangementClipBoard = createSelector(
-  [selectPlayer],
-  (player) => player.arrangementClipBoard
+  [selectTracks],
+  (tracks) => tracks.arrangementClipBoard
 );
 
 export const selectChecksumFromSelectedTrack = createSelector(
-  [selectPlayer],
-  (player) => player.selectedTrack.checksum
+  [selectTracks],
+  (tracks) => tracks.selectedTrack.checksum
 );
 
 export const selectPlayingFromSelectedTrack = createSelector(
-  [selectPlayer],
-  (player) => player.selectedTrack.playing
+  [selectTracks],
+  (tracks) => tracks.selectedTrack.playing
 );
 
 export const selectArrangement = createSelector(
@@ -59,16 +64,16 @@ export const selectArrangement = createSelector(
 );
 
 export const selectCurrentSongPart = createSelector(
-  [selectPlayer],
-  (player) => player.currentSongPart
+  [selectTracks],
+  (tracks) => tracks.currentSongPart
 );
 
-export const selectNextTrack = createSelector([selectPlayer], (player) =>
-  getNextTrack(player.playlists, player.selectedTrack)
+export const selectNextTrack = createSelector([selectTracks], (tracks) =>
+  getNextTrack(tracks.playlists, tracks.selectedTrack)
 );
 
-export const selectPreviousTrack = createSelector([selectPlayer], (player) =>
-  getPreviousTrack(player.playlists, player.selectedTrack)
+export const selectPreviousTrack = createSelector([selectTracks], (tracks) =>
+  getPreviousTrack(tracks.playlists, tracks.selectedTrack)
 );
 
 export const selectIsTrackSelected = memoize((track) =>
@@ -79,6 +84,6 @@ export const selectIsTrackSelected = memoize((track) =>
 );
 
 export const selectShowArrangementView = createSelector(
-  [selectPlayer],
-  (player) => player.showArrangementView
+  [selectTracks],
+  (tracks) => tracks.showArrangementView
 );

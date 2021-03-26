@@ -36,19 +36,6 @@ const ArrangementView = () => {
         id: arrangement.id,
       })
     );
-    // try {
-    //   const response = await axios.request({
-    //     method: 'get',
-    //     url:
-    //       'api/arrangement/paste/' +
-    //       arrangementClipBoard +
-    //       '/' +
-    //       arrangement.id,
-    //   });
-    //   dispatch(setArrangement(response.data));
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
   return (

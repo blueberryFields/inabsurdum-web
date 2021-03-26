@@ -12,7 +12,7 @@ import LoadingSpinner from '../../components/loading-spinner/loading-spinner.com
 import {
   selectPlaylists,
   selectShowArrangementView,
-  selectIsLoading,
+  selectPlaylistsIsLoaded,
 } from '../../redux/tracks/tracks.selectors';
 import {
   fetchPlaylistsStart,
@@ -28,7 +28,7 @@ const JamBoxPage = () => {
   const user = useSelector(selectCurrentUser);
   const playlists = useSelector(selectPlaylists);
   const showArrangementView = useSelector(selectShowArrangementView);
-  const loading = useSelector(selectIsLoading);
+  const playlistsIsLoaded = useSelector(selectPlaylistsIsLoaded);
 
   const dispatch = useDispatch();
 
@@ -70,7 +70,7 @@ const JamBoxPage = () => {
       <div className="body">
         {showArrangementView ? (
           <ArrangementView />
-        ) : loading ? (
+        ) : !playlistsIsLoaded ? (
           <LoadingSpinner />
         ) : (
           playlists.map((playlist, idx) => (
