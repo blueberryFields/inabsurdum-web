@@ -35,6 +35,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         isLoading: false,
         error: action.payload,
       };
+    // TODO: think this should be removed once all async action is mooved to sagas?
     case tracksActionTypes.SET_PLAYLISTS:
       return {
         ...state,
@@ -42,6 +43,26 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           ...playlist,
           isCollapsed: checkCollapsed(state.playlists, playlist),
         })),
+      };
+    case tracksActionTypes.REMOVE_PLAYLIST_START:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case tracksActionTypes.REMOVE_PLAYLIST_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        playlists: action.payload.map((playlist) => ({
+          ...playlist,
+          isCollapsed: checkCollapsed(state.playlists, playlist),
+        })),
+      };
+    case tracksActionTypes.REMOVE_PLAYLIST_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
       };
     case tracksActionTypes.SELECT_TRACK:
       return {

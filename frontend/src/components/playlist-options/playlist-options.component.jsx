@@ -1,8 +1,7 @@
 import React from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setPlaylists } from '../../redux/tracks/tracks.actions';
+import { removePlaylistStart } from '../../redux/tracks/tracks.actions';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import DropDownMenu from '../../pop-ups/drop-down-menu/drop-down-menu.component';
 import DropDownMenuItem from '../../pop-ups/drop-down-menu-item/drop-down-menu-item.component';
@@ -13,20 +12,8 @@ const PlaylistOptions = ({ hide, playlist }) => {
   const dispatch = useDispatch();
   const user = useSelector(selectCurrentUser);
 
-  const removePlaylist = async () => {
-    try {
-      const response = await axios.request({
-        method: 'delete',
-        url:
-          'api/playlist/' +
-          playlist.id +
-          '?userid=' +
-          user.id,
-      });
-      dispatch(setPlaylists(response.data));
-    } catch (error) {
-      console.log('ERROR: ', error);
-    }
+  const removePlaylist = () => {
+    dispatch(removePlaylistStart({ playlist, user }));
   };
 
   return (

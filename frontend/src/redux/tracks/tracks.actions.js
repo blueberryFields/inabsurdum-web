@@ -20,6 +20,21 @@ export const setPlaylists = (playlists) => ({
   payload: playlists,
 });
 
+export const removePlaylistStart = (playlistIdAndUserId) => ({
+  type: tracksActionTypes.REMOVE_PLAYLIST_START,
+  payload: playlistIdAndUserId,
+});
+
+export const removePlaylistSuccess = (playlists) => ({
+  type: tracksActionTypes.REMOVE_PLAYLIST_SUCCESS,
+  payload: playlists,
+});
+
+export const removePlaylistFailure = (error) => ({
+  type: tracksActionTypes.REMOVE_PLAYLIST_FAILURE,
+  payload: error,
+});
+
 export const selectTrack = (track) => ({
   type: tracksActionTypes.SELECT_TRACK,
   payload: track,

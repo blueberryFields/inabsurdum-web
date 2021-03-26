@@ -7,6 +7,8 @@ import {
   fetchPlaylistsFailure,
   pasteArrangementSuccess,
   pasteArrangementFailure,
+  removePlaylistSuccess,
+  removePlaylistFailure,
 } from './tracks.actions';
 
 export function* onFetchPlaylistsStart() {
@@ -25,12 +27,31 @@ export function* fetchPlaylists(action) {
   }
 }
 
+export function* onRemovePlaylistStart() {
+  yield takeLatest(tracksActionTypes.REMOVE_PLAYLIST_START, removePlaylist);
+}
+
+export function* removePlaylist(action) {
+  const { playlist, user } = action.payload;
+
+  try {
+    const response = yield axios.request({
+      method: 'delete',
+      url: 'api/playlist/' + playlist.id + '?userid=' + user.id,
+    });
+    yield put(removePlaylistSuccess(response.data));
+  } catch (error) {
+    yield put(removePlaylistFailure(error));
+  }
+}
+
 export function* onPasteArrangementStart() {
   yield takeLatest(tracksActionTypes.PASTE_ARRANGEMENT_START, pasteArrangement);
 }
 
 export function* pasteArrangement(action) {
   const { arrangement, id } = action.payload;
+
   try {
     const response = yield axios.request({
       method: 'get',
@@ -43,5 +64,9 @@ export function* pasteArrangement(action) {
 }
 
 export function* tracksSagas() {
-  yield all([call(onFetchPlaylistsStart), call(onPasteArrangementStart)]);
+  yield all([
+    call(onFetchPlaylistsStart),
+    call(onPasteArrangementStart),
+    call(onRemovePlaylistStart),
+  ]);
 }
