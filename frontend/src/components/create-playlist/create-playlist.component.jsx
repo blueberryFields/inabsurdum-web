@@ -13,7 +13,7 @@ const CreatePlaylist = ({ hide }) => {
   const [title, setTitle] = useState('');
   const user = useSelector(selectCurrentUser);
 
-  const createPlaylist = async () => {
+  const createPlaylist = () => {
     if (title) {
       dispatch(createPlaylistStart({ title, userId: user.id }));
       hide();
