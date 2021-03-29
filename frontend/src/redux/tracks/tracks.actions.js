@@ -35,6 +35,20 @@ export const createPlaylistFailure = (error) => ({
   payload: error,
 });
 
+export const downloadTrackStart = (trackId) => ({
+  type: tracksActionTypes.DOWNLOAD_TRACK_START,
+  payload: trackId,
+});
+
+export const downloadTrackSuccess = () => ({
+  type: tracksActionTypes.DOWNLOAD_TRACK_SUCCESS,
+});
+
+export const downloadTrackFailure = (error) => ({
+  type: tracksActionTypes.DOWNLOAD_TRACK_FAILURE,
+  payload: error,
+});
+
 export const removePlaylistStart = (playlistIdAndUserId) => ({
   type: tracksActionTypes.REMOVE_PLAYLIST_START,
   payload: playlistIdAndUserId,

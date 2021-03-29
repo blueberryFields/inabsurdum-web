@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import fileDownload from 'react-file-download';
 
 import CustomButton from '../custom-button/custom-button.component';
 import DoubletapButton from '../doubletap-button/doubletap-button.component';
@@ -16,6 +15,7 @@ import { selectCurrentUser } from '../../redux/user/user.selectors';
 import {
   setPlaylists,
   removeTrackStart,
+  downloadTrackStart,
 } from '../../redux/tracks/tracks.actions';
 
 import './track-options-modal.styles.scss';
@@ -77,16 +77,7 @@ const TrackOptionsModal = ({
   };
 
   const downloadTrack = async () => {
-    try {
-      const response = await axios.request({
-        method: 'get',
-        url: 'api/track/download/' + id,
-        responseType: 'blob',
-      });
-      fileDownload(response.data, originalFilename);
-    } catch (error) {
-      console.log('ERROR: ', error);
-    }
+    dispatch(downloadTrackStart({ trackId: id, originalFilename }));
   };
 
   // Cleanup, dont update state if this is set to false, otherwise there

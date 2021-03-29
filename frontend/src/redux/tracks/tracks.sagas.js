@@ -1,5 +1,6 @@
 import { takeLatest, put, all, call } from 'redux-saga/effects';
 import axios from 'axios';
+import fileDownload from 'react-file-download';
 
 import tracksActionTypes from './tracks.types';
 import {
@@ -13,6 +14,8 @@ import {
   createPlaylistSuccess,
   removeTrackSuccess,
   removeTracksFailure,
+  downloadTrackSuccess,
+  downloadTrackFailure,
 } from './tracks.actions';
 
 export function* onFetchPlaylistsStart() {
@@ -66,6 +69,25 @@ export function* removePlaylist(action) {
   }
 }
 
+export function* onDownloadTrackStart() {
+  yield takeLatest(tracksActionTypes.DOWNLOAD_TRACK_START, downloadTrack);
+}
+
+export function* downloadTrack(action) {
+  const { trackId, originalFilename } = action.payload;
+  try {
+    const response = yield axios.request({
+      method: 'get',
+      url: 'api/track/download/' + trackId,
+      responseType: 'blob',
+    });
+    yield fileDownload(response.data, originalFilename);
+    yield put(downloadTrackSuccess());
+  } catch (error) {
+    yield put(downloadTrackFailure(error));
+  }
+}
+
 export function* onRemoveTrackStart() {
   yield takeLatest(tracksActionTypes.REMOVE_TRACK_START, removeTrack);
 }
@@ -107,6 +129,7 @@ export function* tracksSagas() {
     call(onPasteArrangementStart),
     call(onCreatePlaylistStart),
     call(onRemovePlaylistStart),
+    call(onDownloadTrackStart),
     call(onRemoveTrackStart),
   ]);
 }

@@ -17,6 +17,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case tracksActionTypes.FETCH_PLAYLISTS_START:
     case tracksActionTypes.CREATE_PLAYLIST_START:
     case tracksActionTypes.REMOVE_PLAYLIST_START:
+    case tracksActionTypes.DOWNLOAD_TRACK_START:
     case tracksActionTypes.REMOVE_TRACK_START:
       return {
         ...state,
@@ -35,9 +36,15 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         isLoading: false,
         error: null,
       };
+    case tracksActionTypes.DOWNLOAD_TRACK_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+      };
     case tracksActionTypes.FETCH_PLAYLISTS_FAILURE:
     case tracksActionTypes.CREATE_PLAYLIST_FAILURE:
     case tracksActionTypes.REMOVE_PLAYLIST_FAILURE:
+    case tracksActionTypes.DOWNLOAD_TRACK_FAILURE:
     case tracksActionTypes.REMOVE_TRACK_FAILURE:
       return {
         ...state,
