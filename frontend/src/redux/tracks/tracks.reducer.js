@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   arrangementClipBoard: null,
   isLoading: false,
   error: null,
+  message: '',
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
@@ -18,6 +19,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case tracksActionTypes.CREATE_PLAYLIST_START:
     case tracksActionTypes.REMOVE_PLAYLIST_START:
     case tracksActionTypes.DOWNLOAD_TRACK_START:
+    case tracksActionTypes.UPDATE_TRACK_START:
     case tracksActionTypes.REMOVE_TRACK_START:
       return {
         ...state,
@@ -26,6 +28,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case tracksActionTypes.CREATE_PLAYLIST_SUCCESS:
     case tracksActionTypes.REMOVE_PLAYLIST_SUCCESS:
     case tracksActionTypes.FETCH_PLAYLISTS_SUCCESS:
+    case tracksActionTypes.UPDATE_TRACK_SUCCESS:
     case tracksActionTypes.REMOVE_TRACK_SUCCESS:
       return {
         ...state,
@@ -35,6 +38,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         })),
         isLoading: false,
         error: null,
+        message: 'Lyckades!',
       };
     case tracksActionTypes.DOWNLOAD_TRACK_SUCCESS:
       return {
@@ -44,12 +48,20 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case tracksActionTypes.FETCH_PLAYLISTS_FAILURE:
     case tracksActionTypes.CREATE_PLAYLIST_FAILURE:
     case tracksActionTypes.REMOVE_PLAYLIST_FAILURE:
+    case tracksActionTypes.UPDATE_TRACK_FAILURE:
     case tracksActionTypes.DOWNLOAD_TRACK_FAILURE:
     case tracksActionTypes.REMOVE_TRACK_FAILURE:
       return {
         ...state,
         isLoading: false,
         error: action.payload,
+        message: 'Misslyckades!',
+      };
+    case tracksActionTypes.CLEAR_ERROR_AND_MESSAGE:
+      return {
+        ...state,
+        message: '',
+        error: null,
       };
     case tracksActionTypes.SELECT_TRACK:
       return {

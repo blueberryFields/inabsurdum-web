@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
 
 import CustomButton from '../custom-button/custom-button.component';
 import DoubletapButton from '../doubletap-button/doubletap-button.component';
@@ -10,12 +9,15 @@ import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import {
   selectPlaylists,
   selectPlaylistContainingTrack,
+  selectIsLoading,
+  selectMessage,
 } from '../../redux/tracks/tracks.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import {
-  setPlaylists,
   removeTrackStart,
   downloadTrackStart,
+  updateTrackStart,
+  clearErrorAndMessage,
 } from '../../redux/tracks/tracks.actions';
 
 import './track-options-modal.styles.scss';
@@ -25,50 +27,23 @@ const TrackOptionsModal = ({
   hide,
 }) => {
   const dispatch = useDispatch();
+
+  const isLoading = useSelector(selectIsLoading);
   const playlists = useSelector(selectPlaylists);
   const currentPlaylist = useSelector(selectPlaylistContainingTrack(id));
   const user = useSelector(selectCurrentUser);
 
-  const [state, setState] = useState({
+  const [trackDetails, setTrackDetails] = useState({
     title,
+    currentPlaylistId: currentPlaylist.id,
     selectedPlaylist: currentPlaylist.id,
-    loading: false,
-    message: '',
+    userId: user.id,
+    trackId: id,
   });
 
-  const updateTrack = async () => {
-    if (state.title && state.selectedPlaylist) {
-      setState({ ...state, loading: true });
-
-      const bodyFormData = new FormData();
-      bodyFormData.set('title', state.title);
-      bodyFormData.set('currentPlaylistid', currentPlaylist.id);
-      bodyFormData.set('newPlaylistid', state.selectedPlaylist);
-      bodyFormData.set('userid', user.id);
-
-      try {
-        const response = await axios.request({
-          method: 'put',
-          url: 'api/track/' + id,
-          data: bodyFormData,
-        });
-
-        dispatch(setPlaylists(response.data));
-        console.log(isSubscribed.current);
-        if (isSubscribed.current === true) hide();
-      } catch (error) {
-        if (isSubscribed.current === true)
-          setState({
-            ...state,
-            loading: false,
-            message: 'Någonting gick fel.',
-          });
-      }
-    } else {
-      setState({
-        ...state,
-        message: 'Någonting saknas.',
-      });
+  const updateTrack = () => {
+    if (trackDetails.title && trackDetails.selectedPlaylist) {
+      dispatch(updateTrackStart(trackDetails));
     }
   };
 
@@ -80,31 +55,35 @@ const TrackOptionsModal = ({
     dispatch(downloadTrackStart({ trackId: id, originalFilename }));
   };
 
-  // Cleanup, dont update state if this is set to false, otherwise there
-  // will be a memory leak
-  const isSubscribed = useRef();
-  useEffect(() => {
-    isSubscribed.current = true;
-    return () => (isSubscribed.current = false);
-  });
-
   const handleChange = (event) => {
     const { value, name } = event.target;
 
-    setState({ ...state, [name]: value });
+    setTrackDetails({ ...trackDetails, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     updateTrack();
   };
+
+  const message = useSelector(selectMessage);
+  // Clear error and message from tracks-reducer on
+  // component mount and unmount
+  useEffect(() => {
+    dispatch(clearErrorAndMessage());
+
+    return () => {
+      dispatch(clearErrorAndMessage());
+    };
+  }, [dispatch]);
+
   return (
     <form onSubmit={handleSubmit} className="track-options-modal">
-      {state.loading && <LoadingSpinner absolutePosition />}
+      {isLoading && <LoadingSpinner absolutePosition />}
       <ModalFormInput
         name="title"
         type="text"
-        value={state.title}
+        value={trackDetails.title}
         onChange={handleChange}
         placeholder="Namn"
         required
@@ -113,7 +92,7 @@ const TrackOptionsModal = ({
         userId={user.id}
         handleChange={handleChange}
         playlists={playlists}
-        selectedPlaylist={state.selectedPlaylist}
+        selectedPlaylist={trackDetails.selectedPlaylist}
       />
       <div className="buttons first">
         <CustomButton type="button" inverted onClick={downloadTrack}>
@@ -129,7 +108,7 @@ const TrackOptionsModal = ({
           Stäng
         </CustomButton>
       </div>
-      <div className="message">{state.message}</div>
+      <div className="message">{message}</div>
     </form>
   );
 };

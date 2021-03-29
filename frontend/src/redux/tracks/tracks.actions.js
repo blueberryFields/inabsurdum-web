@@ -35,6 +35,21 @@ export const createPlaylistFailure = (error) => ({
   payload: error,
 });
 
+export const updateTrackStart = (trackDetails) => ({
+  type: tracksActionTypes.UPDATE_TRACK_START,
+  payload: trackDetails,
+});
+
+export const updateTrackSuccess = (playlists) => ({
+  type: tracksActionTypes.UPDATE_TRACK_SUCCESS,
+  payload: playlists,
+});
+
+export const updateTrackFailure = (error) => ({
+  type: tracksActionTypes.UPDATE_TRACK_FAILURE,
+  payload: error,
+});
+
 export const downloadTrackStart = (trackId) => ({
   type: tracksActionTypes.DOWNLOAD_TRACK_START,
   payload: trackId,
@@ -77,6 +92,10 @@ export const removeTrackSuccess = (playlists) => ({
 export const removeTracksFailure = (error) => ({
   type: tracksActionTypes.REMOVE_TRACK_FAILURE,
   payload: error,
+});
+
+export const clearErrorAndMessage = () => ({
+  type: tracksActionTypes.CLEAR_ERROR_AND_MESSAGE,
 });
 
 export const selectTrack = (track) => ({

@@ -16,6 +16,8 @@ import {
   removeTracksFailure,
   downloadTrackSuccess,
   downloadTrackFailure,
+  updateTrackSuccess,
+  updateTrackFailure,
 } from './tracks.actions';
 
 export function* onFetchPlaylistsStart() {
@@ -66,6 +68,38 @@ export function* removePlaylist(action) {
     yield put(removePlaylistSuccess(response.data));
   } catch (error) {
     yield put(removePlaylistFailure(error));
+  }
+}
+
+export function* onUpdateTrackStart() {
+  yield takeLatest(tracksActionTypes.UPDATE_TRACK_START, updateTrack);
+}
+
+export function* updateTrack(action) {
+  const {
+    title,
+    currentPlaylistId,
+    selectedPlaylist,
+    userId,
+    trackId,
+  } = action.payload;
+
+  const bodyFormData = new FormData();
+  bodyFormData.set('title', title);
+  bodyFormData.set('currentPlaylistid', currentPlaylistId);
+  bodyFormData.set('newPlaylistid', selectedPlaylist);
+  bodyFormData.set('userid', userId);
+
+  try {
+    const response = yield axios.request({
+      method: 'put',
+      url: 'api/track/' + trackId,
+      data: bodyFormData,
+    });
+
+    yield put(updateTrackSuccess(response.data));
+  } catch (error) {
+    yield put(updateTrackFailure(error));
   }
 }
 
@@ -129,6 +163,7 @@ export function* tracksSagas() {
     call(onPasteArrangementStart),
     call(onCreatePlaylistStart),
     call(onRemovePlaylistStart),
+    call(onUpdateTrackStart),
     call(onDownloadTrackStart),
     call(onRemoveTrackStart),
   ]);

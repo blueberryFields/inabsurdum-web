@@ -4,6 +4,16 @@ import { getNextTrack, getPreviousTrack } from './tracks.utils';
 
 const selectTracks = (state) => state.tracks;
 
+export const selectMessage = createSelector(
+  [selectTracks],
+  (tracks) => tracks.message
+);
+
+export const selectError = createSelector(
+  [selectTracks],
+  (tracks) => tracks.message
+);
+
 export const selectPlaylists = createSelector(
   [selectTracks],
   (tracks) => tracks.playlists
