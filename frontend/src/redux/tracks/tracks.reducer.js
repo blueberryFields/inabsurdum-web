@@ -3,7 +3,7 @@ import { getNextTrack, getPreviousTrack, checkCollapsed } from './tracks.utils';
 import isEmpty from 'lodash.isempty';
 
 const INITIAL_STATE = {
-  playlists: [],
+  playlists: null,
   selectedTrack: {},
   showArrangementView: false,
   currentSongPart: null,

@@ -16,7 +16,7 @@ export const selectIsLoading = createSelector(
 
 export const selectPlaylistsIsLoaded = createSelector(
   [selectTracks],
-  (tracks) => tracks.playlists.length > 0
+  (tracks) => !!tracks.playlists
 );
 
 export const selectPlaylistContainingTrack = memoize((trackId) =>
@@ -69,11 +69,13 @@ export const selectCurrentSongPart = createSelector(
 );
 
 export const selectNextTrack = createSelector([selectTracks], (tracks) =>
-  getNextTrack(tracks.playlists, tracks.selectedTrack)
+  tracks.playlists ? getNextTrack(tracks.playlists, tracks.selectedTrack) : null
 );
 
 export const selectPreviousTrack = createSelector([selectTracks], (tracks) =>
-  getPreviousTrack(tracks.playlists, tracks.selectedTrack)
+  tracks.playlists
+    ? getPreviousTrack(tracks.playlists, tracks.selectedTrack)
+    : null
 );
 
 export const selectIsTrackSelected = memoize((track) =>
