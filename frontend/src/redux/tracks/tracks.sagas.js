@@ -1,4 +1,13 @@
-import { takeLatest, put, all, call } from 'redux-saga/effects';
+import {
+  takeLatest,
+  take,
+  put,
+  all,
+  call,
+  cancelled,
+  fork,
+} from 'redux-saga/effects';
+import { eventChannel, END } from 'redux-saga';
 import axios from 'axios';
 import fileDownload from 'react-file-download';
 
@@ -18,6 +27,9 @@ import {
   downloadTrackFailure,
   updateTrackSuccess,
   updateTrackFailure,
+  uploadTrackSuccess,
+  uploadTrackFailure,
+  setUploadProgress,
 } from './tracks.actions';
 
 export function* onFetchPlaylistsStart() {
@@ -70,6 +82,120 @@ export function* removePlaylist(action) {
     yield put(removePlaylistFailure(error));
   }
 }
+
+export function* onUploadTrackStart() {
+  yield takeLatest(tracksActionTypes.UPLOAD_TRACK_START, uploadTrack);
+}
+
+export function* uploadTrack(action) {
+  const { title, selectedPlaylist, userId, selectedFile } = action.payload;
+
+  try {
+    const bodyFormData = new FormData();
+    bodyFormData.set('title', title);
+    bodyFormData.set('playlistid', selectedPlaylist);
+    bodyFormData.set('userid', userId);
+    bodyFormData.append('file', selectedFile);
+
+    const uploadChannel = yield call(
+      createUploaderChannel,
+      title,
+      bodyFormData
+    );
+    yield fork(uploadProgressWatcher, title, uploadChannel);
+    // yield put(uploadTrackSuccess())
+  } catch (error) {
+    yield put(uploadTrackFailure(error));
+  }
+}
+
+function createUploaderChannel(key, bodyFormData) {
+  return eventChannel((emit) => {
+    const onProgress = ({ total, loaded }) => {
+      const percentage = Math.round((loaded * 100) / total);
+      console.log('In on progress: ', percentage);
+      emit(percentage);
+    };
+
+    axios
+      .request({
+        requestId: key,
+        method: 'post',
+        url: 'api/track',
+        data: bodyFormData,
+        uploadProgress: onProgress,
+      })
+      .then(() => {
+        console.log('In success clause!');
+        emit(END);
+      })
+      .catch((err) => {
+        emit(new Error(err.message));
+        emit(END);
+      });
+
+    const unsubscribe = () => {};
+    return unsubscribe;
+  });
+}
+
+function* uploadProgressWatcher(fileName, channel) {
+  while (true) {
+    yield console.log('In watcher!');
+    try {
+      yield console.log('In try inside watcher!');
+      const progress = yield take(channel);
+      yield console.log('Progress: ', progress);
+      yield put(setUploadProgress(progress));
+    } catch (error) {
+      yield console.log('In catch inside watcher!');
+      // TODO: ??? maybe this just should put error in error instead?
+      yield put(setUploadProgress(error));
+    } finally {
+      yield console.log('In finally inside watcher!');
+      if (yield cancelled()) channel.close();
+    }
+  }
+}
+
+// try {
+//   const response = yield axios.request({
+//     method: 'post',
+//     url: 'api/track',
+//     data: bodyFormData,
+// onUploadProgress: (progressEvent) => {
+//   let percentCompleted = Math.round(
+//     (progressEvent.loaded * 100) / progressEvent.total
+//   );
+//   if (isSubscribed.current === true)
+//     setTrackDetails((prevState) => ({
+//       ...prevState,
+//       uploadProgress: percentCompleted,
+//     }));
+// },
+//   });
+
+//   yield put(uploadTrackSuccess(response.data));
+//   // setTrackDetails((prevState) => ({
+//   //   ...prevState,
+//   //   title: '',
+//   //   selectedPlaylist: 'Välj spellista',
+//   //   selectedFile: null,
+//   //   showLoadingSpinner: false,
+//   //   message: 'Filuppladdning lyckades.',
+//   // }));
+//   // }
+// } catch (error) {
+//   yield put(uploadTrackFailure(error));
+//   // if (isSubscribed.current === true)
+//   //   setTrackDetails((prevState) => ({
+//   //     ...prevState,
+//   //     showLoadingSpinner: false,
+//   //     showProgbar: false,
+//   //     message: 'Någonting gick fel.',
+//   //   }));
+// }
+// }
 
 export function* onUpdateTrackStart() {
   yield takeLatest(tracksActionTypes.UPDATE_TRACK_START, updateTrack);
@@ -163,6 +289,7 @@ export function* tracksSagas() {
     call(onPasteArrangementStart),
     call(onCreatePlaylistStart),
     call(onRemovePlaylistStart),
+    call(onUploadTrackStart),
     call(onUpdateTrackStart),
     call(onDownloadTrackStart),
     call(onRemoveTrackStart),

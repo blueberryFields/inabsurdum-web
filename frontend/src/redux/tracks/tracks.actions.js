@@ -35,6 +35,36 @@ export const createPlaylistFailure = (error) => ({
   payload: error,
 });
 
+export const removePlaylistStart = (playlistIdAndUserId) => ({
+  type: tracksActionTypes.REMOVE_PLAYLIST_START,
+  payload: playlistIdAndUserId,
+});
+
+export const removePlaylistSuccess = (playlists) => ({
+  type: tracksActionTypes.REMOVE_PLAYLIST_SUCCESS,
+  payload: playlists,
+});
+
+export const removePlaylistFailure = (error) => ({
+  type: tracksActionTypes.REMOVE_PLAYLIST_FAILURE,
+  payload: error,
+});
+
+export const uploadTrackStart = (trackDetails) => ({
+  type: tracksActionTypes.UPLOAD_TRACK_START,
+  payload: trackDetails,
+});
+
+export const uploadTrackSuccess = (playlists) => ({
+  type: tracksActionTypes.UPLOAD_TRACK_SUCCESS,
+  payload: playlists,
+});
+
+export const uploadTrackFailure = (error) => ({
+  type: tracksActionTypes.UPLOAD_TRACK_FAILURE,
+  payload: error,
+});
+
 export const updateTrackStart = (trackDetails) => ({
   type: tracksActionTypes.UPDATE_TRACK_START,
   payload: trackDetails,
@@ -64,21 +94,6 @@ export const downloadTrackFailure = (error) => ({
   payload: error,
 });
 
-export const removePlaylistStart = (playlistIdAndUserId) => ({
-  type: tracksActionTypes.REMOVE_PLAYLIST_START,
-  payload: playlistIdAndUserId,
-});
-
-export const removePlaylistSuccess = (playlists) => ({
-  type: tracksActionTypes.REMOVE_PLAYLIST_SUCCESS,
-  payload: playlists,
-});
-
-export const removePlaylistFailure = (error) => ({
-  type: tracksActionTypes.REMOVE_PLAYLIST_FAILURE,
-  payload: error,
-});
-
 export const removeTrackStart = (trackIdAndUserId) => ({
   type: tracksActionTypes.REMOVE_TRACK_START,
   payload: trackIdAndUserId,
@@ -96,6 +111,11 @@ export const removeTracksFailure = (error) => ({
 
 export const clearErrorAndMessage = () => ({
   type: tracksActionTypes.CLEAR_ERROR_AND_MESSAGE,
+});
+
+export const setUploadProgress = (progress) => ({
+  type: tracksActionTypes.SET_UPLOAD_PROGRESS,
+  payload: progress,
 });
 
 export const selectTrack = (track) => ({

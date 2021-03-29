@@ -11,6 +11,7 @@ const INITIAL_STATE = {
   isLoading: false,
   error: null,
   message: '',
+  uploadProgress: 0,
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
@@ -18,8 +19,9 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case tracksActionTypes.FETCH_PLAYLISTS_START:
     case tracksActionTypes.CREATE_PLAYLIST_START:
     case tracksActionTypes.REMOVE_PLAYLIST_START:
-    case tracksActionTypes.DOWNLOAD_TRACK_START:
+    case tracksActionTypes.UPLOAD_TRACK_START:
     case tracksActionTypes.UPDATE_TRACK_START:
+    case tracksActionTypes.DOWNLOAD_TRACK_START:
     case tracksActionTypes.REMOVE_TRACK_START:
       return {
         ...state,
@@ -28,6 +30,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case tracksActionTypes.CREATE_PLAYLIST_SUCCESS:
     case tracksActionTypes.REMOVE_PLAYLIST_SUCCESS:
     case tracksActionTypes.FETCH_PLAYLISTS_SUCCESS:
+    case tracksActionTypes.UPLOAD_TRACK_SUCCESS:
     case tracksActionTypes.UPDATE_TRACK_SUCCESS:
     case tracksActionTypes.REMOVE_TRACK_SUCCESS:
       return {
@@ -48,6 +51,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case tracksActionTypes.FETCH_PLAYLISTS_FAILURE:
     case tracksActionTypes.CREATE_PLAYLIST_FAILURE:
     case tracksActionTypes.REMOVE_PLAYLIST_FAILURE:
+    case tracksActionTypes.UPLOAD_TRACK_FAILURE:
     case tracksActionTypes.UPDATE_TRACK_FAILURE:
     case tracksActionTypes.DOWNLOAD_TRACK_FAILURE:
     case tracksActionTypes.REMOVE_TRACK_FAILURE:
@@ -62,6 +66,11 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         ...state,
         message: '',
         error: null,
+      };
+    case tracksActionTypes.SET_UPLOAD_PROGRESS:
+      return {
+        ...state,
+        uploadProgress: action.payload,
       };
     case tracksActionTypes.SELECT_TRACK:
       return {

@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
 
 import CustomButton from '../custom-button/custom-button.component';
 import FileUploader from '../file-uploader/file-uploader.component';
@@ -8,9 +7,15 @@ import SelectOrCreatePlaylist from '../select-or-create-playlist/select-or-creat
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import LoadingProgBar from '../loading-prog-bar/loading-prog-bar.component';
-import { selectPlaylists } from '../../redux/tracks/tracks.selectors';
+import {
+  selectMessage,
+  selectPlaylists,
+} from '../../redux/tracks/tracks.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import { setPlaylists } from '../../redux/tracks/tracks.actions';
+import {
+  clearErrorAndMessage,
+  uploadTrackStart,
+} from '../../redux/tracks/tracks.actions';
 
 import './upload-modal.styles.scss';
 
@@ -19,28 +24,28 @@ const UploadModal = ({ hide }) => {
   const playlists = useSelector(selectPlaylists);
   const user = useSelector(selectCurrentUser);
 
-  const [state, setState] = useState({
+  const [trackDetails, setTrackDetails] = useState({
     title: '',
     selectedPlaylist: 'Välj spellista',
+    userId: user.id,
     selectedFile: null,
-    message: '',
     showLoadingSpinner: false,
     showProgbar: false,
     uploadProgress: 0,
   });
 
   const selectFile = (e) => {
-    setState({
-      ...state,
+    setTrackDetails({
+      ...trackDetails,
       selectedFile: e.target.files[0],
-      title: state.title || e.target.files[0].name,
+      title: trackDetails.title || e.target.files[0].name,
     });
   };
 
   const handleChange = (event) => {
     const { value, name } = event.target;
 
-    setState({ ...state, [name]: value });
+    setTrackDetails({ ...trackDetails, [name]: value });
   };
 
   const handleSubmit = (e) => {
@@ -50,25 +55,28 @@ const UploadModal = ({ hide }) => {
 
   const validateAndSubmitForm = () => {
     if (validateSelectedFile()) {
-      if (state.title && state.selectedPlaylist !== 'Välj spellista') {
-        uploadTrack();
+      if (
+        trackDetails.title &&
+        trackDetails.selectedPlaylist !== 'Välj spellista'
+      ) {
+        dispatch(uploadTrackStart(trackDetails));
       } else {
-        setState((prevState) => ({
-          ...prevState,
-          message: 'Namn eller spellista saknas.',
-        }));
+        // setTrackDetails((prevState) => ({
+        //   ...prevState,
+        //   message: 'Namn eller spellista saknas.',
+        // }));
       }
     } else {
-      setState((prevState) => ({
-        ...prevState,
-        message: 'Fil saknas eller är av olämpligt format.',
-      }));
+      // setTrackDetails((prevState) => ({
+      //   ...prevState,
+      //   message: 'Fil saknas eller är av olämpligt format.',
+      // }));
     }
   };
 
   const validateSelectedFile = () => {
-    if (state.selectedFile) {
-      const fileType = state.selectedFile.type;
+    if (trackDetails.selectedFile) {
+      const fileType = trackDetails.selectedFile.type;
       return (
         fileType === 'audio/mpeg' ||
         fileType === 'audio/x-wav' ||
@@ -78,85 +86,40 @@ const UploadModal = ({ hide }) => {
     } else return false;
   };
 
-  const uploadTrack = async () => {
-    setState((prevState) => ({
-      ...prevState,
-      showProgbar: true,
-      message: '',
-    }));
-
-    const bodyFormData = new FormData();
-    bodyFormData.set('title', state.title);
-    bodyFormData.set('playlistid', state.selectedPlaylist);
-    bodyFormData.set('userid', user.id);
-    bodyFormData.append('file', state.selectedFile);
-
-    try {
-      const response = await axios.request({
-        method: 'post',
-        url: 'api/track',
-        onUploadProgress: (progressEvent) => {
-          let percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          if (isSubscribed.current === true)
-            setState((prevState) => ({
-              ...prevState,
-              uploadProgress: percentCompleted,
-            }));
-        },
-        data: bodyFormData,
-      });
-
-      if (isSubscribed.current === true) {
-        console.log('Trying to set state!');
-        dispatch(setPlaylists(response.data));
-        setState((prevState) => ({
-          ...prevState,
-          title: '',
-          selectedPlaylist: 'Välj spellista',
-          selectedFile: null,
-          showLoadingSpinner: false,
-          message: 'Filuppladdning lyckades.',
-        }));
-      }
-    } catch (error) {
-      if (isSubscribed.current === true)
-        setState((prevState) => ({
-          ...prevState,
-          showLoadingSpinner: false,
-          showProgbar: false,
-          message: 'Någonting gick fel.',
-        }));
-    }
-  };
-
   useEffect(() => {
-    if (state.uploadProgress === 100)
-      setState((prevState) => ({
+    if (trackDetails.uploadProgress === 100)
+      setTrackDetails((prevState) => ({
         ...prevState,
         showLoadingSpinner: true,
         showProgbar: false,
       }));
-  }, [state.uploadProgress]);
+  }, [trackDetails.uploadProgress]);
 
-  // Cleanup, dont update state if this is set to false, otherwise there
-  // will be a memory leak
-  const isSubscribed = useRef();
+  const message = useSelector(selectMessage);
+  // Clear error and message from tracks-reducer on
+  // component mount and unmount
   useEffect(() => {
-    isSubscribed.current = true;
-    return () => (isSubscribed.current = false);
-  });
+    dispatch(clearErrorAndMessage());
+
+    return () => {
+      dispatch(clearErrorAndMessage());
+    };
+  }, [dispatch]);
 
   return (
     <form onSubmit={handleSubmit} className="upload-modal">
-      {state.showProgbar && <LoadingProgBar progress={state.uploadProgress} />}
-      {state.showLoadingSpinner && <LoadingSpinner absolutePosition />}
-      <FileUploader selectedFile={state.selectedFile} selectFile={selectFile} />
+      {trackDetails.showProgbar && (
+        <LoadingProgBar progress={trackDetails.uploadProgress} />
+      )}
+      {trackDetails.showLoadingSpinner && <LoadingSpinner absolutePosition />}
+      <FileUploader
+        selectedFile={trackDetails.selectedFile}
+        selectFile={selectFile}
+      />
       <ModalFormInput
         name="title"
         type="text"
-        value={state.title}
+        value={trackDetails.title}
         onChange={handleChange}
         placeholder="Namn"
         required
@@ -165,7 +128,7 @@ const UploadModal = ({ hide }) => {
         userId={user.id}
         handleChange={handleChange}
         playlists={playlists}
-        selectedPlaylist={state.selectedPlaylist}
+        selectedPlaylist={trackDetails.selectedPlaylist}
       />
       <div className="buttons">
         <CustomButton type="submit" inverted>
@@ -175,7 +138,7 @@ const UploadModal = ({ hide }) => {
           Stäng
         </CustomButton>
       </div>
-      <div className="message">{state.message}</div>
+      <div className="message">{message}</div>
     </form>
   );
 };
