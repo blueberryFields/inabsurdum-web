@@ -17,6 +17,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case tracksActionTypes.FETCH_PLAYLISTS_START:
     case tracksActionTypes.CREATE_PLAYLIST_START:
     case tracksActionTypes.REMOVE_PLAYLIST_START:
+    case tracksActionTypes.REMOVE_TRACK_START:
       return {
         ...state,
         isLoading: true,
@@ -24,6 +25,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case tracksActionTypes.CREATE_PLAYLIST_SUCCESS:
     case tracksActionTypes.REMOVE_PLAYLIST_SUCCESS:
     case tracksActionTypes.FETCH_PLAYLISTS_SUCCESS:
+    case tracksActionTypes.REMOVE_TRACK_SUCCESS:
       return {
         ...state,
         playlists: action.payload.map((playlist) => ({
@@ -36,6 +38,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case tracksActionTypes.FETCH_PLAYLISTS_FAILURE:
     case tracksActionTypes.CREATE_PLAYLIST_FAILURE:
     case tracksActionTypes.REMOVE_PLAYLIST_FAILURE:
+    case tracksActionTypes.REMOVE_TRACK_FAILURE:
       return {
         ...state,
         isLoading: false,

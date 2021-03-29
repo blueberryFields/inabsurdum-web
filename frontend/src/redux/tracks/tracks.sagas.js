@@ -9,9 +9,10 @@ import {
   pasteArrangementFailure,
   removePlaylistSuccess,
   removePlaylistFailure,
-  createPlaylistStart,
   createPlaylistFailure,
   createPlaylistSuccess,
+  removeTrackSuccess,
+  removeTracksFailure,
 } from './tracks.actions';
 
 export function* onFetchPlaylistsStart() {
@@ -65,6 +66,23 @@ export function* removePlaylist(action) {
   }
 }
 
+export function* onRemoveTrackStart() {
+  yield takeLatest(tracksActionTypes.REMOVE_TRACK_START, removeTrack);
+}
+
+export function* removeTrack(action) {
+  const { trackId, userId } = action.payload;
+  try {
+    const response = yield axios.request({
+      method: 'delete',
+      url: 'api/track/' + trackId + '?userid=' + userId,
+    });
+    yield put(removeTrackSuccess(response.data));
+  } catch (error) {
+    yield put(removeTracksFailure(error));
+  }
+}
+
 export function* onPasteArrangementStart() {
   yield takeLatest(tracksActionTypes.PASTE_ARRANGEMENT_START, pasteArrangement);
 }
@@ -89,5 +107,6 @@ export function* tracksSagas() {
     call(onPasteArrangementStart),
     call(onCreatePlaylistStart),
     call(onRemovePlaylistStart),
+    call(onRemoveTrackStart),
   ]);
 }

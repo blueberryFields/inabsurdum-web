@@ -50,6 +50,21 @@ export const removePlaylistFailure = (error) => ({
   payload: error,
 });
 
+export const removeTrackStart = (trackIdAndUserId) => ({
+  type: tracksActionTypes.REMOVE_TRACK_START,
+  payload: trackIdAndUserId,
+});
+
+export const removeTrackSuccess = (playlists) => ({
+  type: tracksActionTypes.REMOVE_TRACK_SUCCESS,
+  payload: playlists,
+});
+
+export const removeTracksFailure = (error) => ({
+  type: tracksActionTypes.REMOVE_TRACK_FAILURE,
+  payload: error,
+});
+
 export const selectTrack = (track) => ({
   type: tracksActionTypes.SELECT_TRACK,
   payload: track,

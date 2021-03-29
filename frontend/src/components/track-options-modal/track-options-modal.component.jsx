@@ -13,7 +13,10 @@ import {
   selectPlaylistContainingTrack,
 } from '../../redux/tracks/tracks.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import { setPlaylists } from '../../redux/tracks/tracks.actions';
+import {
+  setPlaylists,
+  removeTrackStart,
+} from '../../redux/tracks/tracks.actions';
 
 import './track-options-modal.styles.scss';
 
@@ -70,17 +73,7 @@ const TrackOptionsModal = ({
   };
 
   const removeTrack = async () => {
-    isSubscribed.current = true;
-    try {
-      const response = await axios.request({
-        method: 'delete',
-        url: 'api/track/' + id + '?userid=' + user.id,
-      });
-      dispatch(setPlaylists(response.data));
-      if (isSubscribed.current === true) hide();
-    } catch (error) {
-      console.log('ERROR: ', error);
-    }
+    dispatch(removeTrackStart({ trackId: id, userId: user.id }));
   };
 
   const downloadTrack = async () => {
