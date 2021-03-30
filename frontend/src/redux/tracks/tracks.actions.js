@@ -109,8 +109,13 @@ export const removeTracksFailure = (error) => ({
   payload: error,
 });
 
-export const clearErrorAndMessage = () => ({
-  type: tracksActionTypes.CLEAR_ERROR_AND_MESSAGE,
+export const setFetchStatus = (status) => ({
+  type: tracksActionTypes.SET_FETCH_STATUS,
+  payload: status,
+});
+
+export const clearErrorAndStatus = () => ({
+  type: tracksActionTypes.CLEAR_ERROR_AND_STATUS,
 });
 
 export const setUploadProgress = (progress) => ({

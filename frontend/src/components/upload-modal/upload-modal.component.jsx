@@ -8,14 +8,16 @@ import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import LoadingProgBar from '../loading-prog-bar/loading-prog-bar.component';
 import {
-  selectMessage,
+  selectFetchStatus,
   selectPlaylists,
+  selectUploadProgress,
 } from '../../redux/tracks/tracks.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import {
-  clearErrorAndMessage,
+  clearErrorAndStatus,
   uploadTrackStart,
 } from '../../redux/tracks/tracks.actions';
+import status from '../../redux/tracks/tracks.status';
 
 import './upload-modal.styles.scss';
 
@@ -29,9 +31,6 @@ const UploadModal = ({ hide }) => {
     selectedPlaylist: 'Välj spellista',
     userId: user.id,
     selectedFile: null,
-    showLoadingSpinner: false,
-    showProgbar: false,
-    uploadProgress: 0,
   });
 
   const selectFile = (e) => {
@@ -61,16 +60,10 @@ const UploadModal = ({ hide }) => {
       ) {
         dispatch(uploadTrackStart(trackDetails));
       } else {
-        // setTrackDetails((prevState) => ({
-        //   ...prevState,
-        //   message: 'Namn eller spellista saknas.',
-        // }));
+        setMessage('Namn eller spellista saknas.');
       }
     } else {
-      // setTrackDetails((prevState) => ({
-      //   ...prevState,
-      //   message: 'Fil saknas eller är av olämpligt format.',
-      // }));
+      setMessage('Fil saknas eller är av olämpligt format.');
     }
   };
 
@@ -95,23 +88,53 @@ const UploadModal = ({ hide }) => {
       }));
   }, [trackDetails.uploadProgress]);
 
-  const message = useSelector(selectMessage);
-  // Clear error and message from tracks-reducer on
+  const uploadProgress = useSelector(selectUploadProgress);
+  const fetchStatus = useSelector(selectFetchStatus);
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    switch (fetchStatus) {
+      case status.ON_HOLD:
+        setMessage('');
+        break;
+      case status.SUCCESS:
+        setMessage('Uppladdningen lyckades!');
+        setTrackDetails((prevState) => ({
+          ...prevState,
+          title: '',
+          selectedPlaylist: 'Välj spellista',
+          selectedFile: null,
+        }));
+        break;
+      case status.FAILURE:
+        setMessage('Uppdateringen misslyckades!');
+        break;
+      default:
+        setMessage('');
+        break;
+    }
+  }, [fetchStatus]);
+
+  // Clear error and status from tracks-reducer on
   // component mount and unmount
   useEffect(() => {
-    dispatch(clearErrorAndMessage());
+    dispatch(clearErrorAndStatus());
 
     return () => {
-      dispatch(clearErrorAndMessage());
+      dispatch(clearErrorAndStatus());
     };
   }, [dispatch]);
 
   return (
     <form onSubmit={handleSubmit} className="upload-modal">
-      {trackDetails.showProgbar && (
-        <LoadingProgBar progress={trackDetails.uploadProgress} />
+      {fetchStatus === status.UPLOADING && (
+        <LoadingProgBar progress={uploadProgress} />
       )}
-      {trackDetails.showLoadingSpinner && <LoadingSpinner absolutePosition />}
+      {fetchStatus === status.FETCHING ? (
+        <LoadingSpinner absolutePosition />
+      ) : (
+        <></>
+      )}
       <FileUploader
         selectedFile={trackDetails.selectedFile}
         selectFile={selectFile}

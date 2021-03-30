@@ -4,8 +4,8 @@ import {
   put,
   all,
   call,
-  cancelled,
   fork,
+  cancelled,
 } from 'redux-saga/effects';
 import { eventChannel, END } from 'redux-saga';
 import axios from 'axios';
@@ -30,7 +30,9 @@ import {
   uploadTrackSuccess,
   uploadTrackFailure,
   setUploadProgress,
+  setFetchStatus,
 } from './tracks.actions';
+import status from './tracks.status';
 
 export function* onFetchPlaylistsStart() {
   yield takeLatest(tracksActionTypes.FETCH_PLAYLISTS_START, fetchPlaylists);
@@ -87,115 +89,65 @@ export function* onUploadTrackStart() {
   yield takeLatest(tracksActionTypes.UPLOAD_TRACK_START, uploadTrack);
 }
 
-export function* uploadTrack(action) {
-  const { title, selectedPlaylist, userId, selectedFile } = action.payload;
+function* uploadTrack(action) {
+  const [uploadPromise, chan] = yield createUploader(action.payload);
+  yield fork(watchOnProgress, chan);
 
   try {
-    const bodyFormData = new FormData();
-    bodyFormData.set('title', title);
-    bodyFormData.set('playlistid', selectedPlaylist);
-    bodyFormData.set('userid', userId);
-    bodyFormData.append('file', selectedFile);
-
-    const uploadChannel = yield call(
-      createUploaderChannel,
-      title,
-      bodyFormData
-    );
-    yield fork(uploadProgressWatcher, title, uploadChannel);
-    // yield put(uploadTrackSuccess())
+    const response = yield call(() => uploadPromise);
+    yield put(uploadTrackSuccess(response.data));
   } catch (error) {
     yield put(uploadTrackFailure(error));
   }
 }
 
-function createUploaderChannel(key, bodyFormData) {
-  return eventChannel((emit) => {
-    const onProgress = ({ total, loaded }) => {
-      const percentage = Math.round((loaded * 100) / total);
-      console.log('In on progress: ', percentage);
-      emit(percentage);
-    };
+function createUploader(payload) {
+  let emit;
+  const channel = eventChannel((emitter) => {
+    emit = emitter;
+    return () => {};
+  });
 
-    axios
-      .request({
-        requestId: key,
-        method: 'post',
-        url: 'api/track',
-        data: bodyFormData,
-        uploadProgress: onProgress,
-      })
-      .then(() => {
-        console.log('In success clause!');
-        emit(END);
-      })
-      .catch((err) => {
-        emit(new Error(err.message));
-        emit(END);
-      });
+  const uploadPromise = upload(payload, ({ total, loaded }) => {
+    const percentage = Math.round((loaded * 100) / total);
+    emit({ percentage });
+    if (percentage === 100) {
+      emit(END);
+    }
+  });
 
-    const unsubscribe = () => {};
-    return unsubscribe;
+  return [uploadPromise, channel];
+}
+
+function upload(payload, onProgress) {
+  const { title, selectedPlaylist, userId, selectedFile } = payload;
+
+  const bodyFormData = new FormData();
+  bodyFormData.set('title', title);
+  bodyFormData.set('playlistid', selectedPlaylist);
+  bodyFormData.set('userid', userId);
+  bodyFormData.append('file', selectedFile);
+
+  return axios.request({
+    method: 'post',
+    url: 'api/track',
+    data: bodyFormData,
+    onUploadProgress: onProgress,
   });
 }
 
-function* uploadProgressWatcher(fileName, channel) {
-  while (true) {
-    yield console.log('In watcher!');
-    try {
-      yield console.log('In try inside watcher!');
-      const progress = yield take(channel);
-      yield console.log('Progress: ', progress);
-      yield put(setUploadProgress(progress));
-    } catch (error) {
-      yield console.log('In catch inside watcher!');
-      // TODO: ??? maybe this just should put error in error instead?
-      yield put(setUploadProgress(error));
-    } finally {
-      yield console.log('In finally inside watcher!');
-      if (yield cancelled()) channel.close();
+export function* watchOnProgress(channel) {
+  try {
+    while (true) {
+      const { percentage } = yield take(channel);
+      yield put(setUploadProgress(percentage));
     }
+  } finally {
+    console.log('Recieved END-signal');
+    yield put(setFetchStatus(status.FETCHING));
+    if (yield cancelled()) channel.close();
   }
 }
-
-// try {
-//   const response = yield axios.request({
-//     method: 'post',
-//     url: 'api/track',
-//     data: bodyFormData,
-// onUploadProgress: (progressEvent) => {
-//   let percentCompleted = Math.round(
-//     (progressEvent.loaded * 100) / progressEvent.total
-//   );
-//   if (isSubscribed.current === true)
-//     setTrackDetails((prevState) => ({
-//       ...prevState,
-//       uploadProgress: percentCompleted,
-//     }));
-// },
-//   });
-
-//   yield put(uploadTrackSuccess(response.data));
-//   // setTrackDetails((prevState) => ({
-//   //   ...prevState,
-//   //   title: '',
-//   //   selectedPlaylist: 'Välj spellista',
-//   //   selectedFile: null,
-//   //   showLoadingSpinner: false,
-//   //   message: 'Filuppladdning lyckades.',
-//   // }));
-//   // }
-// } catch (error) {
-//   yield put(uploadTrackFailure(error));
-//   // if (isSubscribed.current === true)
-//   //   setTrackDetails((prevState) => ({
-//   //     ...prevState,
-//   //     showLoadingSpinner: false,
-//   //     showProgbar: false,
-//   //     message: 'Någonting gick fel.',
-//   //   }));
-// }
-// }
 
 export function* onUpdateTrackStart() {
   yield takeLatest(tracksActionTypes.UPDATE_TRACK_START, updateTrack);

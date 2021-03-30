@@ -9,16 +9,16 @@ import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 import {
   selectPlaylists,
   selectPlaylistContainingTrack,
-  selectIsLoading,
-  selectMessage,
+  selectFetchStatus,
 } from '../../redux/tracks/tracks.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 import {
   removeTrackStart,
   downloadTrackStart,
   updateTrackStart,
-  clearErrorAndMessage,
+  clearErrorAndStatus,
 } from '../../redux/tracks/tracks.actions';
+import status from '../../redux/tracks/tracks.status';
 
 import './track-options-modal.styles.scss';
 
@@ -28,7 +28,6 @@ const TrackOptionsModal = ({
 }) => {
   const dispatch = useDispatch();
 
-  const isLoading = useSelector(selectIsLoading);
   const playlists = useSelector(selectPlaylists);
   const currentPlaylist = useSelector(selectPlaylistContainingTrack(id));
   const user = useSelector(selectCurrentUser);
@@ -66,20 +65,40 @@ const TrackOptionsModal = ({
     updateTrack();
   };
 
-  const message = useSelector(selectMessage);
-  // Clear error and message from tracks-reducer on
+  const fetchStatus = useSelector(selectFetchStatus);
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    switch (fetchStatus) {
+      case status.ON_HOLD:
+        setMessage('');
+        break;
+      case status.SUCCESS:
+        setMessage('Uppdateringen lyckades!');
+        hide();
+        break;
+      case status.FAILURE:
+        setMessage('Uppdateringen misslyckades!');
+        break;
+      default:
+        setMessage('');
+        break;
+    }
+  }, [fetchStatus, hide]);
+
+  // Clear error and status from tracks-reducer on
   // component mount and unmount
   useEffect(() => {
-    dispatch(clearErrorAndMessage());
+    dispatch(clearErrorAndStatus());
 
     return () => {
-      dispatch(clearErrorAndMessage());
+      dispatch(clearErrorAndStatus());
     };
   }, [dispatch]);
 
   return (
     <form onSubmit={handleSubmit} className="track-options-modal">
-      {isLoading && <LoadingSpinner absolutePosition />}
+      {fetchStatus === status.FETCHING && <LoadingSpinner absolutePosition />}
       <ModalFormInput
         name="title"
         type="text"

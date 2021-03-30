@@ -43,7 +43,6 @@ export const checkCollapsed = (prevPlaylists, newPlaylist) => {
     const matchingPlaylist = prevPlaylists.find(
       (prevPlaylist) => prevPlaylist.id === newPlaylist.id
     );
-    console.log(matchingPlaylist);
     return matchingPlaylist ? matchingPlaylist.isCollapsed : true;
   } else return true;
 };

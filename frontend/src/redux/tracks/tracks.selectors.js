@@ -24,6 +24,16 @@ export const selectIsLoading = createSelector(
   (tracks) => tracks.isLoading
 );
 
+export const selectFetchStatus = createSelector(
+  [selectTracks],
+  (tracks) => tracks.fetchStatus
+);
+
+export const selectUploadProgress = createSelector(
+  [selectTracks],
+  (tracks) => tracks.uploadProgress
+);
+
 export const selectPlaylistsIsLoaded = createSelector(
   [selectTracks],
   (tracks) => !!tracks.playlists

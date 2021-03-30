@@ -1,6 +1,8 @@
 import tracksActionTypes from './tracks.types';
-import { getNextTrack, getPreviousTrack, checkCollapsed } from './tracks.utils';
 import isEmpty from 'lodash.isempty';
+
+import { getNextTrack, getPreviousTrack, checkCollapsed } from './tracks.utils';
+import status from './tracks.status';
 
 const INITIAL_STATE = {
   playlists: null,
@@ -11,7 +13,9 @@ const INITIAL_STATE = {
   isLoading: false,
   error: null,
   message: '',
+  fetchStatus: status.ON_HOLD,
   uploadProgress: 0,
+  showProgbar: false,
 };
 
 const playerReducer = (state = INITIAL_STATE, action) => {
@@ -19,13 +23,19 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case tracksActionTypes.FETCH_PLAYLISTS_START:
     case tracksActionTypes.CREATE_PLAYLIST_START:
     case tracksActionTypes.REMOVE_PLAYLIST_START:
-    case tracksActionTypes.UPLOAD_TRACK_START:
     case tracksActionTypes.UPDATE_TRACK_START:
     case tracksActionTypes.DOWNLOAD_TRACK_START:
     case tracksActionTypes.REMOVE_TRACK_START:
       return {
         ...state,
         isLoading: true,
+        fetchStatus: status.FETCHING,
+      };
+    case tracksActionTypes.UPLOAD_TRACK_START:
+      return {
+        ...state,
+        isLoading: true,
+        fetchStatus: status.UPLOADING,
       };
     case tracksActionTypes.CREATE_PLAYLIST_SUCCESS:
     case tracksActionTypes.REMOVE_PLAYLIST_SUCCESS:
@@ -42,11 +52,13 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         isLoading: false,
         error: null,
         message: 'Lyckades!',
+        fetchStatus: status.SUCCESS,
       };
     case tracksActionTypes.DOWNLOAD_TRACK_SUCCESS:
       return {
         ...state,
         isLoading: false,
+        fetchStatus: status.SUCCESS,
       };
     case tracksActionTypes.FETCH_PLAYLISTS_FAILURE:
     case tracksActionTypes.CREATE_PLAYLIST_FAILURE:
@@ -60,12 +72,19 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         isLoading: false,
         error: action.payload,
         message: 'Misslyckades!',
+        fetchStatus: status.FAILURE,
       };
-    case tracksActionTypes.CLEAR_ERROR_AND_MESSAGE:
+    case tracksActionTypes.CLEAR_ERROR_AND_STATUS:
       return {
         ...state,
         message: '',
         error: null,
+        fetchStatus: status.ON_HOLD,
+      };
+    case tracksActionTypes.SET_FETCH_STATUS:
+      return {
+        ...state,
+        fetchStatus: action.payload,
       };
     case tracksActionTypes.SET_UPLOAD_PROGRESS:
       return {
