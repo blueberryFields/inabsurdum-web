@@ -127,7 +127,8 @@ const AudioPlayer = () => {
     });
 
     wavesurfer.current.on('ready', function () {
-      wavesurfer.current.setVolume(volume);
+      setVolume(0.75);
+      wavesurfer.current.setVolume(0.75);
       wavesurfer.current.play();
       dispatch(setPlaying(true));
       setShowSpinner(false);
@@ -158,7 +159,7 @@ const AudioPlayer = () => {
     return () => {
       wavesurfer.current.destroy();
     };
-  }, [checksum, dispatch, peaks, calculateAndSetCurrentSongPart, user.jwt, volume]);
+  }, [checksum, dispatch, peaks, calculateAndSetCurrentSongPart, user.jwt]);
 
   // If selected track is set to playing, start playback of wavesurfer
   useEffect(() => {

@@ -98,16 +98,16 @@ const UploadModal = ({ hide }) => {
         setMessage('');
         break;
       case status.SUCCESS:
-        setMessage('Uppladdningen lyckades!');
-        setTrackDetails((prevState) => ({
-          ...prevState,
-          title: '',
-          selectedPlaylist: 'Välj spellista',
-          selectedFile: null,
-        }));
+        setMessage('Lyckades!');
+        // setTrackDetails((prevState) => ({
+        //   ...prevState,
+        //   title: '',
+        //   selectedPlaylist: 'Välj spellista',
+        //   selectedFile: null,
+        // }));
         break;
       case status.FAILURE:
-        setMessage('Uppdateringen misslyckades!');
+        setMessage('Misslyckades!');
         break;
       default:
         setMessage('');
