@@ -158,7 +158,7 @@ const AudioPlayer = () => {
     return () => {
       wavesurfer.current.destroy();
     };
-  }, [checksum, dispatch, peaks, calculateAndSetCurrentSongPart, user.jwt]);
+  }, [checksum, dispatch, peaks, calculateAndSetCurrentSongPart, user.jwt, volume]);
 
   // If selected track is set to playing, start playback of wavesurfer
   useEffect(() => {
