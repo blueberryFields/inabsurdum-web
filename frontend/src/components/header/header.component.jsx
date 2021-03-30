@@ -8,12 +8,14 @@ import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component
 import ModalFrame from '../../pop-ups/modal-frame/modal-frame.component';
 import UploadModal from '../upload-modal/upload-modal.component';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { selectPlaylistsIsLoaded } from '../../redux/tracks/tracks.selectors';
 
 import './header.styles.scss';
 
 const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectCurrentUser);
+  const playlistsIsLoaded = useSelector(selectPlaylistsIsLoaded);
 
   return (
     <div className="header">
@@ -21,7 +23,13 @@ const Header = () => {
         <>
           <ToggleContent
             toggle={(show) => (
-              <CustomButton onClick={show}>Ladda upp</CustomButton>
+              <CustomButton
+                onClick={() => {
+                  playlistsIsLoaded && show();
+                }}
+              >
+                Ladda upp
+              </CustomButton>
             )}
             content={(hide) => (
               <ModalFrame hide={hide} header={'Ladda upp'}>
