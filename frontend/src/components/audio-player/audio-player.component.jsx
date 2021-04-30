@@ -50,6 +50,7 @@ const AudioPlayer = () => {
   const [currentTime, setCurrentTime] = useState('');
 
   const waveformRef = useRef(null);
+
   const wavesurfer = useRef(null);
 
   const calculateAndSetCurrentSongPart = useCallback(
@@ -97,15 +98,6 @@ const AudioPlayer = () => {
     setScrollIsLocked(!scrollIsLocked);
     wavesurfer.current.toggleScroll();
   };
-
-  const [volume, setVolume] = useState(0.75);
-  const volumeRef = useRef(volume);
-
-  // Set volume of wavesurfer and volumeRef when volume is changed
-  useEffect(() => {
-    if (wavesurfer.current) wavesurfer.current.setVolume(volume);
-    volumeRef.current = volume;
-  }, [volume]);
 
   // Create waveform and start listen to events
   useEffect(() => {
@@ -162,6 +154,15 @@ const AudioPlayer = () => {
       wavesurfer.current.destroy();
     };
   }, [checksum, dispatch, peaks, calculateAndSetCurrentSongPart, user.jwt]);
+
+  const [volume, setVolume] = useState(0.75);
+  const volumeRef = useRef(volume);
+
+  // Set volume of wavesurfer and volumeRef when volume is changed
+  useEffect(() => {
+    if (wavesurfer.current) wavesurfer.current.setVolume(volume);
+    volumeRef.current = volume;
+  }, [volume]);
 
   // If selected track is set to playing, start playback of wavesurfer
   useEffect(() => {
