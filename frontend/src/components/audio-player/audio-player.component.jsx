@@ -99,9 +99,12 @@ const AudioPlayer = () => {
   };
 
   const [volume, setVolume] = useState(0.75);
+  const volumeRef = useRef(volume);
 
+  // Set volume of wavesurfer and volumeRef when volume is changed
   useEffect(() => {
     if (wavesurfer.current) wavesurfer.current.setVolume(volume);
+    volumeRef.current = volume;
   }, [volume]);
 
   // Create waveform and start listen to events
@@ -127,8 +130,7 @@ const AudioPlayer = () => {
     });
 
     wavesurfer.current.on('ready', function () {
-      setVolume(0.75);
-      wavesurfer.current.setVolume(0.75);
+      wavesurfer.current.setVolume(volumeRef.current);
       wavesurfer.current.play();
       dispatch(setPlaying(true));
       setShowSpinner(false);
