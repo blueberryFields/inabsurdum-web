@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -13,52 +12,39 @@ import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component
 import ModalFrame from '../../pop-ups/modal-frame/modal-frame.component';
 import EditSongPartModal from '../edit-song-part-modal/edit-song-part-modal.component';
 import ConfirmModal from '../confirm-modal/confirm-modal.component';
-import { setArrangement } from '../../redux/tracks/tracks.actions';
+import {
+  moveSongPartUpStart,
+  removeSongPartStart,
+  moveSongPartDownStart,
+} from '../../redux/tracks/tracks.actions';
 
 import './song-part.styles.scss';
 
 const SongPart = ({ part, arrangementId, highestArrSeqNo, isPlaying }) => {
-  const { id, title, startingAt, endingAt, lyrics, arrSequenceNo } = part;
+  const {
+    id: songpartId,
+    title,
+    startingAt,
+    endingAt,
+    lyrics,
+    arrSequenceNo,
+  } = part;
 
   const dispatch = useDispatch();
 
-  const remove = async () => {
-    try {
-      const response = await axios.request({
-        method: 'delete',
-        url: 'api/arrangement/removesongpart/' + arrangementId + '/' + id,
-      });
-      dispatch(setArrangement(response.data));
-    } catch (error) {
-      console.log(error);
-    }
+  const remove = () => {
+    dispatch(removeSongPartStart({ songpartId, arrangementId }));
   };
 
-  const moveUp = async () => {
+  const moveUp = () => {
     if (arrSequenceNo > 0) {
-      try {
-        const response = await axios.request({
-          method: 'put',
-          url: 'api/arrangement/movesongpartup/' + arrangementId + '/' + id,
-        });
-        dispatch(setArrangement(response.data));
-      } catch (error) {
-        console.log(error);
-      }
+      dispatch(moveSongPartUpStart({ songpartId, arrangementId }));
     }
   };
 
-  const moveDown = async () => {
+  const moveDown = () => {
     if (arrSequenceNo < highestArrSeqNo) {
-      try {
-        const response = await axios.request({
-          method: 'put',
-          url: 'api/arrangement/movesongpartdown/' + arrangementId + '/' + id,
-        });
-        dispatch(setArrangement(response.data));
-      } catch (error) {
-        console.log(error);
-      }
+      dispatch(moveSongPartDownStart({ songpartId, arrangementId }));
     }
   };
 
@@ -77,7 +63,7 @@ const SongPart = ({ part, arrangementId, highestArrSeqNo, isPlaying }) => {
             content={(hide) => (
               <ModalFrame hide={hide} header={'Redigera låt-del'}>
                 <EditSongPartModal
-                  arrangementId={arrangementId}
+                  arrId={arrangementId}
                   part={part}
                   hide={hide}
                 />

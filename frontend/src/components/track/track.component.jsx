@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Moment from 'react-moment';
-import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -11,7 +10,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { selectIsTrackSelected } from '../../redux/tracks/tracks.selectors';
-import { selectTrack, togglePlaying } from '../../redux/tracks/tracks.actions';
+import {
+  fetchTrackStart,
+  togglePlaying,
+} from '../../redux/tracks/tracks.actions';
 import ToggleContent from '../../pop-ups/toggle-content/toggle-content.component';
 import ModalFrame from '../../pop-ups/modal-frame/modal-frame.component';
 import TrackOptionsModal from '../track-options-modal/track-options-modal.component';
@@ -19,7 +21,7 @@ import TrackOptionsModal from '../track-options-modal/track-options-modal.compon
 import './track.styles.scss';
 
 const Track = ({ track }) => {
-  const { title, duration, uploadedAt } = track;
+  const { id, title, duration, uploadedAt } = track;
 
   const isTrack = useSelector(selectIsTrackSelected(track));
   const dispatch = useDispatch();
@@ -32,16 +34,8 @@ const Track = ({ track }) => {
       : fetchTrack();
   };
 
-  const fetchTrack = async () => {
-    try {
-      const response = await axios.request({
-        method: 'get',
-        url: 'api/track/' + track.id,
-      });
-      dispatch(selectTrack(response.data));
-    } catch (error) {
-      console.log('ERROR: ', error);
-    }
+  const fetchTrack = () => {
+    dispatch(fetchTrackStart(id));
   };
 
   const formatDuration = (duration) => {

@@ -18,11 +18,12 @@ const INITIAL_STATE = {
   showProgbar: false,
 };
 
-const playerReducer = (state = INITIAL_STATE, action) => {
+const tracksReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case tracksActionTypes.FETCH_PLAYLISTS_START:
     case tracksActionTypes.CREATE_PLAYLIST_START:
     case tracksActionTypes.REMOVE_PLAYLIST_START:
+    case tracksActionTypes.FETCH_TRACK_START:
     case tracksActionTypes.UPDATE_TRACK_START:
     case tracksActionTypes.DOWNLOAD_TRACK_START:
     case tracksActionTypes.REMOVE_TRACK_START:
@@ -54,6 +55,11 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         message: 'Lyckades!',
         fetchStatus: status.SUCCESS,
       };
+    case tracksActionTypes.FETCH_TRACK_SUCCESS:
+      return {
+        ...state,
+        selectedTrack: { ...action.payload, playing: false },
+      };
     case tracksActionTypes.DOWNLOAD_TRACK_SUCCESS:
       return {
         ...state,
@@ -64,6 +70,7 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     case tracksActionTypes.CREATE_PLAYLIST_FAILURE:
     case tracksActionTypes.REMOVE_PLAYLIST_FAILURE:
     case tracksActionTypes.UPLOAD_TRACK_FAILURE:
+    case tracksActionTypes.FETCH_TRACK_FAILURE:
     case tracksActionTypes.UPDATE_TRACK_FAILURE:
     case tracksActionTypes.DOWNLOAD_TRACK_FAILURE:
     case tracksActionTypes.REMOVE_TRACK_FAILURE:
@@ -90,11 +97,6 @@ const playerReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         uploadProgress: action.payload,
-      };
-    case tracksActionTypes.SELECT_TRACK:
-      return {
-        ...state,
-        selectedTrack: { ...action.payload, playing: false },
       };
     case tracksActionTypes.SELECT_NEXT_TRACK:
       return {
@@ -136,36 +138,6 @@ const playerReducer = (state = INITIAL_STATE, action) => {
           playing: action.payload,
         },
       };
-    case tracksActionTypes.TOGGLE_SHOW_ARRANGEMENT_VIEW:
-      return {
-        ...state,
-        showArrangementView:
-          !isEmpty(state.selectedTrack) && !state.showArrangementView,
-      };
-    case tracksActionTypes.PASTE_ARRANGEMENT_SUCCESS:
-      return {
-        ...state,
-        error: null,
-        selectedTrack: {
-          ...state.selectedTrack,
-          arrangement: action.payload,
-        },
-      };
-    case tracksActionTypes.PASTE_ARRANGEMENT_FAILURE:
-      return {
-        ...state,
-        error: action.payload,
-      };
-    case tracksActionTypes.SET_ARRANGEMENT_CLIPBOARD:
-      return {
-        ...state,
-        arrangementClipBoard: action.payload,
-      };
-    case tracksActionTypes.SET_CURRENT_SONGPART:
-      return {
-        ...state,
-        currentSongPart: action.payload,
-      };
     case tracksActionTypes.TOGGLE_IS_PLAYLIST_COLLAPSED:
       return {
         ...state,
@@ -184,9 +156,62 @@ const playerReducer = (state = INITIAL_STATE, action) => {
             : playlist
         ),
       };
+
+    // REDUCERS RELATED TO ARRANGMENT
+    case tracksActionTypes.TOGGLE_SHOW_ARRANGEMENT_VIEW:
+      return {
+        ...state,
+        showArrangementView:
+          !isEmpty(state.selectedTrack) && !state.showArrangementView,
+      };
+    case tracksActionTypes.PASTE_ARRANGEMENT_START:
+    case tracksActionTypes.CREATE_SONGPART_START:
+    case tracksActionTypes.UPDATE_SONGPART_START:
+    case tracksActionTypes.REMOVE_SONGPART_START:
+    case tracksActionTypes.MOVE_SONGPART_UP_START:
+    case tracksActionTypes.MOVE_SONGPART_DOWN_START:
+      return {
+        ...state,
+        isLoading: true,
+        fetchStatus: status.FETCHING,
+      };
+    case tracksActionTypes.PASTE_ARRANGEMENT_SUCCESS:
+    case tracksActionTypes.CREATE_SONGPART_SUCCESS:
+    case tracksActionTypes.UPDATE_SONGPART_SUCCESS:
+    case tracksActionTypes.REMOVE_SONGPART_SUCCESS:
+    case tracksActionTypes.MOVE_SONGPART_UP_SUCCESS:
+    case tracksActionTypes.MOVE_SONGPART_DOWN_SUCCESS:
+      return {
+        ...state,
+        error: null,
+        selectedTrack: {
+          ...state.selectedTrack,
+          arrangement: action.payload,
+        },
+      };
+    case tracksActionTypes.PASTE_ARRANGEMENT_FAILURE:
+    case tracksActionTypes.CREATE_SONGPART_FAILURE:
+    case tracksActionTypes.UPDATE_SONGPART_FAILURE:
+    case tracksActionTypes.REMOVE_SONGPART_FAILURE:
+    case tracksActionTypes.MOVE_SONGPART_UP_FAILURE:
+    case tracksActionTypes.MOVE_SONGPART_DOWN_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case tracksActionTypes.SET_ARRANGEMENT_CLIPBOARD:
+      return {
+        ...state,
+        arrangementClipBoard: action.payload,
+      };
+    case tracksActionTypes.SET_CURRENT_SONGPART:
+      return {
+        ...state,
+        currentSongPart: action.payload,
+      };
     default:
       return state;
   }
 };
 
-export default playerReducer;
+export default tracksReducer;

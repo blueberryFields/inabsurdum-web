@@ -31,6 +31,18 @@ import {
   uploadTrackFailure,
   setUploadProgress,
   setFetchStatus,
+  createSongPartSuccess,
+  createSongPartFailure,
+  removeSongPartFailure,
+  removeSongPartSuccess,
+  moveSongPartUpSuccess,
+  moveSongPartUpFailure,
+  moveSongPartDownSuccess,
+  moveSongPartDownFailure,
+  updateSongPartSuccess,
+  updateSongPartFailure,
+  fetchTrackSuccess,
+  fetchTrackFailure,
 } from './tracks.actions';
 import status from './tracks.status';
 
@@ -149,6 +161,24 @@ export function* watchOnProgress(channel) {
   }
 }
 
+export function* onFetchTrackStart() {
+  yield takeLatest(tracksActionTypes.FETCH_TRACK_START, fetchTrack);
+}
+
+export function* fetchTrack(action) {
+  const id = action.payload;
+
+  try {
+    const response = yield axios.request({
+      method: 'get',
+      url: 'api/track/' + id,
+    });
+    yield put(fetchTrackSuccess(response.data));
+  } catch (error) {
+    yield put(fetchTrackFailure(error));
+  }
+}
+
 export function* onUpdateTrackStart() {
   yield takeLatest(tracksActionTypes.UPDATE_TRACK_START, updateTrack);
 }
@@ -235,6 +265,121 @@ export function* pasteArrangement(action) {
   }
 }
 
+export function* onCreateSongPartStart() {
+  yield takeLatest(tracksActionTypes.CREATE_SONGPART_START, createSongPart);
+}
+
+export function* createSongPart(action) {
+  const {
+    songPartDetails: { title, startingAt, endingAt, lyrics },
+    arrId,
+  } = action.payload;
+
+  try {
+    const response = yield axios.request({
+      method: 'post',
+      url: 'api/arrangement/createsongpart/' + arrId,
+      data: {
+        title,
+        startingAt,
+        endingAt,
+        lyrics,
+      },
+    });
+    yield put(createSongPartSuccess(response.data));
+  } catch (error) {
+    yield put(createSongPartFailure(error));
+  }
+}
+
+export function* onUpdateSongapartStart() {
+  yield takeLatest(tracksActionTypes.UPDATE_SONGPART_START, updateSongpart);
+}
+
+export function* updateSongpart(action) {
+  const {
+    songPartDetails: { id, title, startingAt, endingAt, lyrics },
+    arrId,
+  } = action.payload;
+
+  try {
+    const response = yield axios.request({
+      method: 'put',
+      url: 'api/arrangement/updatesongpart/' + arrId,
+      data: {
+        id,
+        title,
+        startingAt,
+        endingAt,
+        lyrics,
+      },
+    });
+    yield put(updateSongPartSuccess(response.data));
+  } catch (error) {
+    yield put(updateSongPartFailure(error));
+  }
+}
+
+export function* onRemoveSongPartStart() {
+  yield takeLatest(tracksActionTypes.REMOVE_SONGPART_START, removeSongPart);
+}
+
+export function* removeSongPart(action) {
+  const { arrangementId, songpartId } = action.payload;
+
+  try {
+    const response = yield axios.request({
+      method: 'delete',
+      url: 'api/arrangement/removesongpart/' + arrangementId + '/' + songpartId,
+    });
+    yield put(removeSongPartSuccess(response.data));
+  } catch (error) {
+    yield put(removeSongPartFailure(error));
+  }
+}
+
+export function* onMoveSongPartUpStart() {
+  yield takeLatest(tracksActionTypes.MOVE_SONGPART_UP_START, moveSongPartUp);
+}
+
+export function* moveSongPartUp(action) {
+  const { arrangementId, songpartId } = action.payload;
+
+  try {
+    const response = yield axios.request({
+      method: 'put',
+      url: 'api/arrangement/movesongpartup/' + arrangementId + '/' + songpartId,
+    });
+
+    yield put(moveSongPartUpSuccess(response.data));
+  } catch (error) {
+    yield put(moveSongPartUpFailure(error));
+  }
+}
+
+export function* onMoveSongPartDownStart() {
+  yield takeLatest(
+    tracksActionTypes.MOVE_SONGPART_DOWN_START,
+    moveSongPartDown
+  );
+}
+
+export function* moveSongPartDown(action) {
+  const { arrangementId, songpartId } = action.payload;
+
+  try {
+    const response = yield axios.request({
+      method: 'put',
+      url:
+        'api/arrangement/movesongpartdown/' + arrangementId + '/' + songpartId,
+    });
+
+    yield put(moveSongPartDownSuccess(response.data));
+  } catch (error) {
+    yield put(moveSongPartDownFailure(error));
+  }
+}
+
 export function* tracksSagas() {
   yield all([
     call(onFetchPlaylistsStart),
@@ -242,8 +387,14 @@ export function* tracksSagas() {
     call(onCreatePlaylistStart),
     call(onRemovePlaylistStart),
     call(onUploadTrackStart),
+    call(onFetchTrackStart),
     call(onUpdateTrackStart),
     call(onDownloadTrackStart),
     call(onRemoveTrackStart),
+    call(onCreateSongPartStart),
+    call(onUpdateSongapartStart),
+    call(onRemoveSongPartStart),
+    call(onMoveSongPartUpStart),
+    call(onMoveSongPartDownStart),
   ]);
 }

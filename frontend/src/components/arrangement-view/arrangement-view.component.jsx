@@ -68,7 +68,7 @@ const ArrangementView = () => {
           )}
           content={(hide) => (
             <ModalFrame hide={hide} header={'Skapa låt-del'}>
-              <CreateSongPartModal id={arrangement.id} hide={hide} />
+              <CreateSongPartModal arrId={arrangement.id} hide={hide} />
             </ModalFrame>
           )}
         />

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
-import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -16,8 +15,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {
   togglePlaying,
-  selectTrack,
   toggleShowArrangmentView,
+  fetchTrackStart,
 } from '../../redux/tracks/tracks.actions';
 import {
   selectNextTrack,
@@ -55,25 +54,13 @@ const TrackControls = ({
 
   const handleSelectNextTrack = () => {
     if (!isEmpty(selectedTrack)) {
-      fetchTrack(nextTrack);
+      dispatch(fetchTrackStart(nextTrack.id));
     }
   };
 
   const handleSelectPreviousTrack = () => {
     if (!isEmpty(selectedTrack)) {
-      fetchTrack(previousTrack);
-    }
-  };
-
-  const fetchTrack = async (track) => {
-    try {
-      const response = await axios.request({
-        method: 'get',
-        url: 'api/track/' + track.id,
-      });
-      dispatch(selectTrack(response.data));
-    } catch (error) {
-      console.log('ERROR: ', error);
+      dispatch(fetchTrackStart(previousTrack.id));
     }
   };
 

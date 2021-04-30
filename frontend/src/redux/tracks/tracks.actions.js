@@ -65,6 +65,21 @@ export const uploadTrackFailure = (error) => ({
   payload: error,
 });
 
+export const fetchTrackStart = (id) => ({
+  type: tracksActionTypes.FETCH_TRACK_START,
+  payload: id,
+});
+
+export const fetchTrackSuccess = (track) => ({
+  type: tracksActionTypes.FETCH_TRACK_SUCCESS,
+  payload: track,
+});
+
+export const fetchTrackFailure = (error) => ({
+  type: tracksActionTypes.FETCH_TRACK_FAILURE,
+  payload: error,
+});
+
 export const updateTrackStart = (trackDetails) => ({
   type: tracksActionTypes.UPDATE_TRACK_START,
   payload: trackDetails,
@@ -151,6 +166,17 @@ export const setPlaying = (boolean) => ({
   payload: boolean,
 });
 
+export const toggleIsPlaylistCollapsed = (playlist) => ({
+  type: tracksActionTypes.TOGGLE_IS_PLAYLIST_COLLAPSED,
+  payload: playlist,
+});
+
+export const setPlaylistIsCollapsed = (playlist, boolean) => ({
+  type: tracksActionTypes.SET_PLAYLIST_IS_COLLAPSED,
+  payload: { playlist, boolean },
+});
+
+// ARRANGEMENT STUFF
 export const toggleShowArrangmentView = () => ({
   type: tracksActionTypes.TOGGLE_SHOW_ARRANGEMENT_VIEW,
 });
@@ -170,9 +196,79 @@ export const pasteArrangementFailure = (error) => ({
   payload: error,
 });
 
-export const setArrangement = (arrangement) => ({
-  type: tracksActionTypes.SET_ARRANGEMENT,
+export const createSongPartStart = (songPartAndArrId) => ({
+  type: tracksActionTypes.CREATE_SONGPART_START,
+  payload: songPartAndArrId,
+});
+
+export const createSongPartSuccess = (arrangement) => ({
+  type: tracksActionTypes.CREATE_SONGPART_SUCCESS,
   payload: arrangement,
+});
+
+export const createSongPartFailure = (error) => ({
+  type: tracksActionTypes.CREATE_SONGPART_FAILURE,
+  payload: error,
+});
+
+export const updateSongPartStart = (songPartAndArrId) => ({
+  type: tracksActionTypes.UPDATE_SONGPART_START,
+  payload: songPartAndArrId,
+});
+
+export const updateSongPartSuccess = (arrangement) => ({
+  type: tracksActionTypes.UPDATE_SONGPART_SUCCESS,
+  payload: arrangement,
+});
+
+export const updateSongPartFailure = (error) => ({
+  type: tracksActionTypes.UPDATE_SONGPART_FAILURE,
+  payload: error,
+});
+
+export const removeSongPartStart = (arrIdAndSongpartId) => ({
+  type: tracksActionTypes.REMOVE_SONGPART_START,
+  payload: arrIdAndSongpartId,
+});
+
+export const removeSongPartSuccess = (arrangement) => ({
+  type: tracksActionTypes.REMOVE_SONGPART_SUCCESS,
+  payload: arrangement,
+});
+
+export const removeSongPartFailure = (error) => ({
+  type: tracksActionTypes.REMOVE_SONGPART_FAILURE,
+  payload: error,
+});
+
+export const moveSongPartUpStart = (arrIdAndSongpartId) => ({
+  type: tracksActionTypes.MOVE_SONGPART_UP_START,
+  payload: arrIdAndSongpartId,
+});
+
+export const moveSongPartUpSuccess = (arrangement) => ({
+  type: tracksActionTypes.MOVE_SONGPART_UP_SUCCESS,
+  payload: arrangement,
+});
+
+export const moveSongPartUpFailure = (error) => ({
+  type: tracksActionTypes.MOVE_SONGPART_UP_FAILURE,
+  payload: error,
+});
+
+export const moveSongPartDownStart = (arrIdAndSongpartId) => ({
+  type: tracksActionTypes.MOVE_SONGPART_DOWN_START,
+  payload: arrIdAndSongpartId,
+});
+
+export const moveSongPartDownSuccess = (arrangement) => ({
+  type: tracksActionTypes.MOVE_SONGPART_DOWN_SUCCESS,
+  payload: arrangement,
+});
+
+export const moveSongPartDownFailure = (error) => ({
+  type: tracksActionTypes.MOVE_SONGPART_DOWN_FAILURE,
+  payload: error,
 });
 
 export const setArrangementClipBoard = (arrangementId) => ({
@@ -183,14 +279,4 @@ export const setArrangementClipBoard = (arrangementId) => ({
 export const setCurrentSongPart = (arrSequenceNo) => ({
   type: tracksActionTypes.SET_CURRENT_SONGPART,
   payload: arrSequenceNo,
-});
-
-export const toggleIsPlaylistCollapsed = (playlist) => ({
-  type: tracksActionTypes.TOGGLE_IS_PLAYLIST_COLLAPSED,
-  payload: playlist,
-});
-
-export const setPlaylistIsCollapsed = (playlist, boolean) => ({
-  type: tracksActionTypes.SET_PLAYLIST_IS_COLLAPSED,
-  payload: { playlist, boolean },
 });

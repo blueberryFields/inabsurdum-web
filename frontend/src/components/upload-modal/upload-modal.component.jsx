@@ -99,12 +99,6 @@ const UploadModal = ({ hide }) => {
         break;
       case status.SUCCESS:
         setMessage('Lyckades!');
-        // setTrackDetails((prevState) => ({
-        //   ...prevState,
-        //   title: '',
-        //   selectedPlaylist: 'Välj spellista',
-        //   selectedFile: null,
-        // }));
         break;
       case status.FAILURE:
         setMessage('Misslyckades!');

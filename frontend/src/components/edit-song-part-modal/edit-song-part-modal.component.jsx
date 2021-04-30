@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
+
+import { updateSongPartStart } from '../../redux/tracks/tracks.actions';
 
 import ModalFormInput from '../modal-form-input/modal-form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
-import { setArrangement } from '../../redux/tracks/tracks.actions';
 
 import './edit-song-part-modal.styles.scss';
 
 const EditSongPartModal = ({
-  arrangementId,
+  arrId,
   part: { id, title, startingAt, endingAt, lyrics },
   hide,
 }) => {
   const dispatch = useDispatch();
-  const [state, setState] = useState({
+  const [songPartDetails, setSongPartDetails] = useState({
+    id,
     title,
     startingAt,
     endingAt,
@@ -25,32 +26,13 @@ const EditSongPartModal = ({
   const handleChange = (event) => {
     const { value, name } = event.target;
 
-    setState({ ...state, [name]: value });
+    setSongPartDetails({ ...songPartDetails, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    update();
-  };
-
-  const update = async () => {
-    try {
-      const response = await axios.request({
-        method: 'put',
-        url: 'api/arrangement/updatesongpart/' + arrangementId,
-        data: {
-          id,
-          title: state.title,
-          startingAt: state.startingAt,
-          endingAt: state.endingAt,
-          lyrics: state.lyrics,
-        },
-      });
-      dispatch(setArrangement(response.data));
-      hide();
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(updateSongPartStart({ songPartDetails, arrId }));
+    hide();
   };
 
   return (
@@ -58,7 +40,7 @@ const EditSongPartModal = ({
       <ModalFormInput
         name="title"
         type="text"
-        value={state.title}
+        value={songPartDetails.title}
         onChange={handleChange}
         placeholder="Namn"
         required
@@ -67,7 +49,7 @@ const EditSongPartModal = ({
       <ModalFormInput
         name="startingAt"
         type="time"
-        value={state.startingAt}
+        value={songPartDetails.startingAt}
         onChange={handleChange}
         placeholder="Startar vid"
         step="1"
@@ -76,7 +58,7 @@ const EditSongPartModal = ({
       <ModalFormInput
         name="endingAt"
         type="time"
-        value={state.endingAt}
+        value={songPartDetails.endingAt}
         onChange={handleChange}
         placeholder="Slutar vid"
         step="1"
@@ -85,7 +67,7 @@ const EditSongPartModal = ({
         textArea
         name="lyrics"
         // type="text-area"
-        value={state.lyrics}
+        value={songPartDetails.lyrics}
         onChange={handleChange}
         placeholder="Text"
         rows="10"
